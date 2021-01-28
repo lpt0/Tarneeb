@@ -5,18 +5,41 @@ using System.Text;
 using System.Threading.Tasks;
 
 /**
- * @Author  Duy Tan Vu
- * @Date    2021-01-22
+ * @Author  Tan Vu.
+ * @Date    2021-01-22.
  */
 
 namespace Tarneeb
 {
     /// <summary>
-    /// The enum type of card suit with four constants
+    /// The enum type of card suit with 4 constants.
     /// </summary>
     public enum CardSuit
     {
-        Spades, Hearts, Diamonds, Clubs
+        Spades = 1,
+        Hearts = 2,
+        Diamonds = 3,
+        Clubs = 4
+    }
+
+    /// <summary>
+    /// The enum type of card value with 13 constants.
+    /// </summary>
+    public enum CardValue
+    {
+        Two = 1,
+        Three = 2,
+        Four = 3,
+        Five = 4,
+        Six = 5,
+        Seven = 6,
+        Eight = 7,
+        Nine = 8,
+        Ten = 9,
+        Jack = 10,
+        Queen = 11,
+        King = 12,
+        Ace = 13
     }
 
     /// <summary>
@@ -25,65 +48,33 @@ namespace Tarneeb
     class Card
     {
         /// <summary>
-        /// Value attribute of type int
+        /// Value attribute of type CardValue.
         /// </summary>
-        public int Value { get; set; }
+        public CardValue Value { get; set; }
 
         /// <summary>
-        /// Value attribute of type CardSuit
+        /// Suit attribute of type CardSuit.
         /// </summary>
         public CardSuit Suit { get; set; }
 
         /// <summary>
-        /// Parameterized constructor
+        /// Parameterized constructor.
         /// </summary>
-        /// <param name="value">An int representing card value</param>
+        /// <param name="value">An CardValue enum value representing card value.</param>
         /// <param name="suit">A CardSuit enum value representing card suit</param>
-        public Card(int value, CardSuit suit)
+        public Card(CardValue value, CardSuit suit)
         {
-            // Throw a new arguement if card value is out of range
-            if (value < 2 || value > 14)
-            {
-                throw new ArgumentException("Card value must be between 2 and 14");
-            }
-            else
-            {
-                Value = value;
-                Suit = suit;
-            }
+            Value = value;
+            Suit = suit;
         }
 
         /// <summary>
-        /// ToString() method return a string containing card value and suit
+        /// ToString() method return a string containing card value and suit.
         /// </summary>
-        /// <returns>A string containing card information</returns>
+        /// <returns>A string containing card information.</returns>
         public override string ToString()
         {
-            string valueString = "";
-            if (Value > 10)
-            {
-                switch (Value)
-                {
-                    case 11:
-                        valueString += "Jack";
-                        break;
-                    case 12:
-                        valueString += "Queen";
-                        break;
-                    case 13:
-                        valueString += "King";
-                        break;
-                    default:
-                        valueString += "Ace";
-                        break;
-                }
-            }
-            else
-            {
-                valueString += Value.ToString();
-            }
-
-            return valueString + " of " + Suit.ToString();
+            return Value.ToString() + " of " + Suit.ToString();
         }
     }
 }
