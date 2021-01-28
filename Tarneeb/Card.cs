@@ -16,7 +16,10 @@ namespace Tarneeb
     /// </summary>
     public enum CardSuit
     {
-        Spades, Hearts, Diamonds, Clubs
+        Spades = 1,
+        Hearts = 2,
+        Diamonds = 3,
+        Clubs = 4
     }
 
     /// <summary>
