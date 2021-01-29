@@ -23,34 +23,34 @@ namespace Tarneeb
     }
 
     /// <summary>
-    /// The enum type of card value with 13 constants.
+    /// The enum type of card number with 13 constants.
     /// </summary>
-    public enum CardValue
+    public enum CardNumber
     {
-        Two = 1,
-        Three = 2,
-        Four = 3,
-        Five = 4,
-        Six = 5,
-        Seven = 6,
-        Eight = 7,
-        Nine = 8,
-        Ten = 9,
-        Jack = 10,
-        Queen = 11,
-        King = 12,
-        Ace = 13
+        Ace = 1,
+        Two = 2,
+        Three = 3,
+        Four = 4,
+        Five = 5,
+        Six = 6,
+        Seven = 7,
+        Eight = 8,
+        Nine = 9,
+        Ten = 10,
+        Jack = 11,
+        Queen = 12,
+        King = 13
     }
 
     /// <summary>
-    /// Card class representing individual card of a deck with value and suit.
+    /// Card class representing individual card of a deck with number and suit.
     /// </summary>
     class Card
     {
         /// <summary>
-        /// Value attribute of type CardValue.
+        /// Number attribute of type CardNumber.
         /// </summary>
-        public CardValue Value { get; set; }
+        public CardNumber Number { get; set; }
 
         /// <summary>
         /// Suit attribute of type CardSuit.
@@ -60,21 +60,21 @@ namespace Tarneeb
         /// <summary>
         /// Parameterized constructor.
         /// </summary>
-        /// <param name="value">An CardValue enum value representing card value.</param>
-        /// <param name="suit">A CardSuit enum value representing card suit</param>
-        public Card(CardValue value, CardSuit suit)
+        /// <param name="number">A CardNumber enum named number representing card number.</param>
+        /// <param name="suit">A CardSuit enum named suit representing card suit</param>
+        public Card(CardNumber number, CardSuit suit)
         {
-            Value = value;
-            Suit = suit;
+            this.Number = number;
+            this.Suit = suit;
         }
 
         /// <summary>
-        /// ToString() method return a string containing card value and suit.
+        /// ToString() method return a string containing card number and suit.
         /// </summary>
         /// <returns>A string containing card information.</returns>
         public override string ToString()
         {
-            return Value.ToString() + " of " + Suit.ToString();
+            return $"{Number} of {Suit}";
         }
     }
 }
