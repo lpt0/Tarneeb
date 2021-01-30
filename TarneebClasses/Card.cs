@@ -9,7 +9,7 @@ using System.Threading.Tasks;
  * @Date    2021-01-22.
  */
 
-namespace Tarneeb
+namespace TarneebClasses
 {
     /// <summary>
     /// The enum type of card suit with 4 constants.
