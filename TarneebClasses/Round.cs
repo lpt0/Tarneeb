@@ -20,20 +20,20 @@ namespace TarneebClasses
         /// <summary>
         /// New card that been played 
         /// </summary>
-        public CardValue newValue { get; set; }
+        public Enums.CardNumber newValue { get; set; }
 
         /// <summary>
         /// Suit value on the card that had been played recently
         /// </summary>
-        public CardSuit newSuit { get; set; }
+        public Enums.CardSuit newSuit { get; set; }
 
         /// <summary>
         /// Parameterized constructor 
         /// </summary>
-        /// <param name="value">represents the value of the card 
         /// <param name="suit">represents the value of the suit on the card
+        /// <param name="value">represents the value of the card 
         /// <param name="bid">represents the new bid that been placed
-        public Round(CardValue value, CardSuit suit, int bid) : base(value, suit)
+        public Round(Enums.CardNumber value, Enums.CardSuit suit, int bid) : base(value, suit)
         {
             if (bid < 7)
             {
@@ -55,9 +55,9 @@ namespace TarneebClasses
         /// <param name="cardPlayed">represents the card that had been played 
         /// <param name="suitPlaced">represents the suit of the card had been played
         /// <returns></returns>
-        public bool isWin(int bidPlaced, CardValue cardPlayed, CardSuit suitPlaced)
-        {
-            cardPlayed = Value;
+        public bool isWin(int bidPlaced, Enums.CardNumber cardPlayed, Enums.CardSuit suitPlaced)
+        { 
+            cardPlayed = Number;
             suitPlaced = Suit;
 
             if (newBid > bidPlaced)
