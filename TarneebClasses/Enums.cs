@@ -37,6 +37,9 @@ namespace TarneebClasses
             King = 13
         }
 
+        /// <summary>
+        /// The enum type of team name with 3 constants.
+        /// </summary>
         public enum Team
         {
             None = 0,
