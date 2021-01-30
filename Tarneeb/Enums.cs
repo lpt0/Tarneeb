@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tarneeb
 {
-    public static class MyEnums
+    public static class Enums
     {
         /// <summary>
         /// The enum type of card suit with 4 constants.
@@ -14,9 +14,9 @@ namespace Tarneeb
         public enum CardSuit
         {
             Spades = 1,
-            Hearts = 2,
-            Diamonds = 3,
-            Clubs = 4
+            Heart = 2,
+            Diamond = 3,
+            Club = 4
         }
 
         /// <summary>
@@ -37,6 +37,13 @@ namespace Tarneeb
             Jack = 11,
             Queen = 12,
             King = 13
+        }
+
+        public enum Team
+        {
+            None = 0,
+            Blue = 1,
+            Red = 2
         }
     }
 }

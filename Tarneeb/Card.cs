@@ -14,24 +14,29 @@ namespace Tarneeb
     /// <summary>
     /// Card class representing individual card of a deck with number and suit.
     /// </summary>
-    class Card
+    public class Card
     {
         /// <summary>
         /// Number attribute of type CardNumber.
         /// </summary>
-        public MyEnums.CardNumber Number { get; set; }
+        public Enums.CardNumber Number { get; set; }
 
         /// <summary>
         /// Suit attribute of type CardSuit.
         /// </summary>
-        public MyEnums.CardSuit Suit { get; set; }
+        public Enums.CardSuit Suit { get; set; }
+
+        /// <summary>
+        /// Card's value determined by the game.
+        /// </summary>
+        public int Value { get; set; }
 
         /// <summary>
         /// Parameterized constructor.
         /// </summary>
         /// <param name="number">A CardNumber enum named number representing card number.</param>
         /// <param name="suit">A CardSuit enum named suit representing card suit</param>
-        public Card(MyEnums.CardNumber number, MyEnums.CardSuit suit)
+        public Card(Enums.CardNumber number, Enums.CardSuit suit)
         {
             this.Number = number;
             this.Suit = suit;
