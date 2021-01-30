@@ -9,7 +9,7 @@ using System.Threading.Tasks;
  * @date    2021-01-22
  */
 
-namespace Tarneeb
+namespace TarneebClasses
 {
     /// <summary>
     /// Deck class represents a collection of cards. It derived from Collection

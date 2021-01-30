@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tarneeb
+namespace TarneebClasses
 {
     /// <summary>
     /// The player class will represent an individual player including their
