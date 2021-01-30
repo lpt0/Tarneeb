@@ -12,90 +12,119 @@ using System.Threading.Tasks;
 namespace TarneebClasses
 {
     /// <summary>
-    /// Deck class represents a collection of cards. It derived from Collection
-    /// List<> allowing access to useful methods provided the Collection-based
-    /// classes.
-    /// 
-    /// Details on List<T> Class:
-    ///     system.collections.generic.list
+    /// Deck class represents a collection of cards. 
     /// 
     /// </summary>
-    class Deck : List<Card>
+    public class Deck
     {
         /// <summary>
-        /// Deck's Human readable label.
+        /// Value of each Card. Should probably involve higher class with game
+        /// logic. This dictionary assigns a integer value to each CardNumber.
         /// </summary>
-        public string DeckName { get; set; }
+        public static Dictionary<Enums.CardNumber, int> CardValues =
+            new Dictionary<Enums.CardNumber, int> {
+                {Enums.CardNumber.Ace, 13},
+                {Enums.CardNumber.Two, 1},
+                {Enums.CardNumber.Three, 2},
+                {Enums.CardNumber.Four, 3},
+                {Enums.CardNumber.Five, 4},
+                {Enums.CardNumber.Six, 5},
+                {Enums.CardNumber.Seven, 6},
+                {Enums.CardNumber.Eight, 7},
+                {Enums.CardNumber.Nine, 8},
+                {Enums.CardNumber.Ten, 9},
+                {Enums.CardNumber.Jack, 10},
+                {Enums.CardNumber.Queen, 11},
+                {Enums.CardNumber.King, 12},
+        };
 
         /// <summary>
-        /// Deck's unique ID.
+        /// List of cards stored in the deck.
         /// </summary>
-        public int DeckId { get; set; }
-
-        /// <summary>
-        /// Returns summary of the Deck as a string.
-        /// 
-        /// TODO: Perhaps the to String should return name with number of
-        /// cards.
-        /// </summary>
-        /// <returns>Summary of Deck as String</returns>
-        public override string ToString()
+        public List<Card> Cards
         {
-            return "ID: " + DeckId + "  Name: " + DeckName + "  O:" + base.ToString();
+            get;
+            set;
         }
 
         /// <summary>
-        /// Checks if the given object is a the same.
+        /// Default Constructor.
         /// </summary>
-        /// <param name="obj">Test object.</param>
-        /// <returns>If object are equals</returns>
-        public override bool Equals(object obj)
+        public Deck()
         {
-            // Check if there is an object.
-            if (obj == null)
-            {
-                return false;
-            }
-            // Cast the obj as a Deck
-            Deck potentialDeck = obj as Deck;
-            // Check if failed to be cast.
-            if (potentialDeck == null)
-            {
-                return false;
-            }
-            // Call the base classes Equals method.
-            return base.Equals(potentialDeck);
+            this.Reset();
         }
 
         /// <summary>
-        /// Equals method to check other Decks. Simply calls 
-        /// Equals(object obj).
+        /// Generates a new standard 52 card deck.
         /// </summary>
-        /// <param name="other">Another Deck.</param>
-        /// <returns>If the two object match.</returns>
-        public bool Equals(Deck other)
+        public void Reset()
         {
-            // Check if provided Deck is null.
-            if (other == null)
-            {
-                return false;
-            }
-            // Else use the Deck's Equals.
-            return this.DeckId.Equals(other.DeckId);
+            // Fetch the number of Card suit and numbers. 
+            // This could be hard coded or saved to the Enum class.
+            int numberOfCardSuit =
+                Enum.GetNames(typeof(Enums.CardSuit)).Length;
+            int numberOfCardNumber =
+                Enum.GetNames(typeof(Enums.CardNumber)).Length;
+
+            // Generate all cards with Tarneeb values.
+            this.Cards = Enumerable.Range(1, numberOfCardSuit)
+                .SelectMany(suit => Enumerable.Range(1, numberOfCardNumber)
+                .Select(number => new Card((Enums.CardNumber)number, (Enums.CardSuit)suit)
+                {
+                    Value = CardValues[(Enums.CardNumber)number]
+                }))
+                .ToList();
         }
 
         /// <summary>
-        /// Returns the unique ID of the Deck.
-        /// Does not actually return a hash.
+        /// Shuffles the cards order.
         /// </summary>
-        /// <returns>Integer representing the Deck.</returns>
-        public override int GetHashCode()
+        public void Shuffle()
         {
-            //return base.GetHashCode();
-            return DeckId;
+            this.Cards = Cards.OrderBy(card => Guid.NewGuid()).ToList();
         }
 
-        // TODO: Sort Comparison? Need Card to implement values.
+        /// <summary>
+        /// Sort the cards order value.
+        /// </summary>
+        public void Sort()
+        {
+            this.Cards = Cards.OrderBy(card => card.Value).ToList();
+        }
+
+        /// <summary>
+        /// Draw returns the first card in the deck.
+        /// </summary>
+        /// <returns>Card.</returns>
+        public Card Draw()
+        {
+            // Grab the first card and remove it from list.
+            Card card = Cards.FirstOrDefault();
+            Cards.Remove(card);
+
+            // Return the selected card.
+            return card;
+        }
+
+        /// <summary>
+        /// Draw returns a number of cards.
+        /// </summary>
+        /// <param name="numberOfCards">The number of Cards</param>
+        /// <returns>A list of Cards.</returns>
+        public IEnumerable<Card> Draw(int numberOfCards)
+        {
+            // Take the number of cards from the deck.
+            IEnumerable<Card> cards = Cards.Take(numberOfCards);
+
+            // Select the cards drawn.
+            IEnumerable<Card> takeCards = cards as Card[] ?? cards.ToArray();
+            // Remove them from the main deck.
+            Cards.RemoveAll(takeCards.Contains);
+
+            // Return the set of cards.
+            return takeCards;
+        }
 
     }
 }
