@@ -19,45 +19,39 @@ namespace TarneebClasses
     {
         /**** DATA MEMBERS ****/
 
-        private string playerName;      // A given player's name
-        private int playerId;           // A given player's ID (i.e. player 1, 2, 3, 4)
-        private int teamNumber;         // A given player's team number (i.e. team 1 or team 2)
-
-        Deck handList = new Deck();     // A given player's hand of cards
-
-        /**** CONSTRUCTORS ****/
-        public Player(string playerName, int playerId, int teamNumber, Deck handList)
-        {
-            this.playerName = playerName;
-            this.playerId = playerId;
-            this.teamNumber = teamNumber;
-            this.handList = handList;
-        }
-
-
-        /**** ACCESSORS & MUTATORS ****/
-
         /// <summary>
-        /// Gets and sets a given player's name
+        /// Gets and sets a given players name
         /// </summary>
         public string PlayerName { get; set; }
 
         /// <summary>
-        /// Gets and sets a given player's ID
+        /// Gets and sets a given players ID
         /// </summary>
         public int PlayerId { get; set; }
 
-        /// <summary>
-        /// Gets and sets a given player's team number
-        /// </summary>
-        public int TeamNumber { get; set; }
+        // Gets and sets a given players team number
+        public Enums.Team TeamNumber { get; set; }
 
-        /// <summary>
-        /// Gets and sets a given players hand
-        /// </summary>
+        // Gets and sets a given players hand
         public Deck HandList { get; set; }
 
+        /**** CONSTRUCTORS ****/
+        public Player(string playerName, int playerId, Enums.Team teamNumber, Deck handList)
+        {
+            this.PlayerName = playerName;
+            this.PlayerId = playerId;
+            this.TeamNumber = teamNumber;
+            this.HandList = handList;
+        }
+
         /**** METHODS ****/
+
+        public override string ToString()
+        {
+            return $"User Name: {PlayerName}" +
+                   $"Player Number: {PlayerId}" +
+                   $"Team Number: {TeamNumber}";
+        }
 
     }
 }
