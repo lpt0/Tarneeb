@@ -12,9 +12,9 @@ namespace TarneebClasses
         public enum CardSuit
         {
             Spades = 1,
-            Hearts = 2,
-            Diamonds = 3,
-            Clubs = 4
+            Heart = 2,
+            Diamond = 3,
+            Club = 4
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace TarneebClasses
     /// The player class will represent an individual player including their
     /// ID, team number, name, and hand.
     /// </summary>
-    class Player
+    public class Player
     {
         /**** DATA MEMBERS ****/
 
@@ -48,9 +48,9 @@ namespace TarneebClasses
 
         public override string ToString()
         {
-            return $"User Name: {PlayerName}" +
-                   $"Player Number: {PlayerId}" +
-                   $"Team Number: {TeamNumber}";
+            return $"User Name: {PlayerName}. " +
+                   $"Player Number: {PlayerId}. " +
+                   $"Team Number: {TeamNumber}. ";
         }
 
     }
