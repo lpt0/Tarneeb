@@ -63,11 +63,11 @@ namespace TarneebTest
             {
                 Cards = deck.Draw(13).ToList()
             });
-            Player player2 = new Player("Player Two", 2, Enums.Team.Blue, new Deck
+            Player player2 = new Player("Player Two", 2, Enums.Team.Red, new Deck
             {
                 Cards = deck.Draw(13).ToList()
             });
-            Player player3 = new Player("Player Three", 3, Enums.Team.Red, new Deck
+            Player player3 = new Player("Player Three", 3, Enums.Team.Blue, new Deck
             {
                 Cards = deck.Draw(13).ToList()
             });
@@ -78,18 +78,22 @@ namespace TarneebTest
 
             Console.WriteLine($"{player1}");
             Console.WriteLine("Player One's cards:");
+            player1.HandList.Sort();
             player1.HandList.Cards.ForEach(card => Console.WriteLine($"\t{card}"));
 
             Console.WriteLine($"\n{player2}");
             Console.WriteLine("Player Two's cards:");
+            player2.HandList.Sort();
             player2.HandList.Cards.ForEach(card => Console.WriteLine($"\t{card}"));
 
             Console.WriteLine($"\n{player3}");
             Console.WriteLine("Player Three's cards:");
+            player3.HandList.Sort();
             player3.HandList.Cards.ForEach(card => Console.WriteLine($"\t{card}"));
 
             Console.WriteLine($"\n{player4}");
             Console.WriteLine("Player Four's cards:");
+            player4.HandList.Sort();
             player4.HandList.Cards.ForEach(card => Console.WriteLine($"\t{card}"));
 
             Console.WriteLine($"\nNumer of cards left in the deck: {deck.Cards.Count()}");
