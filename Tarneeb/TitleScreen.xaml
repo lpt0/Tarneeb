@@ -1,0 +1,42 @@
+﻿<!-- TitleScreen.xaml
+    Title screen window.
+    
+    Author: Haran
+    Date: 2021-01-31
+-->
+<Window x:Class="Tarneeb.TitleScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tarneeb"
+        mc:Ignorable="d"
+        Title="Tarneeb - Title Screen" Height="450" Width="800">
+    <Grid>
+        <Label 
+            HorizontalAlignment="Center"
+            FontFamily="Segoe UI SemiLight"
+            FontSize="24"
+        >
+            Tarneeb
+        </Label>
+
+        <StackPanel
+            VerticalAlignment="Center"
+            Orientation="Vertical"
+            Margin="100"
+        >
+            <!-- Child element styles: https://stackoverflow.com/a/932609 -->
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="75, 10" />
+                    <Setter Property="FontSize" Value="20" />
+                </Style>
+            </StackPanel.Resources>
+            <Button Click="LocalPlayClicked">Play</Button>
+            <Button Click="ManualClicked">User Manual</Button>
+            <Button Click="SettingsClicked">Settings</Button>
+            <Button Click="ExitClicked">Exit</Button>
+        </StackPanel>
+    </Grid>
+</Window>
