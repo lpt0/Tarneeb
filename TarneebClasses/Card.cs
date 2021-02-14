@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-/**
- * @Author  Tan Vu.
- * @Date    2021-01-22.
+﻿/**
+ * @author  Tan Vu.
+ * @date    2021-01-22.
  */
 
 namespace TarneebClasses

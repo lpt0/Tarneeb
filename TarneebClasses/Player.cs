@@ -48,9 +48,7 @@ namespace TarneebClasses
 
         public override string ToString()
         {
-            return $"User Name: {PlayerName}. " +
-                   $"Player Number: {PlayerId}. " +
-                   $"Team Number: {TeamNumber}. ";
+            return $"User Name: {PlayerName}. Player Number: {PlayerId}. Team Color: {TeamNumber}. ";
         }
 
     }
