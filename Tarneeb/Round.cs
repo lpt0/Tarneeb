@@ -4,36 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tarneeb
+namespace TarneebClasses
 {
     /**
     * @Author  Hoang Quoc Bao Nguyen.
     * @Date    2021-01-29.
     */
-    class Round : Card
+    class Round 
     {
         /// <summary>
-        /// New Bid that been placed by the next player
+        /// Bid had been placed 
         /// </summary>
-        public int newBid { get; set; }
+        public int bid { get; set; }
 
         /// <summary>
-        /// New card that been played 
+        /// Card had been played 
         /// </summary>
-        public CardValue newValue { get; set; }
+        public Card card { get; set; }
 
         /// <summary>
-        /// Suit value on the card that had been played recently
+        /// Player who had already played a card and placed a bid 
         /// </summary>
-        public CardSuit newSuit { get; set; }
+        public Player player { get; set; }
+
+        /// <summary>
+        /// The list of card had been played
+        /// </summary>
+        public List<Card> CardPlayed { get; set; }
+
+        /// <summary>
+        /// The list of player, who had played
+        /// </summary>
+        public List<Player> PlayerPlayed { get; set; }
+
+        // The list of bid had been placed 
+        public List<int> Bid { get; set; }
 
         /// <summary>
         /// Parameterized constructor 
         /// </summary>
-        /// <param name="value">represents the value of the card 
-        /// <param name="suit">represents the value of the suit on the card
+        /// <param name="card">represents the value of the card
         /// <param name="bid">represents the new bid that been placed
-        public Round(CardValue value, CardSuit suit, int bid) : base(value, suit)
+        public Round(int bid, Card card, Player player)
         {
             if (bid < 7)
             {
@@ -41,40 +53,48 @@ namespace Tarneeb
             }
             else
             {
-                this.newValue = value;
-                this.newBid = bid;
-                this.newSuit = suit;
+                this.bid = bid;
+                this.card = card;
+                this.player = player;
             }
+        }
+
+        /// <summary>
+        /// Method to add to the list of cards played by players during a round 
+        /// </summary>
+        /// <param name="card"></param>represents the value of the card  
+        /// <param name="player"></param>represents the player name
+        public void PlayCard(Card card, Player player)
+        {
+            CardPlayed.Add(card);
+            PlayerPlayed.Add(player);
+        }
+
+        /// <summary>
+        /// Method to add to the list of bid placed by players during a round
+        /// </summary>
+        /// <param name="bid"></param>represents the value of the bid 
+        /// <param name="playerName"></param>represents the player name 
+        public void PlaceBid(int bid)
+        {
+            Bid.Add(bid);
         }
 
         /// <summary>
         /// Determine who is the winner based on the bid 
         /// Return true/false
         /// </summary>
-        /// <param name="bidPlaced">represents the previous bid placed 
-        /// <param name="cardPlayed">represents the card that had been played 
-        /// <param name="suitPlaced">represents the suit of the card had been played
+        /// <param name="newBid">represents the new bid placed 
         /// <returns></returns>
-        public bool isWin(int bidPlaced, CardValue cardPlayed, CardSuit suitPlaced)
+        public bool HighestBid(int newBid)
         {
-            cardPlayed = Value;
-            suitPlaced = Suit;
+            int lastBidItem = Bid.Count - 1;
+            int bidPlaced = Bid[lastBidItem];
+            newBid = this.bid;
 
             if (newBid > bidPlaced)
             {
-                if (newValue > cardPlayed)
-                {
-                    return true;
-                }
-                else if (newValue == cardPlayed)
-                {
-                    if (newSuit > suitPlaced)
-                    {
-                        return true;
-                    }
-                    else { return false; }
-                }
-                else { return false; }
+                return true;
             }
             else { return false; }
         }
