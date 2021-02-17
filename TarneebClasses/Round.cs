@@ -90,7 +90,7 @@ namespace TarneebClasses
         {
             int lastBidItem = BidList.Count - 1;
             int bidPlaced = BidList[lastBidItem];
-            newBid = this.bid;
+            newBid = this.BidList;
 
             if (newBid > bidPlaced)
             {
