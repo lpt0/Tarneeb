@@ -10,35 +10,35 @@ namespace TarneebClasses
     * @Author  Hoang Quoc Bao Nguyen.
     * @Date    2021-01-29.
     */
-    class Round : Deck
+    class Round 
     {
         /// <summary>
         /// Bid had been placed 
         /// </summary>
-        public int bid { get; set; }
+        public int Bid { get; set; }
 
         /// <summary>
         /// Card had been played 
         /// </summary>
-        public Card card { get; set; }
+        public Card Card { get; set; }
 
         /// <summary>
         /// Player who had already played a card and placed a bid 
         /// </summary>
-        public Player player { get; set; }
+        public Player Player { get; set; }
 
         /// <summary>
         /// The list of card had been played
         /// </summary>
-        public List<Card> CardPlayed {get; set; }
+        public List<Card> CardList {get; set; }
 
         /// <summary>
         /// The list of player, who had played
         /// </summary>
-        public List<Player> PlayerPlayed { get; set; }
+        public List<Player> PlayerList { get; set; }
 
         // The list of bid had been placed 
-        public List<int> Bid { get; set;  }
+        public List<int> BidList { get; set;  }
 
         /// <summary>
         /// Parameterized constructor 
@@ -53,9 +53,9 @@ namespace TarneebClasses
             }
             else
             {
-                this.bid = bid;
-                this.card = card;
-                this.player = player; 
+                this.Bid = bid;
+                this.Card = card;
+                this.Player = player; 
             }
         }
 
@@ -66,8 +66,8 @@ namespace TarneebClasses
         /// <param name="player"></param>represents the player name
         public void PlayCard(Card card, Player player)
         {
-            CardPlayed.Add(card);
-            PlayerPlayed.Add(player); 
+            CardList.Add(card);
+            PlayerList.Add(player); 
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace TarneebClasses
         /// <param name="playerName"></param>represents the player name 
         public void PlaceBid(int bid)
         {
-            Bid.Add(bid); 
+            BidList.Add(bid); 
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace TarneebClasses
         /// <returns></returns>
         public bool HighestBid(int newBid)
         {
-            int lastBidItem = Bid.Count - 1;
-            int bidPlaced = Bid[lastBidItem];
+            int lastBidItem = BidList.Count - 1;
+            int bidPlaced = BidList[lastBidItem];
             newBid = this.bid;
 
             if (newBid > bidPlaced)
