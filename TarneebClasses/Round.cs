@@ -10,7 +10,7 @@ namespace TarneebClasses
     * @Author  Hoang Quoc Bao Nguyen.
     * @Date    2021-01-29.
     */
-    class Round 
+    public class Round 
     {
         /// <summary>
         /// Bid had been placed 
