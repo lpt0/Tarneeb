@@ -112,13 +112,13 @@ namespace TarneebClasses
         /// </summary>
         /// <param name="numberOfCards">The number of Cards</param>
         /// <returns>A list of Cards.</returns>
-        public IEnumerable<Card> Draw(int numberOfCards)
+        public List<Card> Draw(int numberOfCards)
         {
             // Take the number of cards from the deck.
             IEnumerable<Card> cards = Cards.Take(numberOfCards);
 
             // Select the cards drawn.
-            IEnumerable<Card> takeCards = cards as Card[] ?? cards.ToArray();
+            List<Card> takeCards = cards as List<Card> ?? cards.ToList();
             // Remove them from the main deck.
             Cards.RemoveAll(takeCards.Contains);
 
