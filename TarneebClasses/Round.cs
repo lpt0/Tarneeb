@@ -63,7 +63,7 @@ namespace TarneebClasses
             int lostScore = 0;
             int totalScore = 0; 
 
-            if (bid == numberOfWinTrick)
+            if (numberOfWinTrick == bid || numberOfWinTrick > bid)
             {
                 winScore = numberOfWinTrick;
             }
