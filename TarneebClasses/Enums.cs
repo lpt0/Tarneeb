@@ -1,4 +1,9 @@
-﻿namespace TarneebClasses
+﻿/**
+ * @author  Duy Tan Vu.
+ * @date    2021-01-22.
+ */
+
+namespace TarneebClasses
 {
     public static class Enums
     {
