@@ -128,7 +128,7 @@ namespace TarneebTest
              * - Create a new Bid object each time we want a new Bidding stage.
              * - Call BidStage() methods and pass four players objects as arguments.
              *  => All logics happens inside BidStage(). No need to implement inside main game loop.
-             * - The object has two properties: WinningPlayer and HighestBid. Use those two for next steps in the game.
+             * - The object has three properties: WinningPlayer, HighestBid, and TrumpSuit. Use those for next steps in the game.
              */
             Bid newBid = new Bid();
             newBid.BidStage(player1, player2, player3, player4);

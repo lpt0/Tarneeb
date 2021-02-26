@@ -35,6 +35,11 @@ namespace TarneebClasses
         public int HighestBid { get; set; } = 0;
 
         /// <summary>
+        /// The trump suit determined by winning player.
+        /// </summary>
+        public Enums.CardSuit TrumpSuit { get; set; } 
+
+        /// <summary>
         /// Default constructor.
         /// </summary>
         public Bid()
@@ -135,6 +140,31 @@ namespace TarneebClasses
             } while (HighestBid != 13);
 
             Console.WriteLine($"\n{WinningPlayer.PlayerName} has the highest bid: {HighestBid}");
+
+            while (true)
+            {
+                Console.WriteLine("\nPlease select a trump suit: 1 for Spades, 2 for Heart, 3 for Diamond, and 4 for Club.");
+
+                string trumpSuit = Console.ReadLine();
+                if (int.TryParse(trumpSuit, out int trumpSuitNumber))
+                {
+                    if (trumpSuitNumber < 1 || trumpSuitNumber > 4)
+                    {
+                        Console.WriteLine("Please enter a valid option.");
+                    }
+                    else
+                    {
+                        TrumpSuit = (Enums.CardSuit)trumpSuitNumber;
+                        break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a numeric value.");
+                }
+            }
+
+            Console.WriteLine($"Trump suit is {TrumpSuit}");
         }
     }
 }
