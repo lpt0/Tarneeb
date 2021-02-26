@@ -12,91 +12,75 @@ namespace TarneebClasses
     */
     public class Round 
     {
-        /// <summary>
-        /// Bid had been placed 
-        /// </summary>
-        public int Bid { get; set; }
+        public Enums.CardSuit TrumpSuit { get; set; }
 
-        /// <summary>
-        /// Card had been played 
-        /// </summary>
-        public Card Card { get; set; }
+        public Card CardOne { get; set; }
 
-        /// <summary>
-        /// Player who had already played a card and placed a bid 
-        /// </summary>
-        public Player Player { get; set; }
+        public Card CardTwo { get; set; }
 
-        /// <summary>
-        /// The list of card had been played
-        /// </summary>
-        public List<Card> CardList {get; set; }
+        public Card CardThree { get; set; }
 
-        /// <summary>
-        /// The list of player, who had played
-        /// </summary>
-        public List<Player> PlayerList { get; set; }
+        public Card CardFour { get; set; }
 
-        // The list of bid had been placed 
-        public List<int> BidList { get; set;  }
+        static List<Card> CardList = new List<Card>() { }; 
 
-        /// <summary>
-        /// Parameterized constructor 
-        /// </summary>
-        /// <param name="card">represents the value of the card
-        /// <param name="bid">represents the new bid that been placed
-        public Round(int bid, Card card, Player player)
+        public Round (Enums.CardSuit trumpSuit, Card card1, Card card2, Card card3, Card card4)
         {
-            if (bid < 7)
+            TrumpSuit = trumpSuit; 
+            CardOne = card1;
+            CardTwo = card2;
+            CardThree = card3;
+            CardFour = card4;
+            List<Card> CardList = new List<Card>() { CardOne, CardTwo, CardThree, CardFour };
+        }
+
+        public int LeadTrick (Round round)
+        {
+            int numberOfWinTrick = 0; 
+            var trumpSuitCard = CardList.Where(x => x.Suit == TrumpSuit).ToString();
+
+            if (trumpSuitCard != "")
             {
-                throw new Exception("Please input a bid greater than 7!");
+                var highestNumber = CardList.Max(x => x.Number);
+                var cardMax = CardList.Where(x => x.Number == highestNumber)
+                                      .Where(y => y.Suit == TrumpSuit);
+                numberOfWinTrick++;
             }
             else
             {
-                this.Bid = bid;
-                this.Card = card;
-                this.Player = player; 
+                var highestNumber = CardList.Max(x => x.Number);
+                var cardMax = CardList.Where(x => x.Number == highestNumber);
+                numberOfWinTrick++;
             }
+
+            return numberOfWinTrick; 
         }
 
-        /// <summary>
-        /// Method to add to the list of cards played by players during a round 
-        /// </summary>
-        /// <param name="card"></param>represents the value of the card  
-        /// <param name="player"></param>represents the player name
-        public void PlayCard(Card card, Player player)
+        public int Score (int bid, int numberOfWinTrick)
         {
-            CardList.Add(card);
-            PlayerList.Add(player); 
-        }
+            int score = 0; 
+            int winScore = 0;
+            int lostScore = 0;
+            int totalScore = 0; 
 
-        /// <summary>
-        /// Method to add to the list of bid placed by players during a round
-        /// </summary>
-        /// <param name="bid"></param>represents the value of the bid 
-        /// <param name="playerName"></param>represents the player name 
-        public void PlaceBid(int bid)
-        {
-            BidList.Add(bid); 
-        }
-
-        /// <summary>
-        /// Determine who is the winner based on the bid 
-        /// Return true/false
-        /// </summary>
-        /// <param name="newBid">represents the new bid placed 
-        /// <returns></returns>
-        public bool HighestBid(int newBid)
-        {
-            int lastBidItem = BidList.Count - 1;
-            int bidPlaced = BidList[lastBidItem];
-            newBid = this.BidList;
-
-            if (newBid > bidPlaced)
+            if (bid == numberOfWinTrick)
             {
-                return true; 
+                winScore = numberOfWinTrick;
             }
-            else { return false; }
+            else
+            {
+                lostScore = - numberOfWinTrick; 
+            }
+
+            totalScore = winScore + lostScore;
+            score = totalScore; 
+
+            return totalScore; 
+        }
+
+        private static void main()
+        {
+
         }
     }
 }
