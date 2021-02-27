@@ -56,6 +56,24 @@ namespace TarneebClasses
         }
 
         /// <summary>
+        /// Parameterized Constructor. Accepts of a Deck to have cards cloned of.
+        /// </summary>
+        /// <param name="aDeck">A deck to copy cards from.</param>
+        public Deck(Deck aDeck)
+        {
+            this.Cards = new List<Card>(aDeck.Cards);
+        }
+
+        /// <summary>
+        /// Parameterized Constructor. Accepts a set of list of Cards.
+        /// </summary>
+        /// <param name="aListOfCards">A list of cards to create a deck of.</param>
+        public Deck(List<Card> aListOfCards)
+        {
+            this.Cards = new List<Card>(aListOfCards);
+        }
+
+        /// <summary>
         /// Generates a new standard 52 card deck.
         /// </summary>
         public void Reset()
@@ -112,7 +130,7 @@ namespace TarneebClasses
         /// </summary>
         /// <param name="numberOfCards">The number of Cards</param>
         /// <returns>A list of Cards.</returns>
-        public List<Card> Draw(int numberOfCards)
+        public Deck Draw(int numberOfCards)
         {
             // Take the number of cards from the deck.
             IEnumerable<Card> cards = Cards.Take(numberOfCards);
@@ -123,8 +141,17 @@ namespace TarneebClasses
             Cards.RemoveAll(takeCards.Contains);
 
             // Return the set of cards.
-            return takeCards;
+            return new Deck(takeCards);
         }
 
+        /// <summary>
+        /// Adds a card to the deck.
+        /// </summary>
+        /// <param name="aCard">Card to be added.</param>
+        public void Add(Card aCard)
+        {
+            // Add the card to the Card list.
+            this.Cards.Add(aCard);
+        }
     }
 }
