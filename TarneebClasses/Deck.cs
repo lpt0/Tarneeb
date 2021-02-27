@@ -56,6 +56,24 @@ namespace TarneebClasses
         }
 
         /// <summary>
+        /// Parameterized Constructor. Accepts of a Deck to have cards cloned of.
+        /// </summary>
+        /// <param name="aDeck">A deck to copy cards from.</param>
+        public Deck(Deck aDeck)
+        {
+            this.Cards = new List<Card>(aDeck.Cards);
+        }
+
+        /// <summary>
+        /// Parameterized Constructor. Accepts a set of list of Cards.
+        /// </summary>
+        /// <param name="aListOfCards">A list of cards to create a deck of.</param>
+        public Deck(List<Card> aListOfCards)
+        {
+            this.Cards = new List<Card>(aListOfCards);
+        }
+
+        /// <summary>
         /// Generates a new standard 52 card deck.
         /// </summary>
         public void Reset()
@@ -112,19 +130,55 @@ namespace TarneebClasses
         /// </summary>
         /// <param name="numberOfCards">The number of Cards</param>
         /// <returns>A list of Cards.</returns>
-        public IEnumerable<Card> Draw(int numberOfCards)
+        public Deck Draw(int numberOfCards)
         {
             // Take the number of cards from the deck.
             IEnumerable<Card> cards = Cards.Take(numberOfCards);
 
             // Select the cards drawn.
-            IEnumerable<Card> takeCards = cards as Card[] ?? cards.ToArray();
+            List<Card> takeCards = cards as List<Card> ?? cards.ToList();
             // Remove them from the main deck.
             Cards.RemoveAll(takeCards.Contains);
 
             // Return the set of cards.
-            return takeCards;
+            return new Deck(takeCards);
         }
 
+        /// <summary>
+        /// Adds a card to the deck.
+        /// </summary>
+        /// <param name="aCard">Card to be added.</param>
+        public void Add(Card aCard)
+        {
+            // Add the card to the Card list.
+            this.Cards.Add(aCard);
+        }
+
+        /// <summary>
+        /// Given a position in the deck returns that Card, effectively removing it from Deck.
+        /// Returns null if invalid position.
+        /// </summary>
+        /// <param name="position">Index of the Card to return. Zero based.</param>
+        /// <returns>Card at said position or null if invalid</returns>
+        public Card Pick(int position)
+        {
+            // Card to be returned.
+            Card picked;
+
+            // Check position is reasonable.
+            if (position > this.Cards.Count || position < 0)
+            {
+                // TODO: We could throw error if needed.
+                return null;
+            }
+
+            // Grab a copy of the card at position.
+            picked = this.Cards[position];
+            // Remove the Card from the Card List.
+            this.Cards.RemoveAt(position);
+
+            // Return Card.
+            return picked;
+        }
     }
 }
