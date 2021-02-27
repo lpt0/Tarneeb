@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿/**
+ * @author  Duy Tan Vu.
+ * @date    2021-01-22.
+ */
 
 namespace TarneebClasses
 {

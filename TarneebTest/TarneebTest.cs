@@ -23,7 +23,10 @@ namespace TarneebTest
             // DeckTest();
 
             // Test Player Class.
-            PlayerTest();
+            //PlayerTest();
+
+            // Test Bid Class.
+            BidTest();
 
             // Prompt user for any key to quit.
             Console.WriteLine("\n\nPress any key to quit...");
@@ -97,6 +100,42 @@ namespace TarneebTest
             player4.HandList.Cards.ForEach(card => Console.WriteLine($"\t{card}"));
 
             Console.WriteLine($"\nNumer of cards left in the deck: {deck.Cards.Count()}");
+        }
+
+        /// <summary>
+        /// Test the Bid class.
+        /// </summary>
+        static void BidTest()
+        {
+            Deck deck = new Deck();
+            deck.Shuffle();
+
+            Player player1 = new Player("Player One", 1, Enums.Team.Blue, new Deck
+            {
+                Cards = deck.Draw(13).ToList()
+            });
+            Player player2 = new Player("Player Two", 2, Enums.Team.Blue, new Deck
+            {
+                Cards = deck.Draw(13).ToList()
+            });
+            Player player3 = new Player("Player Three", 3, Enums.Team.Red, new Deck
+            {
+                Cards = deck.Draw(13).ToList()
+            });
+            Player player4 = new Player("Player Four", 4, Enums.Team.Red, new Deck
+            {
+                Cards = deck.Draw(13).ToList()
+            });
+
+            /*
+             * Usage: 
+             * - Create a new Bid object each time we want a new Bidding stage.
+             * - Call BidStage() methods and pass four players objects as arguments.
+             *  => All logics happens inside BidStage(). No need to implement inside main game loop.
+             * - The object has three properties: WinningPlayer, HighestBid, and TrumpSuit. Use those for next steps in the game.
+             */
+            Bid newBid = new Bid();
+            newBid.BidStage(player1, player2, player3, player4);
         }
     }
 }
