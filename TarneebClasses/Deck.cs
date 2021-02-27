@@ -153,5 +153,32 @@ namespace TarneebClasses
             // Add the card to the Card list.
             this.Cards.Add(aCard);
         }
+
+        /// <summary>
+        /// Given a position in the deck returns that Card, effectively removing it from Deck.
+        /// Returns null if invalid position.
+        /// </summary>
+        /// <param name="position">Index of the Card to return. Zero based.</param>
+        /// <returns>Card at said position or null if invalid</returns>
+        public Card Pick(int position)
+        {
+            // Card to be returned.
+            Card picked;
+
+            // Check position is reasonable.
+            if (position > this.Cards.Count || position < 0)
+            {
+                // TODO: We could throw error if needed.
+                return null;
+            }
+
+            // Grab a copy of the card at position.
+            picked = this.Cards[position];
+            // Remove the Card from the Card List.
+            this.Cards.RemoveAt(position);
+
+            // Return Card.
+            return picked;
+        }
     }
 }
