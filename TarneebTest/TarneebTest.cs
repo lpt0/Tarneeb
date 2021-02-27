@@ -62,37 +62,29 @@ namespace TarneebTest
             Deck deck = new Deck();
             deck.Shuffle();
 
-            Player player1 = new Player("Player One", 1, Enums.Team.Blue, new Deck
-            {
-                Cards = deck.Draw(13).ToList()
-            });
-            Player player2 = new Player("Player Two", 2, Enums.Team.Blue, new Deck
-            {
-                Cards = deck.Draw(13).ToList()
-            });
-            Player player3 = new Player("Player Three", 3, Enums.Team.Red, new Deck
-            {
-                Cards = deck.Draw(13).ToList()
-            });
-            Player player4 = new Player("Player Four", 4, Enums.Team.Red, new Deck
-            {
-                Cards = deck.Draw(13).ToList()
-            });
+            Player player1 = new Player("Player One", 1, Enums.Team.Blue, new Deck(deck.Draw(13)));
+            Player player2 = new Player("Player Two", 2, Enums.Team.Red, new Deck(deck.Draw(13)));
+            Player player3 = new Player("Player Three", 3, Enums.Team.Blue, new Deck(deck.Draw(13)));
+            Player player4 = new Player("Player Four", 4, Enums.Team.Red, new Deck(deck.Draw(13)));
 
             Console.WriteLine($"{player1}");
             Console.WriteLine("Player One's cards:");
+            player1.HandList.Sort();
             player1.HandList.Cards.ForEach(card => Console.WriteLine($"\t{card}"));
 
             Console.WriteLine($"\n{player2}");
             Console.WriteLine("Player Two's cards:");
+            player2.HandList.Sort();
             player2.HandList.Cards.ForEach(card => Console.WriteLine($"\t{card}"));
 
             Console.WriteLine($"\n{player3}");
             Console.WriteLine("Player Three's cards:");
+            player3.HandList.Sort();
             player3.HandList.Cards.ForEach(card => Console.WriteLine($"\t{card}"));
 
             Console.WriteLine($"\n{player4}");
             Console.WriteLine("Player Four's cards:");
+            player4.HandList.Sort();
             player4.HandList.Cards.ForEach(card => Console.WriteLine($"\t{card}"));
 
             Console.WriteLine($"\nNumer of cards left in the deck: {deck.Cards.Count()}");
@@ -106,22 +98,10 @@ namespace TarneebTest
             Deck deck = new Deck();
             deck.Shuffle();
 
-            Player player1 = new Player("Player One", 1, Enums.Team.Blue, new Deck
-            {
-                Cards = deck.Draw(13).ToList()
-            });
-            Player player2 = new Player("Player Two", 2, Enums.Team.Blue, new Deck
-            {
-                Cards = deck.Draw(13).ToList()
-            });
-            Player player3 = new Player("Player Three", 3, Enums.Team.Red, new Deck
-            {
-                Cards = deck.Draw(13).ToList()
-            });
-            Player player4 = new Player("Player Four", 4, Enums.Team.Red, new Deck
-            {
-                Cards = deck.Draw(13).ToList()
-            });
+            Player player1 = new Player("Player One", 1, Enums.Team.Blue, new Deck(deck.Draw(13)));
+            Player player2 = new Player("Player Two", 2, Enums.Team.Blue, new Deck(deck.Draw(13)));
+            Player player3 = new Player("Player Three", 3, Enums.Team.Red, new Deck(deck.Draw(13)));
+            Player player4 = new Player("Player Four", 4, Enums.Team.Red, new Deck(deck.Draw(13)));
 
             /*
              * Usage: 
