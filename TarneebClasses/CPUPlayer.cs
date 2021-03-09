@@ -9,7 +9,7 @@ using System.Text;
 namespace TarneebClasses
 {
     /// <summary>
-    /// 
+    /// A computer-controlled player.
     /// </summary>
     public class CPUPlayer : Player
     {
