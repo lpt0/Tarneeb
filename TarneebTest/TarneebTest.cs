@@ -103,15 +103,15 @@ namespace TarneebTest
             Player player3 = new Player("Player Three", 3, Enums.Team.Red, new Deck(deck.Draw(13)));
             Player player4 = new Player("Player Four", 4, Enums.Team.Red, new Deck(deck.Draw(13)));
 
-            /*
-             * Usage: 
-             * - Create a new Bid object each time we want a new Bidding stage.
-             * - Call BidStage() methods and pass four players objects as arguments.
-             *  => All logics happens inside BidStage(). No need to implement inside main game loop.
-             * - The object has three properties: WinningPlayer, HighestBid, and TrumpSuit. Use those for next steps in the game.
-             */
-            Bid newBid = new Bid();
-            newBid.BidStage(player1, player2, player3, player4);
+            Player[] listOfPlayers = new Player[]
+            {
+                player1,
+                player2,
+                player3,
+                player4,
+            };
+
+            Bid aBid = new Bid(listOfPlayers);
         }
     }
 }
