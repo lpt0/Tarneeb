@@ -9,21 +9,16 @@ using System.Text;
 namespace TarneebClasses.Logging
 {
     /// <summary>
-    /// A log representing a card being played.
+    /// A log representing a trick being completed, and won.
     /// </summary>
-    public class CardPlayedLog : ILog
+    public class TrickCompletedLog : ILog
     {
         public Type Type => Type.CARD_PLAYED;
 
         public DateTime DateTime => DateTime.Now;
 
         /// <summary>
-        /// The card that was played.
-        /// </summary>
-        public Card Card;
-
-        /// <summary>
-        /// The player that played the card.
+        /// The player that won the trick.
         /// </summary>
         public Player Player;
 
@@ -33,7 +28,7 @@ namespace TarneebClasses.Logging
         /// <returns>The string representation of the log.</returns>
         public override string ToString()
         {
-            return $"[{this.DateTime}] {this.Player.PlayerName} played {this.Card}.";
+            return $"[{this.DateTime}] {this.Player.PlayerName} won the trick.";
         }
     }
 }

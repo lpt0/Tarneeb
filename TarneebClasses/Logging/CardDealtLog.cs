@@ -4,26 +4,26 @@ using System.Text;
 
 /**
  * Author: Haran
- * Date: 2021-02-08
+ * Date: 2021-03-08
  */
 namespace TarneebClasses.Logging
 {
     /// <summary>
-    /// A log representing a card being played.
+    /// A log representing a card being dealt to a player.
     /// </summary>
-    public class CardPlayedLog : ILog
+    public class CardDealtLog : ILog
     {
-        public Type Type => Type.CARD_PLAYED;
+        public Type Type => Type.CARD_DEALT;
 
         public DateTime DateTime => DateTime.Now;
 
         /// <summary>
-        /// The card that was played.
+        /// The card that was dealt.
         /// </summary>
         public Card Card;
 
         /// <summary>
-        /// The player that played the card.
+        /// The player that received the card.
         /// </summary>
         public Player Player;
 
@@ -33,7 +33,7 @@ namespace TarneebClasses.Logging
         /// <returns>The string representation of the log.</returns>
         public override string ToString()
         {
-            return $"[{this.DateTime}] {this.Player.PlayerName} played {this.Card}.";
+            return $"[{this.DateTime}] {this.Player.PlayerName} was dealt a {this.Card}.";
         }
     }
 }

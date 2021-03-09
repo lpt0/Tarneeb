@@ -9,21 +9,21 @@ using System.Text;
 namespace TarneebClasses.Logging
 {
     /// <summary>
-    /// A log representing a card being played.
+    /// A log representing a player's initial hand.
     /// </summary>
-    public class CardPlayedLog : ILog
+    public class InitialHandLog : ILog
     {
-        public Type Type => Type.CARD_PLAYED;
+        public Type Type => Type.INITIAL_HAND;
 
         public DateTime DateTime => DateTime.Now;
 
         /// <summary>
-        /// The card that was played.
+        /// The initial hand.
         /// </summary>
-        public Card Card;
+        public Deck Hand;
 
         /// <summary>
-        /// The player that played the card.
+        /// The corresponding player.
         /// </summary>
         public Player Player;
 
@@ -33,7 +33,7 @@ namespace TarneebClasses.Logging
         /// <returns>The string representation of the log.</returns>
         public override string ToString()
         {
-            return $"[{this.DateTime}] {this.Player.PlayerName} played {this.Card}.";
+            return $"[{this.DateTime}] {this.Player.PlayerName}'s initial hand is {this.Hand}.";
         }
     }
 }
