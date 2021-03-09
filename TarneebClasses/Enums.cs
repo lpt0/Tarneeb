@@ -39,13 +39,12 @@ namespace TarneebClasses
         }
 
         /// <summary>
-        /// The enum type of team name with 3 constants.
+        /// The enum type of team name with 2 constants.
         /// </summary>
         public enum Team
         {
-            None = 0,
-            Blue = 1,
-            Red = 2
+            Blue = 0,
+            Red = 1
         }
     }
 }
