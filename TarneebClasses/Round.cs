@@ -61,7 +61,7 @@ namespace TarneebClasses
             CardTwo = card2;
             CardThree = card3;
             CardFour = card4;
-            List<Card> CardList = new List<Card>() { CardOne, CardTwo, CardThree, CardFour };
+            CardList = new List<Card>() { CardOne, CardTwo, CardThree, CardFour };
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace TarneebClasses
             // trumpSuitCard to store the trump suit value 
             // cardSuit to get the suit of the first played card
             var trumpSuitCard = CardList.Select(x => x)
-                                        .Where(x => x.Suit == TrumpSuit).ToString();
+                                        .Where(x => x.Suit == TrumpSuit); // Get all of the trump suit cards
             Enums.CardSuit card1Suit = CardList.Select(x => x.Suit).FirstOrDefault();
             Card cardMax; 
 
@@ -83,7 +83,7 @@ namespace TarneebClasses
             // Focus on the trump suit cards to find the card contains the highest number to be the win card 
             // Else if there is no trump suit card has been played then
             // Using the Suit from the first card played to find the win card 
-            if (trumpSuitCard != "")
+            if (trumpSuitCard.Count() > 0) // Check if there are trump suit cards
             {
                 // sorting the number from largest to smallest
                 // Take the largest number by select the first value in the list 
@@ -94,7 +94,7 @@ namespace TarneebClasses
             else
             {
                 var highestNumber = CardList.OrderByDescending(x => x.Number)
-                                            .Where(y => y.Suit == TrumpSuit).FirstOrDefault();
+                                            .Where(y => y.Suit == card1Suit).FirstOrDefault(); // Use card1Suit instead
 
                 cardMax = highestNumber; 
             }
