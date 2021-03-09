@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TarneebClasses", "TarneebCl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarneebTest", "TarneebTest\TarneebTest.csproj", "{D375E90E-1F95-48B1-9EDD-B8436A5E67DD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TarneebConsoleGame", "TarneebConsoleGame\TarneebConsoleGame.csproj", "{C36B0C50-A958-4E03-8052-4C1B3FA7EA38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{D375E90E-1F95-48B1-9EDD-B8436A5E67DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D375E90E-1F95-48B1-9EDD-B8436A5E67DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D375E90E-1F95-48B1-9EDD-B8436A5E67DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C36B0C50-A958-4E03-8052-4C1B3FA7EA38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C36B0C50-A958-4E03-8052-4C1B3FA7EA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C36B0C50-A958-4E03-8052-4C1B3FA7EA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C36B0C50-A958-4E03-8052-4C1B3FA7EA38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
