@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
+/**
+ * @author: Haran
+ * @date: 2021-02-08
+ */
 namespace TarneebClasses.Logging
 {
     /// <summary>
@@ -15,14 +19,19 @@ namespace TarneebClasses.Logging
         NEW_GAME,
 
         /// <summary>
-        /// A player setting their name.
+        /// A player joined.
         /// </summary>
-        PLAYER_NAMED,
+        PLAYER_JOINED,
 
         /// <summary>
-        /// A player is given a suit.
+        /// The initial hand dealt to a player.
         /// </summary>
-        TEAM_SET,
+        INITIAL_HAND,
+
+        /// <summary>
+        /// A bid was placed.
+        /// </summary>
+        BID_PLACED,
 
         /// <summary>
         /// The suit decided as the Tarneeb (trump) suit.
@@ -30,14 +39,9 @@ namespace TarneebClasses.Logging
         TARNEEB_SUIT,
 
         /// <summary>
-        /// A fattiyeh (bid) placed by a player.
-        /// </summary>
-        FATTIYEH_PLACED,
-
-        /// <summary>
         /// The first card played during a trick round.
         /// </summary>
-        LOW_SUIT,
+        //LOW_SUIT,
 
         /// <summary>
         /// A card played during a trick.
@@ -45,9 +49,19 @@ namespace TarneebClasses.Logging
         CARD_PLAYED,
 
         /// <summary>
+        /// A card was dealt to a player.
+        /// </summary>
+        CARD_DEALT,
+
+        /// <summary>
         /// Whenever a trick is won (by playing the highest number).
         /// </summary>
         TRICK_WON,
+
+        /// <summary>
+        /// A bid was completed.
+        /// </summary>
+        BID_COMPLETE,
 
         /// <summary>
         /// Whenever a game is won (by reaching the maximum score).

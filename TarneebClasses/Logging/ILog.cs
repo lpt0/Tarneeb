@@ -11,7 +11,7 @@ namespace TarneebClasses.Logging
     /// <summary>
     /// Generic game log.
     /// </summary>
-    interface ILog
+    public interface ILog
     {
         /// <summary>
         /// The type of log.
