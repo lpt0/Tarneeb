@@ -21,10 +21,11 @@ namespace TarneebClasses
         /// <param name="playerId">The player's ID.</param>
         /// <param name="teamNumber">The player's team number.</param>
         /// <param name="handList">The player's hand.</param>
-        public CPUPlayer(String playerName, int playerId, Enums.Team teamNumber, Deck handList) 
+        public CPUPlayer(Game game, String playerName, int playerId, Enums.Team teamNumber, Deck handList) 
             : base(playerName, playerId, teamNumber, handList)
         {
-
+            // Setup the event listener
+            game.PlayerTurnEvent += OnPlayerTurn;
         }
         #endregion
 
