@@ -1,0 +1,18 @@
+Card Custom Control
+	Number
+	Suit
+	Back
+
+Card Dimensions
+	64mm X 89mm
+
+/b/
+	back
+/c/
+	clubs
+/d/
+	diamonds
+/h/
+	hearts
+/s/
+	spades
