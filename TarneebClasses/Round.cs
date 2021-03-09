@@ -135,5 +135,13 @@ namespace TarneebClasses
 
             return score; 
         }
+        
+        /// <summary>
+        /// Reset the Card list for the new round 
+        /// </summary>
+        private static void Reset()
+        {
+            CardList.Clear(); 
+        }
     }
 }
