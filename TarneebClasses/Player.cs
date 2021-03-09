@@ -35,6 +35,13 @@ namespace TarneebClasses
         // Gets and sets a given players hand
         public Deck HandList { get; set; }
 
+        /**** EVENTS ****/
+        /// <summary>
+        /// Invoked when this player performs an action, such as playing a card.
+        /// TODO: Readonly
+        /// </summary>
+        public event EventHandler<Events.PlayerActionEventArgs> PlayerActionEvent;
+
         /**** CONSTRUCTORS ****/
         public Player(string playerName, int playerId, Enums.Team teamNumber, Deck handList)
         {
@@ -49,6 +56,15 @@ namespace TarneebClasses
         public override string ToString()
         {
             return $"User Name: {PlayerName}. Player Number: {PlayerId}. Team Color: {TeamNumber}. ";
+        }
+
+        /// <summary>
+        /// Raise the player action event.
+        /// </summary>
+        /// <param name="args">The arguments to use.</param>
+        public void PerformAction(Events.PlayerActionEventArgs args)
+        {
+            this.PlayerActionEvent?.Invoke(this, args);
         }
 
     }
