@@ -26,7 +26,7 @@ namespace TarneebClasses.Logging
         /// The player that played the card.
         /// </summary>
         public Player Player;
-
+        
         /// <summary>
         /// Get this log as a string.
         /// </summary>
