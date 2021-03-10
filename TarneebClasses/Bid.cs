@@ -50,16 +50,14 @@ namespace TarneebClasses
 
         public Player Bids(Player currentPlayer, int bid)
         {
-            if (MyPlayers.Count() == 1 || bid == 13)
-            {
-                WinningPlayer = currentPlayer;
-                HighestBid = bid;
-                return null;
-            }
+            var currentIdx = MyPlayers.IndexOf(currentPlayer);
 
             if (bid == -1)
             {
                 MyPlayers.Remove(currentPlayer);
+
+                if (MyPlayers.Count() == 1) return null;
+                else return MyPlayers[currentIdx];
             }
             else if (!bidValues.Contains(bid))
             {
@@ -68,12 +66,14 @@ namespace TarneebClasses
             }
             else
             {
-                bidValues.RemoveAll(item => item <= HighestBid);
+                bidValues.RemoveAll(item => item <= bid);
+                WinningPlayer = currentPlayer;
+                HighestBid = bid;
+
+                if (bid == 13) return null;
             }
 
-            // In case current player is at the last index, use modulus operator.
-            var nextIndex = (MyPlayers.IndexOf(currentPlayer) + 1) % MyPlayers.Count();
-
+            var nextIndex = currentIdx + 1 == MyPlayers.Count() ? 0 : currentIdx + 1;
             return MyPlayers[nextIndex];
         }
 

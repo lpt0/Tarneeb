@@ -108,10 +108,7 @@ namespace TarneebClasses
         /// </summary>
         private static readonly string[] cpuNames = { "Jim", "Tim", "Bim" };
 
-        /// <summary>
-        /// Game logs; retrievable by using GetLog and SetLog.
-        /// </summary>
-        private List<Logging.ILog> logs; //TODO: Public get and private set, and block Add access for get
+        
 
         /// <summary>
         /// The player that gets to make the next move (trick, bid, etc).
@@ -193,6 +190,11 @@ namespace TarneebClasses
         /// TODO: Block public Add access
         /// </summary>
         public List<Bid> Bids { get; }
+
+        /// <summary>
+        /// Game logs; retrievable by using GetLog and SetLog.
+        /// </summary>
+        public List<Logging.ILog> Logs { get; private set; } //TODO: Public get and private set, and block Add access for get
         #endregion
         #endregion
 
@@ -251,7 +253,7 @@ namespace TarneebClasses
         /// <param name="args">The arguments for the event.</param>
         public void FireNewGameEvent()
         {
-            this.logs.Add(new Logging.NewGameLog());
+            this.Logs.Add(new Logging.NewGameLog());
             NewGameEvent?.Invoke(this, new NewGameEventArgs());
         }
 
@@ -261,7 +263,7 @@ namespace TarneebClasses
         /// <param name="args">The arguments for the event.</param>
         public void FireNewPlayerEvent(NewPlayerEventArgs args)
         {
-            this.logs.Add(new Logging.PlayerJoinedLog() { Player = args.Player });
+            this.Logs.Add(new Logging.PlayerJoinedLog() { Player = args.Player });
             this.NewPlayerEvent?.Invoke(this, args);
         }
         #endregion
@@ -278,7 +280,7 @@ namespace TarneebClasses
             this.Players = new Player[NUMBER_OF_PLAYERS];
             this.CurrentCards = new Card[NUMBER_OF_PLAYERS];
             this.CurrentPlayers = new Player[NUMBER_OF_PLAYERS];
-            this.logs = new List<Logging.ILog>(); // TODO
+            this.Logs = new List<Logging.ILog>(); // TODO
             this.Bids = new List<Bid>();
             this.Rounds = new List<Round>();
             this.CurrentState = State.NEW_GAME;
@@ -310,7 +312,7 @@ namespace TarneebClasses
                         // Bid class will validate bid, and move on to the next player if needed
                         Player nextPlayer = bid.Bids(this.currentPlayer, args.Bid);
 
-                        this.logs.Add(new Logging.BidPlacedLog() { Player = this.currentPlayer, Bid = args.Bid });
+                        this.Logs.Add(new Logging.BidPlacedLog() { Player = this.currentPlayer, Bid = args.Bid });
                         FireGameActionEvent(new GameActionEventArgs() { Player = this.currentPlayer, Bid = args.Bid });
 
                         this.currentPlayer = nextPlayer;
@@ -331,7 +333,7 @@ namespace TarneebClasses
                         this.CurrentCards[cardsPlayedInRound] = args.CardPlayed;
                         cardsPlayedInRound++;
 
-                        this.logs.Add(new Logging.CardPlayedLog() { Player = this.currentPlayer, Card = args.CardPlayed });
+                        this.Logs.Add(new Logging.CardPlayedLog() { Player = this.currentPlayer, Card = args.CardPlayed });
                         FireGameActionEvent(new GameActionEventArgs() { Player = this.currentPlayer, Card = args.CardPlayed });
 
                         this.currentPlayer = this.nextPlayer();
@@ -407,8 +409,8 @@ namespace TarneebClasses
                 this.Deck.Draw(handSize)
             );
             this.Players[0] = user;
-            this.logs.Add(new Logging.PlayerJoinedLog() { Player = user });
-            this.logs.Add(new Logging.InitialHandLog() { Hand = user.HandList, Player = user });
+            this.Logs.Add(new Logging.PlayerJoinedLog() { Player = user });
+            this.Logs.Add(new Logging.InitialHandLog() { Hand = user.HandList, Player = user });
             FireGameActionEvent(new GameActionEventArgs() { Player = user });
 
             // Create CPU players
@@ -421,7 +423,7 @@ namespace TarneebClasses
                     (Enums.Team)(playerNum % 2),
                     this.Deck.Draw(handSize)
                 );
-                this.logs.Add(new Logging.PlayerJoinedLog() { Player = this.Players[playerNum] });
+                this.Logs.Add(new Logging.PlayerJoinedLog() { Player = this.Players[playerNum] });
                 // don't leak hand dealt to CPU
                 FireGameActionEvent(new GameActionEventArgs() { Player = this.Players[playerNum] });
             }
@@ -462,7 +464,7 @@ namespace TarneebClasses
                     break;
                 case State.BID_STAGE:
                     // Condition: bid must be complete
-                    if (currentBid.WinningPlayer != null)
+                    if (this.currentPlayer == null && currentBid.WinningPlayer != null)
                     {
                         // Bid is done; winner picks trump suit
                         this.currentPlayer = currentBid.WinningPlayer;
@@ -512,7 +514,7 @@ namespace TarneebClasses
                         this.bidScore[(int)winner.TeamNumber]++;
 
                         // TODO: Log trick completion
-                        this.logs.Add(new Logging.TrickCompletedLog() { Player = winner });
+                        this.Logs.Add(new Logging.TrickCompletedLog() { Player = winner });
 
                         // The winner gets to play the next card
                         this.currentPlayer = winner;
@@ -637,17 +639,6 @@ namespace TarneebClasses
             this.GameActionEvent?.Invoke(this, args);
         }
         #endregion
-        
-
-        /// <summary>
-        /// Get a log of all of the actions for this game.
-        /// </summary>
-        /// <returns>The game logs.</returns>
-        public List<Logging.ILog> GetLogs()
-        {
-            // TODO: Block Add
-            return this.logs;
-        }
         #endregion
     }
 }
