@@ -142,7 +142,7 @@ namespace TarneebTest
                 {
                     case Game.State.BID_STAGE:
                         Console.Write("Enter your bid: ");
-                        int bid = 7;// GetStdinInt(4);
+                        int bid = GetStdinInt(13);
                         consoleUser.PerformAction(new PlayerActionEventArgs() { Bid = bid });
                         break;
 
@@ -154,7 +154,7 @@ namespace TarneebTest
                             Console.Write($"[{i}] {(Enums.CardSuit)i} ");
                         }
                         Console.Write("\nEnter the Tarneeb suit: ");
-                        Enums.CardSuit suit = Enums.CardSuit.Diamond; // (Enums.CardSuit)int.Parse(Console.ReadLine());
+                        Enums.CardSuit suit = (Enums.CardSuit)GetStdinInt(4);
                         consoleUser.PerformAction(new PlayerActionEventArgs() { Tarneeb = suit });
                         break;
 
@@ -249,7 +249,7 @@ namespace TarneebTest
             //game.NewGameEvent += OnNewGame;
 
             // Initialize and get the player instance
-            consoleUser = game.Initialize("Haran");
+            consoleUser = game.Initialize(Console.ReadLine());
 
             // Start game events
             game.Start();
