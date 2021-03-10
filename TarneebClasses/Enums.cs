@@ -23,7 +23,6 @@ namespace TarneebClasses
         /// </summary>
         public enum CardNumber
         {
-            Ace = 1,
             Two = 2,
             Three = 3,
             Four = 4,
@@ -36,6 +35,7 @@ namespace TarneebClasses
             Jack = 11,
             Queen = 12,
             King = 13
+            Ace = 14,
         }
 
         /// <summary>
