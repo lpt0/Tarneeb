@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tarneeb"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Loaded="Window_Loaded">
     <Grid>
-        
+        <WrapPanel x:Name="PlayerHand" 
+                   Orientation="Horizontal" 
+                   Width="520" Height="200" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Bottom">
+        </WrapPanel>
     </Grid>
 </Window>
