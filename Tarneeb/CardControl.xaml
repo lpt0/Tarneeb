@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="Tarneeb.CardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tarneeb"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="72"
+             Height="100" Width="72"
+             Loaded="CardControl_Loaded">
+    <Viewbox Stretch="Uniform" Height="100" Width="72">
+        <Button Name="CardControlButton" Click="Button_Click" Width="242" Height="336">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="15" />
+                </Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="False" />
+                    </Style.Triggers>
+                </Style>
+            </Button.Resources>
+        </Button>
+    </Viewbox>
+</UserControl>

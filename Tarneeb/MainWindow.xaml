@@ -5,21 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tarneeb"
         mc:Ignorable="d"
-        Title="Tarneeb" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Loaded="Window_Loaded">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Button Height="64" Width="64" Grid.Row="3" Grid.Column="0">Menu</Button>
-        <Image Height="64" Width="64" Grid.Row="3" Grid.Column="3"></Image>
+        <WrapPanel x:Name="PlayerHand" 
+                   Orientation="Horizontal" 
+                   Width="520" Height="200" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Bottom">
+        </WrapPanel>
     </Grid>
 </Window>
