@@ -61,25 +61,41 @@ namespace Tarneeb
                 // Attach generic Click event listener.
                 cc.Click += new RoutedEventHandler(Card_Click);
                 // Append the CardControl to the PlayerHand Area.
-                this.PlayerHand.Children.Add(cc);
+                this.MyPlayerHand.Children.Add(cc);
 
                 // Sample place holder decks
 
                 // Create CardControl with Card. 
                 CardControl cc2 = new CardControl(aCard, true);
                 // Append the CardControl to the PlayerHand Area.
-                this.PlayerHand2.Children.Add(cc2);
+                this.TopPlayerHand.Children.Add(cc2);
 
                 // Create CardControl with Card. 
                 CardControl cc3 = new CardControl(aCard, true);
                 // Append the CardControl to the PlayerHand Area.
-                this.PlayerHand3.Children.Add(cc3);
+                this.LeftPlayerHand.Children.Add(cc3);
 
                 // Create CardControl with Card. 
                 CardControl cc4 = new CardControl(aCard, true);
                 // Append the CardControl to the PlayerHand Area.
-                this.PlayerHand4.Children.Add(cc4);
+                this.RightPlayerHand.Children.Add(cc4);
             }
+
+            Card aRandomCard1 = aDeck.Draw(1).Cards[0];
+            CardControl aRandomCardControl1 = new CardControl(aRandomCard1);
+            this.MyCard.Children.Add(aRandomCardControl1);
+
+            Card aRandomCard2 = aDeck.Draw(1).Cards[0];
+            CardControl aRandomCardControl2 = new CardControl(aRandomCard2);
+            this.TopCard.Children.Add(aRandomCardControl2);
+
+            Card aRandomCard3 = aDeck.Draw(1).Cards[0];
+            CardControl aRandomCardControl3 = new CardControl(aRandomCard3);
+            this.LeftCard.Children.Add(aRandomCardControl3);
+
+            Card aRandomCard4 = aDeck.Draw(1).Cards[0];
+            CardControl aRandomCardControl4 = new CardControl(aRandomCard4);
+            this.RightCard.Children.Add(aRandomCardControl4);
         }
 
         /// <summary>
