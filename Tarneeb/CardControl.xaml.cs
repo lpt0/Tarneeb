@@ -88,7 +88,7 @@ namespace Tarneeb
         /// </summary>
         /// <param name="aCard">A Card Class</param>
         /// <returns>Image Object</returns>
-        public static System.Windows.Controls.Image CardToResource(Card aCard)
+        public System.Windows.Controls.Image CardToResource(Card aCard)
         {
             //// Going from Bitmap to Bitmap Source.
             //var aBitmap = Tarneeb.Properties.Resources.back;
@@ -105,7 +105,7 @@ namespace Tarneeb
             System.Drawing.Bitmap aBitmap;
 
             // If no Card is provided, turn it into a double back card. 
-            if (aCard is null)
+            if (aCard is null || this.IsFaceDown == true)
             {
                 resourceName = "back";
             }

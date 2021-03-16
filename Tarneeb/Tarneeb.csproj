@@ -115,7 +115,6 @@
       <Name>TarneebClasses</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="assets\cards\back\back.png" />
     <Resource Include="assets\cards\back\back_grey.png" />
@@ -179,6 +178,21 @@
     <Resource Include="assets\cards\spades\s_j.png" />
     <Resource Include="assets\cards\spades\s_k.png" />
     <Resource Include="assets\cards\spades\s_q.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="assets\cards\cardSuits\club.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\cards\cardSuits\diamond.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\cards\cardSuits\heart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\cards\cardSuits\spades.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

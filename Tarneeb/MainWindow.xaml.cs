@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using TarneebClasses;
 
 /**
- * @author  Andrew Kuo, <APPEND_NAME>
+ * @author  Andrew Kuo, Duy Tan Vu
  * 
  * @date    2021-03-11
  */
@@ -49,7 +49,9 @@ namespace Tarneeb
         private void TestCardControlPlayerHand()
         {
             // Generate 13 Cards to new Deck.
-            Deck aHand = (new Deck()).Draw(13);
+            Deck aDeck = new Deck();
+            aDeck.Shuffle();
+            Deck aHand = aDeck.Draw(13);
             
             // For each Card in Hand, generate CardControls
             foreach(Card aCard in aHand.Cards)
@@ -60,6 +62,23 @@ namespace Tarneeb
                 cc.Click += new RoutedEventHandler(Card_Click);
                 // Append the CardControl to the PlayerHand Area.
                 this.PlayerHand.Children.Add(cc);
+
+                // Sample place holder decks
+
+                // Create CardControl with Card. 
+                CardControl cc2 = new CardControl(aCard, true);
+                // Append the CardControl to the PlayerHand Area.
+                this.PlayerHand2.Children.Add(cc2);
+
+                // Create CardControl with Card. 
+                CardControl cc3 = new CardControl(aCard, true);
+                // Append the CardControl to the PlayerHand Area.
+                this.PlayerHand3.Children.Add(cc3);
+
+                // Create CardControl with Card. 
+                CardControl cc4 = new CardControl(aCard, true);
+                // Append the CardControl to the PlayerHand Area.
+                this.PlayerHand4.Children.Add(cc4);
             }
         }
 
@@ -72,6 +91,21 @@ namespace Tarneeb
             CardControl cc = sender as CardControl;
             // Display what Card was 'Click' ed.
             MessageBox.Show(cc.Card.ToString());
+        }
+
+        /// <summary>
+        /// Close the playing window and open title window when user clicks on "Settings".
+        /// </summary>
+        private void SettingsClicked(object sender, RoutedEventArgs e)
+        {
+            var isLeft = MessageBox.Show("Are you sure to leave the game?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+
+            if (isLeft == MessageBoxResult.Yes)
+            {
+                var newTitleScreen = new TitleScreen();
+                newTitleScreen.Show();
+                this.Close();
+            }
         }
     }
 }

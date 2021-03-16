@@ -11,7 +11,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tarneeb"
         mc:Ignorable="d"
-        Title="Tarneeb - Title Screen" Height="450" Width="800">
+        Title="Tarneeb - Title Screen" Height="450" Width="800"
+        MinHeight="450" MinWidth="800">
     <Grid>
         <Label 
             HorizontalAlignment="Center"
@@ -24,7 +25,7 @@
         <StackPanel
             VerticalAlignment="Center"
             Orientation="Vertical"
-            Margin="100"
+            Margin="80"
         >
             <!-- Child element styles: https://stackoverflow.com/a/932609 -->
             <StackPanel.Resources>
@@ -36,6 +37,7 @@
             <Button Click="LocalPlayClicked">Play</Button>
             <Button Click="ManualClicked">User Manual</Button>
             <Button Click="SettingsClicked">Settings</Button>
+            <Button Click="AboutClicked">About Us</Button>
             <Button Click="ExitClicked">Exit</Button>
         </StackPanel>
     </Grid>
