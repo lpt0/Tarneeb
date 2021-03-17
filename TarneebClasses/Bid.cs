@@ -37,7 +37,7 @@ namespace TarneebClasses
         /// <summary>
         /// The higest bid value.
         /// </summary>
-        public int HighestBid { get; private set; }
+        public int HighestBid { get; private set; } = -1;
 
         /// <summary>
         /// The trump suit determined by winning player.
@@ -68,18 +68,20 @@ namespace TarneebClasses
 
             if (bid == -1)
             {
-                if (MyPlayers.Count() == 1)
+                MyPlayers.Remove(currentPlayer);
+
+                if (MyPlayers.Count() == 0)
                 {
-                    MyPlayers.Clear();
                     MyPlayers = originalPlayers.ToList();
                     return MyPlayers[0];
                 }
+                else if (MyPlayers.Count() == 1 && HighestBid != -1)
+                {
+                    return null;
+                }
                 else
                 {
-                    MyPlayers.Remove(currentPlayer);
-
-                    if (MyPlayers.Count() == 1) return null;
-                    else return MyPlayers[currentIdx];
+                    return MyPlayers[currentIdx];
                 }
             }
             else if (!bidValues.Contains(bid))

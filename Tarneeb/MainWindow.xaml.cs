@@ -83,19 +83,19 @@ namespace Tarneeb
 
             Card aRandomCard1 = aDeck.Draw(1).Cards[0];
             CardControl aRandomCardControl1 = new CardControl(aRandomCard1);
-            this.MyCard.Children.Add(aRandomCardControl1);
+            this.FirstCard.Children.Add(aRandomCardControl1);
 
             Card aRandomCard2 = aDeck.Draw(1).Cards[0];
             CardControl aRandomCardControl2 = new CardControl(aRandomCard2);
-            this.TopCard.Children.Add(aRandomCardControl2);
+            this.SecondCard.Children.Add(aRandomCardControl2);
 
             Card aRandomCard3 = aDeck.Draw(1).Cards[0];
             CardControl aRandomCardControl3 = new CardControl(aRandomCard3);
-            this.LeftCard.Children.Add(aRandomCardControl3);
+            this.ThirdCard.Children.Add(aRandomCardControl3);
 
             Card aRandomCard4 = aDeck.Draw(1).Cards[0];
             CardControl aRandomCardControl4 = new CardControl(aRandomCard4);
-            this.RightCard.Children.Add(aRandomCardControl4);
+            this.FourthCard.Children.Add(aRandomCardControl4);
         }
 
         /// <summary>

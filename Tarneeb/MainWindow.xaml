@@ -133,47 +133,48 @@
         </WrapPanel>
 
         <!--Center area for current cards-->
-        <Grid Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
-            <Grid>
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              Margin="40 0">
+            <Grid ShowGridLines="True">
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="20" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                </Grid.Resources>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="1" 
-                           Grid.Column="1"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           FontSize="24"
-                           FontWeight="UltraBlack"
-                           FontStyle="Oblique">
-                    Tarneeb
-                </TextBlock>
+                <WrapPanel x:Name="FirstCard" 
+                           Grid.Column="0">
+                </WrapPanel>
+                <TextBlock Grid.Row="1">1st Card</TextBlock>
 
-                <WrapPanel x:Name="MyCard" 
-                           Grid.Row="2"
+                <WrapPanel x:Name="SecondCard" 
                            Grid.Column="1">
                 </WrapPanel>
+                <TextBlock Grid.Row="1" Grid.Column="1">2nd Card</TextBlock>
 
-                <WrapPanel x:Name="TopCard" 
-                           Grid.Column="1">
-                </WrapPanel>
-
-                <WrapPanel x:Name="LeftCard" 
-                           Grid.Row="1">
-                </WrapPanel>
-
-                <WrapPanel x:Name="RightCard" 
-                           Grid.Row="1"
+                <WrapPanel x:Name="ThirdCard" 
                            Grid.Column="2">
                 </WrapPanel>
+                <TextBlock Grid.Row="1" Grid.Column="2">3rd Card</TextBlock>
+
+                <WrapPanel x:Name="FourthCard" 
+                           Grid.Column="3">
+                </WrapPanel>
+                <TextBlock Grid.Row="1" Grid.Column="3">4rd Card</TextBlock>
             </Grid>
         </Grid>
 
