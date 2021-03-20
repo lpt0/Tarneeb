@@ -35,7 +35,7 @@
                 </Style>
             </StackPanel.Resources>
             <Button Click="LocalPlayClicked">Play</Button>
-            <Button Click="ManualClicked">User Manual (opens in browsser)</Button>
+            <Button Click="ManualClicked">User Manual (opens in browser)</Button>
             <Button Click="SettingsClicked">Settings</Button>
             <Button Click="AboutClicked">About Us</Button>
             <Button Click="ExitClicked">Exit</Button>
