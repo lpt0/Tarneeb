@@ -2,6 +2,9 @@
     MainWindow.xaml - main playing window.
     Author: Duy Tan Vu
     Date: March 15, 2021
+    
+    Modified by: Haran
+    Date: March 20, 2021
     -->
 <Window x:Class="Tarneeb.MainWindow"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -41,7 +44,7 @@
                    Margin="0 30"
                    HorizontalAlignment="Center">
             Current Bid:<LineBreak/>
-            <TextBlock FontSize="60">13</TextBlock>
+            <TextBlock x:Name="CurrentBid" FontSize="60">13</TextBlock>
         </TextBlock>
 
         <Grid Grid.Column="2">
@@ -65,12 +68,12 @@
 
             <!--Scoring window inspired by https://viptarneeb.com/-->
             <TextBlock Grid.Column="0" Grid.ColumnSpan="2">25</TextBlock>
-            <TextBlock Grid.Column="0" Grid.Row="1">US</TextBlock>
-            <TextBlock Grid.Column="0" Grid.Row="2">0</TextBlock>
-            <TextBlock Grid.Column="0" Grid.Row="3">0</TextBlock>
-            <TextBlock Grid.Column="1" Grid.Row="1">Them</TextBlock>
-            <TextBlock Grid.Column="1" Grid.Row="2">0</TextBlock>
-            <TextBlock Grid.Column="1" Grid.Row="3">12</TextBlock>
+            <TextBlock Grid.Column="0" Grid.Row="1">Blue</TextBlock>
+            <TextBlock x:Name="Team0TrickWins" Grid.Column="0" Grid.Row="2">0</TextBlock>
+            <TextBlock x:Name="Team0TotalScore" Grid.Column="0" Grid.Row="3">0</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="1">Red</TextBlock>
+            <TextBlock x:Name="Team1TrickWins" Grid.Column="1" Grid.Row="2">0</TextBlock>
+            <TextBlock x:Name="Team1TotalScore" Grid.Column="1" Grid.Row="3">12</TextBlock>
         </Grid>
 
         <WrapPanel x:Name="TopPlayerHand" 
@@ -85,7 +88,8 @@
                 BorderThickness="1">
             <TextBlock Background="White"
                        FontSize="16"
-                       TextWrapping="Wrap">
+                       TextWrapping="Wrap"
+                       x:Name="Messages">
                 Messages placeholer<LineBreak /><LineBreak />
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </TextBlock>
@@ -104,7 +108,7 @@
                 <RowDefinition Height="8*"/>
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
-            <Image Source="./assets/cards/cardSuits/heart.png"></Image>
+            <Image x:Name="TarneebSuitImage" Source="./assets/cards/cardSuits/heart.png"></Image>
             <TextBlock 
                 FontSize="24" 
                 HorizontalAlignment="Center" 
