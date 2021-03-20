@@ -34,6 +34,7 @@ namespace Tarneeb
             //TODO
             MainWindow mainWin = new MainWindow();
             mainWin.Show();
+            this.Close();
             
         }
 
@@ -60,6 +61,21 @@ namespace Tarneeb
         {
             // Let the default handler for HTTP URLs open the page
             Process.Start("https://gist.github.com/lpt0/4c532ed6474add1e9d32dd9af6098ca6");
+        }
+
+        /// <summary>
+        /// About button clicked, display "About" Window.
+        /// </summary>
+        private void AboutClicked(object sender, RoutedEventArgs e)
+        {
+            string about = @"This is the Tarneeb Game project of the course OOP4200 at Durham College, created by:
+- Andrew (https://github.com/BadSolitaire)
+- Domenic Catalano (https://github.com/Marvist-DC)
+- Duy Tan Vu (https://github.com/johntanvu/)
+- Haran (https://github.com/lpt0)
+- Johnny (https://github.com/nhqb/)";
+
+            MessageBox.Show(about, "About Us", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
