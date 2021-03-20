@@ -20,6 +20,7 @@ namespace Tarneeb
     /// </summary>
     public partial class TitleScreen : Window
     {
+
         public TitleScreen()
         {
             InitializeComponent();
@@ -28,15 +29,18 @@ namespace Tarneeb
         /// <summary>
         /// Local play clicked, open main game window.
         /// </summary>
-        private void LocalPlayClicked(object sender, EventArgs args)
+        private void LocalPlayClicked(object sender, RoutedEventArgs e)
         {
             //TODO
+            MainWindow mainWin = new MainWindow();
+            mainWin.Show();
+            
         }
 
         /// <summary>
         /// Settings button clicked, open settings window.
         /// </summary>
-        private void SettingsClicked(object sender, EventArgs args)
+        private void SettingsClicked()
         {
             //TODO
         }
@@ -44,7 +48,7 @@ namespace Tarneeb
         /// <summary>
         /// Exit button clicked, close program.
         /// </summary>
-        private void ExitClicked(object sender, EventArgs args)
+        private void ExitClicked()
         {
             this.Close(); //TODO
         }
