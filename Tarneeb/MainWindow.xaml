@@ -13,8 +13,9 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:local="clr-namespace:Tarneeb"
             mc:Ignorable="d"
-            Title="Tarneeb MainWindow" Height="1000" Width="1200"
+            Title="Tarneeb" Height="1000" Width="1200"
             MinHeight="1000" MinWidth="1200" MaxHeight="1000" MaxWidth="1200"
+            WindowStartupLocation="CenterScreen"
             Loaded="Window_Loaded">
     <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
@@ -67,7 +68,7 @@
             </Grid.Resources>
 
             <!--Scoring window inspired by https://viptarneeb.com/-->
-            <TextBlock Grid.Column="0" Grid.ColumnSpan="2">25</TextBlock>
+            <TextBlock x:Name="MaxScore" Grid.Column="0" Grid.ColumnSpan="2">25</TextBlock>
             <TextBlock Grid.Column="0" Grid.Row="1">Blue</TextBlock>
             <TextBlock x:Name="Team0TrickWins" Grid.Column="0" Grid.Row="2">0</TextBlock>
             <TextBlock x:Name="Team0TotalScore" Grid.Column="0" Grid.Row="3">0</TextBlock>
@@ -90,8 +91,7 @@
                        FontSize="16"
                        TextWrapping="Wrap"
                        x:Name="Messages">
-                Messages placeholer<LineBreak /><LineBreak />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                
             </TextBlock>
         </Border>
 
@@ -187,12 +187,9 @@
                 BorderThickness="1" 
                 Grid.Column="3" 
                 Grid.RowSpan="6">
-            <TextBlock TextWrapping="Wrap"
-                       Background="White"
-                       FontSize="13">
-                LOGS placeholder <LineBreak /><LineBreak />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed elementum tempus egestas sed sed risus. Habitant morbi tristique senectus et. Amet purus gravida quis blandit turpis cursus in hac. Scelerisque eu ultrices vitae auctor. Pulvinar neque laoreet suspendisse interdum consectetur libero id faucibus nisl. Eu mi bibendum neque egestas congue quisque egestas diam in. Elit ullamcorper dignissim cras tincidunt. Urna cursus eget nunc scelerisque viverra mauris in aliquam. Venenatis tellus in metus vulputate eu scelerisque felis imperdiet proin. Amet consectetur adipiscing elit pellentesque habitant morbi tristique. Eu sem integer vitae justo eget magna. Quis viverra nibh cras pulvinar mattis nunc sed blandit. Dictumst vestibulum rhoncus est pellentesque. Venenatis a condimentum vitae sapien pellentesque habitant morbi. Pretium fusce id velit ut tortor pretium viverra suspendisse potenti. Mattis molestie a iaculis at erat pellentesque adipiscing commodo elit. Vitae elementum curabitur vitae nunc sed velit dignissim. Risus at ultrices mi tempus.
-            </TextBlock>
+            <ListView x:Name="Logs">
+
+            </ListView>
         </Border>
     </Grid>
 </Window>
