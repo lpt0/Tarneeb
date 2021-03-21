@@ -34,7 +34,7 @@ namespace TarneebClasses.Logging
         public override string ToString()
         {
             // TODO
-            return $"[{this.DateTime}] {this.Player.PlayerName} decided on the suit {this.Suit}.";
+            return $"{this.Player.PlayerName} decided on the suit {this.Suit}.";
         }
     }
 }

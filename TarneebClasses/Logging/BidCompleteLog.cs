@@ -39,7 +39,7 @@ namespace TarneebClasses.Logging
         public override string ToString()
         {
             // TODO
-            return $"[{this.DateTime}] {this.WinningTeam} won with a score of {this.Score}.";
+            return $"{this.WinningTeam} won with a score of {this.Score}.";
         }
     }
 }
