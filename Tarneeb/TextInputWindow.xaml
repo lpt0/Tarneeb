@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Tarneeb"
         mc:Ignorable="d"
         WindowStyle="SingleBorderWindow"
+        WindowStartupLocation="CenterScreen"
         Title="" Height="150" Width="250">
     <Grid>
         <Grid.RowDefinitions>
