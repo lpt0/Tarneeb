@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using TarneebClasses.Events;
 
@@ -73,9 +74,9 @@ namespace TarneebClasses
             TRICK_COMPLETE,
 
             /// <summary>
-            /// The bid value has been reached.
+            /// The bid value is complete.
             /// </summary>
-            BID_REACHED,
+            BID_COMPLETE,
 
             /// <summary>
             /// The game is complete.
@@ -187,7 +188,7 @@ namespace TarneebClasses
         /// <summary>
         /// Game logs; retrievable by using GetLog and SetLog.
         /// </summary>
-        public List<Logging.ILog> Logs { get; private set; } //TODO: Public get and private set, and block Add access for get
+        public ObservableCollection<Logging.ILog> Logs { get; private set; } //TODO: Public get and private set, and block Add access for get
         #endregion
         #endregion
 
@@ -214,30 +215,6 @@ namespace TarneebClasses
         /// be a card played, or it could be a team winning a trick.
         /// </summary>
         public event EventHandler<GameActionEventArgs> GameActionEvent;
-
-        #region Old events
-        /// <summary>
-        /// Triggered when a card is played.
-        /// </summary>
-        public event EventHandler<CardPlayedEventArgs> CardPlayedEvent;
-
-        /// <summary>
-        /// Triggered when it is a player's turn.
-        /// Player classes should listen for this to be fired, then check if
-        /// the `Player` field is their player.
-        /// </summary>
-        public event EventHandler<PlayerTrickTurnEventArgs> PlayerTrickTurnEvent;
-
-        /// <summary>
-        /// Triggered when a trick is completed.
-        /// </summary>
-        public event EventHandler<TrickCompleteEventArgs> TrickCompleteEvent;
-
-        /// <summary>
-        /// Triggered when a bid is reached (finished).
-        /// </summary>
-        public event EventHandler<BidFinishedEventArgs> BidFinishedEvent;
-        #endregion
         #endregion
         #region Event triggers
         /// <summary>
@@ -273,7 +250,7 @@ namespace TarneebClasses
             this.Players = new Player[NUMBER_OF_PLAYERS];
             this.CurrentCards = new Card[NUMBER_OF_PLAYERS];
             this.CurrentPlayers = new Player[NUMBER_OF_PLAYERS];
-            this.Logs = new List<Logging.ILog>(); // TODO
+            this.Logs = new ObservableCollection<Logging.ILog>(); // TODO
             this.Bids = new List<Bid>();
             this.Rounds = new List<Round>();
             this.CurrentState = State.NEW_GAME;
@@ -320,9 +297,10 @@ namespace TarneebClasses
                     case Game.State.BID_WON:
                         // Validate Tarneeb suit
                         // Assume the suit is valid for a local game
+                        // TODO: Tarneeb suit should be in own staage
                         bid.DecideTarneebSuit(args.Tarneeb);
                         this.Logs.Add(new Logging.TarneebSuitLog() { Player = this.currentPlayer, Suit = args.Tarneeb });
-                        FireGameActionEvent(new GameActionEventArgs() { Player = this.currentPlayer, Tarneeb = args.Tarneeb });
+                        FireGameActionEvent(new GameActionEventArgs() { Player = this.currentPlayer, Bid = bid.HighestBid, Tarneeb = args.Tarneeb });
                         break;
 
                     case Game.State.TRICK:
@@ -332,8 +310,14 @@ namespace TarneebClasses
                         this.CurrentCards[cardsPlayedInRound] = args.CardPlayed;
                         cardsPlayedInRound++;
 
+                        /* Remove the card from the player's hand (again, just in case)
+                         * Players may or may not have already done this, but better to do it
+                         * just in case.
+                         */
+                        this.currentPlayer.HandList.Cards.Remove(args.CardPlayed);
+
                         this.Logs.Add(new Logging.CardPlayedLog() { Player = this.currentPlayer, Card = args.CardPlayed });
-                        FireGameActionEvent(new GameActionEventArgs() { Player = this.currentPlayer, Card = args.CardPlayed });
+                        FireGameActionEvent(new GameActionEventArgs() { Player = this.currentPlayer, Card = args.CardPlayed, CardsPlayedInRound = this.cardsPlayedInRound - 1 });
 
                         this.currentPlayer = this.NextPlayer();
                         break;
@@ -470,12 +454,12 @@ namespace TarneebClasses
                         Player winner = this.CurrentPlayers[winningCardIdx];
 
                         // TODO: Get winner
-                        FireGameActionEvent(new GameActionEventArgs() { Player = winner });
 
                         // Increment number of wins for their team
                         this.bidScore[(int)winner.TeamNumber]++;
 
-                        // TODO: Log trick completion
+                        // Fire off the event and log it
+                        FireGameActionEvent(new GameActionEventArgs() { Player = winner, BidScores = this.bidScore });
                         this.Logs.Add(new Logging.TrickCompletedLog() { Player = winner });
 
                         // The winner gets to play the next card
@@ -491,14 +475,14 @@ namespace TarneebClasses
                         if (this.TrickCounter == HAND_SIZE)
                         {
                             // Bid reached
-                            this.CurrentState = State.BID_REACHED;
+                            this.CurrentState = State.BID_COMPLETE;
                             this.TrickCounter = 0; // Reset counter
                             this.Next();
                         }
                     }
                     break;
 
-                case State.BID_REACHED:
+                case State.BID_COMPLETE:
                     {
                         //TODO: Scoring fix
                         Enums.Team winningTeam =
@@ -534,7 +518,8 @@ namespace TarneebClasses
                                 Player = this.currentPlayer,
                                 Score = score,
                                 WinningTeam = winningTeam,
-                                LosingTeam = losingTeam
+                                LosingTeam = losingTeam,
+                                TeamScores = this.teamScore
                             }
                         );
 

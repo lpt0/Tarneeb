@@ -41,7 +41,7 @@ namespace Tarneeb
         /// <summary>
         /// Settings button clicked, open settings window.
         /// </summary>
-        private void SettingsClicked()
+        private void SettingsClicked(object sender, RoutedEventArgs e)
         {
             //TODO
         }
@@ -49,7 +49,7 @@ namespace Tarneeb
         /// <summary>
         /// Exit button clicked, close program.
         /// </summary>
-        private void ExitClicked()
+        private void ExitClicked(object sender, RoutedEventArgs e)
         {
             this.Close(); //TODO
         }
@@ -57,7 +57,7 @@ namespace Tarneeb
         /// <summary>
         /// User manual button clicked, open the user manual.
         /// </summary>
-        private void ManualClicked(object sender, EventArgs args)
+        private void ManualClicked(object sender, RoutedEventArgs e)
         {
             // Let the default handler for HTTP URLs open the page
             Process.Start("https://gist.github.com/lpt0/4c532ed6474add1e9d32dd9af6098ca6");
