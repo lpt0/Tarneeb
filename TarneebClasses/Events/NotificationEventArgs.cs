@@ -9,14 +9,14 @@ using System.Text;
 namespace TarneebClasses.Events
 {
     /// <summary>
-    /// Event arguments for whenever it is a player's turn to bid.
+    /// Event arguments for notifications.
     /// </summary>
     /// <see cref="EventArgs" />
-    public class PlayerBidTurnEventArgs : EventArgs
+    public class NotificationEventArgs : EventArgs
     {
         /// <summary>
-        /// The player that is currently playing. TODO reword
+        /// The notification message.
         /// </summary>
-        public Player Player { get; set; }
+        public string Message { get; set; }
     }
 }

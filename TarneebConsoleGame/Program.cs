@@ -58,67 +58,6 @@ namespace TarneebTest
         /// </summary>
         public static event EventHandler<PlayerDecideTarneebEventArgs> PlayerDecidesTarneebEvent;
 
-        #region Old event handlers
-        /// <summary>
-        /// Executes when it's this player's turn to play a trick.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        static void OnPlayerTrickTurn(object sender, PlayerTrickTurnEventArgs args)
-        {
-            // Is it my turn?
-            if (args.Player == consoleUser)
-            {
-                // TODO: Need to find low suit
-                Console.WriteLine("Your turn!");
-                PrintPlayerCards(consoleUser.HandList);
-                Console.Write("Enter a number from the above list: ");
-                Card playedCard = consoleUser.HandList.Pick(GetStdinInt(consoleUser.HandList.Cards.Count));
-
-                // Raise an event so the game knows that I played a card
-                PlayerPlaysCardEvent?.Invoke(consoleUser, new PlayerPlayCardEventArgs { Card = playedCard });
-            }
-            else
-            {
-                // Some other player's turn
-                Console.WriteLine($"{args.Player.PlayerName}'s turn!");
-            }
-        }
-
-        /// <summary>
-        /// Executes when it's this player's turn to place a bid.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name=""></param>
-        static void OnPlayerBidTurn(object sender, PlayerBidTurnEventArgs args)
-        {
-            // My turn?
-            if (args.Player == consoleUser)
-            {
-                // Place my bid
-                Console.Write("Place a bid: ");
-                int bid = int.Parse(Console.ReadLine());
-
-                // Fire the event off
-                PlayerPlacesBidEvent?.Invoke(consoleUser, new PlayerPlaceBidEventArgs { Bid = bid });
-            } else
-            {
-                // Somebody else's turn
-                Console.WriteLine($"{args.Player.PlayerName} is placing their bid...");
-            }
-        }
-
-        static void OnCardPlayed(object sender, CardPlayedEventArgs eventArgs)
-        {
-            Console.WriteLine($"{eventArgs.Player.PlayerName} played {eventArgs.Card}.");
-        }
-
-        static void OnTrickCompleted(object sender, TrickCompleteEventArgs eventArgs)
-        {
-            Console.WriteLine($"Trick completed TODO");
-        }
-        #endregion
-
         static void OnNewPlayer(object sender, NewPlayerEventArgs args)
         {
             Console.WriteLine($"{args.Player.PlayerName} joined.");
@@ -141,6 +80,7 @@ namespace TarneebTest
                 switch (args.State)
                 {
                     case Game.State.BID_STAGE:
+                        PrintPlayerCards(consoleUser.HandList);
                         Console.Write("Enter your bid: ");
                         int bid = GetStdinInt(13);
                         consoleUser.PerformAction(new PlayerActionEventArgs() { Bid = bid });
@@ -170,9 +110,9 @@ namespace TarneebTest
                         );
                         break;
 
-                    default:
-                        throw new Exception("Unknown stage!");
-                        break;
+                    //default:
+                    //    throw new Exception("Unknown stage!");
+                    //    break;
                 }
             }
         }
@@ -218,9 +158,9 @@ namespace TarneebTest
                 case Game.State.DONE:
                     Console.WriteLine("Game complete.");
                     break;
-                default:
-                    throw new Exception("Unknown state!");
-                    break;
+                //default:
+                //    throw new Exception("Unknown state!");
+                //    break;
             }
         }
 
@@ -251,69 +191,18 @@ namespace TarneebTest
             // Initialize and get the player instance
             consoleUser = game.Initialize(Console.ReadLine());
 
+            Console.WriteLine("Your cards:");
+            PrintPlayerCards(consoleUser.HandList);
+
             // Start game events
             game.Start();
 
+
             while (game.CurrentState != Game.State.DONE)
             {
-                Thread.Sleep(60);
+                // spin
             }
             //TODO: Await until the game is done
-
-            #region Old Console Game
-            /*do // Run until 30 points
-            {
-                int roundCounter = 0;
-
-                //TODO: Log bid
-                Bid bid = new Bid();
-                bid.BidStage(players[0], players[1], players[2], players[3]);
-
-                Player lastWinner = bid.WinningPlayer;
-                Player currentPlayer = lastWinner;
-
-                do // Run rounds until bid is reached
-                {
-                    Round currentRound;
-                    Card[] playedCards = new Card[4];
-
-                    Console.WriteLine($"==| Round {roundCounter + 1} |==");
-
-                    for (int turn = 0; turn < 4; turn++)
-                    {
-                        //TODO: Logic for low suit
-                        if (currentPlayer is HumanPlayer) // Human?
-                        {
-                            // User plays a card
-                            Console.WriteLine("Your turn! Pick a card:");
-                            PrintPlayerCards(player.HandList);
-                            playedCards[turn] = player.HandList.Pick(GetStdinInt(player.HandList.Cards.Count));
-                            //playedCards[turn] = player.HandList.Cards[]; //TODO: Add card back to deck
-                            //player.HandList.Cards.Remove(playedCards[0]); // TODO: Draw(int cardIndex)
-                        }
-                        else
-                        {
-                            // CPU Player plays a card
-                            //TODO: CPUPlayer and CPUPlayer.PlayCard w/ AI
-                            playedCards[turn] = currentPlayer.HandList.Pick(0);
-                            // TODO: Add card back to main deck
-                            Console.WriteLine($"{currentPlayer.PlayerName} played {playedCards[turn]}.");
-                        }
-                        mainDeck.Add(playedCards[turn]); // Add the card back to the main deck
-
-                        //TODO: Log who played what card
-                        currentPlayer = NextPlayer(players, currentPlayer); // TODO: do this better; logic seems messy
-                    }
-
-                    currentRound = new Round(bid.TrumpSuit, playedCards[0], playedCards[1], playedCards[2], playedCards[3]);
-                    // TODO: Who won this round? And log it
-                    Console.WriteLine($"LeadTrick = {currentRound.LeadTrick(currentRound)}");
-                    rounds.Add(currentRound);
-                    roundCounter++;
-                } while (roundCounter != bid.HighestBid);
-                // TODO: Reset hand?
-            } while (teamScores[0] != 30 && teamScores[1] != 30); */
-            #endregion
 
             Console.WriteLine("\n\nPress any key to quit...");
             Console.ReadKey();

@@ -24,7 +24,7 @@ namespace TarneebClasses.Logging
 
         public override string ToString()
         {
-            return $"[{this.DateTime}] {this.Player.PlayerName} joined.";
+            return $"{this.Player.PlayerName} joined.";
         }
     }
 }

@@ -4,28 +4,33 @@ using System.Text;
 
 /**
  * Author: Haran
- * Date: 2021-03-08
+ * Date: 2021-03-16
  */
 namespace TarneebClasses.Logging
 {
     /// <summary>
-    /// A log representing a card being dealt to a player.
+    /// A log representing a bid being placed.
     /// </summary>
-    public class CardDealtLog : ILog
+    public class BidCompleteLog : ILog
     {
-        public Type Type => Type.CARD_DEALT;
+        public Type Type => Type.BID_PLACED;
 
         public DateTime DateTime => DateTime.Now;
 
         /// <summary>
-        /// The card that was dealt.
+        /// The winning team.
         /// </summary>
-        public Card Card;
+        public Enums.Team WinningTeam;
 
         /// <summary>
-        /// The player that received the card.
+        /// The losing team.
         /// </summary>
-        public Player Player;
+        public Enums.Team LosingTeam;
+
+        /// <summary>
+        /// The score.
+        /// </summary>
+        public int Score;
 
         /// <summary>
         /// Get this log as a string.
@@ -33,7 +38,8 @@ namespace TarneebClasses.Logging
         /// <returns>The string representation of the log.</returns>
         public override string ToString()
         {
-            return $"{this.Player.PlayerName} was dealt a {this.Card}.";
+            // TODO
+            return $"{this.WinningTeam} won with a score of {this.Score}.";
         }
     }
 }

@@ -32,6 +32,11 @@ namespace TarneebClasses.Events
         public Card Card { get; set; }
 
         /// <summary>
+        /// The number of currently played in the trick/round.
+        /// </summary>
+        public int CardsPlayedInRound { get; set; }
+
+        /// <summary>
         /// The bid that was placed.
         /// </summary>
         public int Bid { get; set; }
@@ -57,8 +62,13 @@ namespace TarneebClasses.Events
         public Enums.Team LosingTeam { get; set; }
 
         /// <summary>
-        /// The scores for each team.
+        /// The total scores for each team.
         /// </summary>
         public int[] TeamScores { get; set; }
+
+        /// <summary>
+        /// The scores for each team during a round/trick.
+        /// </summary>
+        public int[] BidScores { get; set; }
     }
 }

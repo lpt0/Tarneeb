@@ -19,7 +19,7 @@ namespace TarneebClasses.Logging
 
         public override string ToString()
         {
-            return $"[{this.DateTime}] New game started.";
+            return $"New game started.";
         }
     }
 }
