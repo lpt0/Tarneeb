@@ -96,11 +96,14 @@ namespace TarneebClasses
         }
 
         /// <summary>
-        /// Shuffles the cards order.
+        /// Shuffles the cards order. Uses Random to generate a new seed for each shuffle.
         /// </summary>
         public void Shuffle()
         {
-            this.Cards = Cards.OrderBy(card => Guid.NewGuid()).ToList();
+            // Seed to generate random order.
+            Random randomSeed = new Random();
+            // Sort according to the random order.
+            this.Cards = Cards.OrderBy(card => randomSeed.Next()).ToList();
         }
 
         /// <summary>
