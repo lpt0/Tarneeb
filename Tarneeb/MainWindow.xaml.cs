@@ -64,6 +64,12 @@ namespace Tarneeb
         private WrapPanel[] CardsInRoundHolders;
 
         /// <summary>
+        /// Same as CardsInRoundHolders, but for the name underneath the card played.
+        /// </summary>
+        /// <see cref="CardsInRoundHolders"/>
+        private TextBlock[] NamesInRoundHolders;
+
+        /// <summary>
         /// An array of the wrap panels used to store each player's cards.
         /// </summary>
         private WrapPanel[] PlayerHands;
@@ -199,6 +205,16 @@ namespace Tarneeb
                 case Game.State.DONE:
                     break; //TODO
             }
+        }
+
+        /// <summary>
+        /// Executes when the game sends the player a notification.
+        /// </summary>
+        /// <param name="sender">The game object.</param>
+        /// <param name="e">The notification details.</param>
+        private void OnNotification(object sender, NotificationEventArgs e)
+        {
+            MessageBox.Show(e.Message);
         }
 
         /// <summary>
@@ -340,8 +356,9 @@ namespace Tarneeb
                 UpdatePlayerHand(e.Player as CPUPlayer);
             }
 
-            // Add the card to the cards played in round
+            // Add the card to the cards played in round, and the name of the player who played it
             this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Add(cc);
+            this.NamesInRoundHolders[e.CardsPlayedInRound].Text = e.Player.PlayerName;
         }
 
         /// <summary>
@@ -464,12 +481,14 @@ namespace Tarneeb
 
             // Set needed variables
             this.CardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
+            this.NamesInRoundHolders = new TextBlock[] { this.FirstName, this.SecondName, this.ThirdName, this.FourthName };
             this.PlayerHands = new WrapPanel[] { this.MyPlayerHand, this.LeftPlayerHand, this.TopPlayerHand, this.RightPlayerHand }; // Counter-clockwise
 
             // Create a new game, listen for events, and start the game
             this.Game = new Game();
             this.Game.GameActionEvent += OnGameAction;
             this.Game.PlayerTurnEvent += OnPlayerTurn;
+            this.Game.NotificationEvent += OnNotification;
             this.UserPlayer = this.Game.Initialize(this.PlayerName);
             this.Logs.ItemsSource = this.Game.Logs;
             this.Game.Start();
