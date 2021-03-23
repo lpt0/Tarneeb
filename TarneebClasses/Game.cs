@@ -15,28 +15,6 @@ namespace TarneebClasses
     /// </summary>
     public class Game
     {
-        /* TODO:
-         * There are two ways (that I can think of) to perform game logic.
-         * 1.
-         *  It can be performed in a class like this. However, drawing to screen
-         *  becomes a bit more complicated.
-         *  Drawing can be done by having the GUI logic read the last game log,
-         *  and draw an action based on that.
-         * 2.
-         *  GUI logic can also handle game logic. That way, it knows exactly
-         *  what the last action was, and what needs to be displayed based on that.
-         *  The downside of this is that AI logic may become more complicated to
-         *  work on - the AI would need to read the game logs, so the GUI would
-         *  need to maintain them and have them accessible by other classes.
-         *  This could be create a circular dependency issue, since the AI is in
-         *  the TarneebClasses project, and the GUI is in a separate project that
-         *  requires the TarneebClasses project. 
-         *  If the AI were to read logs from the GUI, TarneebClasses needs access to
-         *  the GUI project, and the GUI project needs access to the TarneebClasses project.
-         *  OR, could also use events; emit an event that the GUI listens for.
-         *  But, what if too many events happen at once?
-         */
-
         /// <summary>
         /// Enums for representing game state.
         /// </summary>
@@ -96,11 +74,6 @@ namespace TarneebClasses
         public const int NUMBER_OF_TEAMS = 2;
 
         /// <summary>
-        /// The score that needs to be reached to win.
-        /// </summary>
-        public const int MAX_SCORE = 41;
-
-        /// <summary>
         /// The number of cards in a hand (size of deck / number of players).
         /// </summary>
         public const int HAND_SIZE = 13;
@@ -122,22 +95,32 @@ namespace TarneebClasses
         /// <summary>
         /// The player that gets to make the next move (trick, bid, etc).
         /// </summary>
-        private Player currentPlayer;
+        private Player _currentPlayer;
 
         /// <summary>
         /// The number of cards played in the round.
         /// </summary>
-        private int cardsPlayedInRound = 0;
+        private int _cardsPlayedInRound = 0;
 
         /// <summary>
         /// The score for the current bid.
         /// </summary>
-        private int[] bidScore; // TODO: What is init state?
+        private int[] bidScore = new int[NUMBER_OF_TEAMS];
 
         /// <summary>
         /// The overall team score, across all bids.
         /// </summary>
-        private int[] teamScore;
+        private int[] teamScore = new int[NUMBER_OF_TEAMS];
+
+        /// <summary>
+        /// Internal list of bids for this game.
+        /// </summary>
+        private List<Bid> _bids;
+
+        /// <summary>
+        /// Internal list of rounds for this game.
+        /// </summary>
+        private List<Round> _rounds;
 
         #endregion
         #region Public fields
@@ -149,13 +132,14 @@ namespace TarneebClasses
 
         /// <summary>
         /// The players of the current game.
+        /// TODO: Fake players for network
         /// </summary>
         public Player[] Players { get; }
 
         /// <summary>
         /// The game's deck.
         /// </summary>
-        public Deck Deck { get; }
+        //public Deck Deck { get; } //TODO
 
         /// <summary>
         /// The cards currently in play for the current trick.
@@ -175,18 +159,23 @@ namespace TarneebClasses
         public int TrickCounter { get; private set; }
 
         /// <summary>
-        /// TODO
+        /// The score that needs to be reached to win.
         /// </summary>
-        public List<Round> Rounds { get; }
+        public int MaxScore { get; private set; }
 
         /// <summary>
         /// TODO
-        /// TODO: Block public Add access
         /// </summary>
-        public List<Bid> Bids { get; }
+        public List<Round> Rounds { get => this._rounds; } //TODO
 
         /// <summary>
-        /// Game logs; retrievable by using GetLog and SetLog.
+        /// Bids placed in this game.
+        /// </summary>
+        public List<Bid> Bids { get => this._bids; } // TODO
+
+        /// <summary>
+        /// Game logs; TODO
+        /// TODO: https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.readonlyobservablecollection-1?view=net-5.0
         /// </summary>
         public ObservableCollection<Logging.ILog> Logs { get; private set; } //TODO: Public get and private set, and block Add access for get
         #endregion
@@ -200,11 +189,6 @@ namespace TarneebClasses
         public event EventHandler<NewGameEventArgs> NewGameEvent;
 
         /// <summary>
-        /// Triggered when a new player joins.
-        /// </summary>
-        public event EventHandler<NewPlayerEventArgs> NewPlayerEvent;
-
-        /// <summary>
         /// Raised when it is a player's turn.
         /// </summary>
         public event EventHandler<PlayerTurnEventArgs> PlayerTurnEvent;
@@ -215,6 +199,11 @@ namespace TarneebClasses
         /// be a card played, or it could be a team winning a trick.
         /// </summary>
         public event EventHandler<GameActionEventArgs> GameActionEvent;
+
+        /// <summary>
+        /// Raised when there are notifications.
+        /// </summary>
+        public event EventHandler<NotificationEventArgs> NotificationEvent;
         #endregion
         #region Event triggers
         /// <summary>
@@ -228,99 +217,114 @@ namespace TarneebClasses
         }
 
         /// <summary>
-        /// Fire a new player event.
+        /// Raise the PlayerTurnEvent.
         /// </summary>
-        /// <param name="args">The arguments for the event.</param>
-        public void FireNewPlayerEvent(NewPlayerEventArgs args)
+        private void FirePlayerTurnEvent()
         {
-            this.Logs.Add(new Logging.PlayerJoinedLog() { Player = args.Player });
-            this.NewPlayerEvent?.Invoke(this, args);
+            // All arguments are the same
+            this.PlayerTurnEvent?.Invoke(
+                this,
+                new PlayerTurnEventArgs() { Player = this._currentPlayer, State = this.CurrentState }
+            );
         }
-        #endregion
-        #endregion
 
-        #region Constructor
         /// <summary>
-        /// Create a new game.
+        /// Fire a game action event.
+        /// Such as when a card is played, or a bid is placed.
         /// </summary>
-        public Game()
+        /// <param name="args">The event arguments.</param>
+        /// <see cref="GameActionEventArgs" />
+        private void FireGameActionEvent(GameActionEventArgs args)
         {
-            // Initialize all fields
-            this.Deck = new Deck();
-            this.Players = new Player[NUMBER_OF_PLAYERS];
-            this.CurrentCards = new Card[NUMBER_OF_PLAYERS];
-            this.CurrentPlayers = new Player[NUMBER_OF_PLAYERS];
-            this.Logs = new ObservableCollection<Logging.ILog>(); // TODO
-            this.Bids = new List<Bid>();
-            this.Rounds = new List<Round>();
-            this.CurrentState = State.NEW_GAME;
-            this.TrickCounter = 0;
-
-            this.bidScore = new int[NUMBER_OF_TEAMS];
-            this.teamScore = new int[NUMBER_OF_TEAMS];
-
-            this.Deck.Shuffle();
+            // Set state, just in case
+            args.State = this.CurrentState;
+            this.GameActionEvent?.Invoke(this, args);
         }
         #endregion
+        #endregion
 
-        #region Event listeners
+        #region Player action functions
+        private void OnPlayerBid(PlayerActionEventArgs args)
+        {
+            Bid bid = this._bids[this._bids.Count - 1];
+
+            // Validate bid
+            // Bid class will validate bid, and move on to the next player if needed
+            Player nextPlayer = bid.Bids(this._currentPlayer, args.Bid);
+
+            // If the bid was invalid, the next bidder is the same player
+            // And if it is invalid, don't log the bid, and don't send the event out
+            if (this._currentPlayer != nextPlayer || bidCount >= 3) // TODO: Need to find a new way of validation
+            {
+                this.Logs.Add(new Logging.BidPlacedLog() { Player = this._currentPlayer, Bid = args.Bid });
+                FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Bid = args.Bid });
+                bidCount++;
+            }
+
+            this._currentPlayer = nextPlayer;
+        }
+
+        private void OnPlayerTarneeb(PlayerActionEventArgs args)
+        {
+            // Validate Tarneeb suit
+            // Assume the suit is valid for a local game
+            Bid bid = this._bids[this._bids.Count - 1];
+            bid.DecideTarneebSuit(args.Tarneeb);
+            this.Logs.Add(new Logging.TarneebSuitLog() { Player = this._currentPlayer, Suit = args.Tarneeb });
+            FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Bid = bid.HighestBid, Tarneeb = args.Tarneeb });
+        }
+
+        private void OnPlayerTrick(PlayerActionEventArgs args)
+        {
+            // Validate card played
+            // Local play game, assume card is valid
+            this.CurrentPlayers[_cardsPlayedInRound] = this._currentPlayer;
+            this.CurrentCards[_cardsPlayedInRound] = args.CardPlayed;
+            _cardsPlayedInRound++;
+
+            /* Remove the card from the player's hand (again, just in case)
+             * Players may or may not have already done this, but better to do it
+             * just in case.
+             */
+            this._currentPlayer.HandList.Cards.Remove(args.CardPlayed);
+
+            this.Logs.Add(new Logging.CardPlayedLog() { Player = this._currentPlayer, Card = args.CardPlayed });
+            FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Card = args.CardPlayed, CardsPlayedInRound = this._cardsPlayedInRound - 1 });
+
+            this._currentPlayer = this.NextPlayer();
+        }
+
         /// <summary>
         /// Executes when a player performs an action.
         /// </summary>
         /// <param name="sender">The player that performed the action.</param>
         /// <param name="args">The arguments for the action.</param>
-        public void OnPlayerAction(object sender, PlayerActionEventArgs args)
+        private void OnPlayerAction(object sender, PlayerActionEventArgs args)
         {
             // Is it that player's turn?
-            if (sender == this.currentPlayer)
+            if (sender == this._currentPlayer)
             {
-                Bid bid = this.Bids[this.Bids.Count - 1];
-                switch (this.CurrentState)
+                try
                 {
-                    case Game.State.BID_STAGE:
-                        // Validate bid
-                        // Bid class will validate bid, and move on to the next player if needed
-                        Player nextPlayer = bid.Bids(this.currentPlayer, args.Bid);
+                    switch (this.CurrentState)
+                    {
+                        case Game.State.BID_STAGE:
+                            this.OnPlayerBid(args);
+                            break;
 
-                        // If the bid was invalid, the next bidder is the same player
-                        // And if it is invalid, don't log the bid, and don't send the event out
-                        if (this.currentPlayer != nextPlayer || bidCount >= 3) // TODO: Need to find a new way of validation
-                        {
-                            this.Logs.Add(new Logging.BidPlacedLog() { Player = this.currentPlayer, Bid = args.Bid });
-                            FireGameActionEvent(new GameActionEventArgs() { Player = this.currentPlayer, Bid = args.Bid });
-                            bidCount++;
-                        }
+                        case Game.State.BID_WON:
+                            // TODO: Tarneeb suit should be in own stage
+                            this.OnPlayerTarneeb(args);
+                            break;
 
-                        this.currentPlayer = nextPlayer;
-                        break;
-
-                    case Game.State.BID_WON:
-                        // Validate Tarneeb suit
-                        // Assume the suit is valid for a local game
-                        // TODO: Tarneeb suit should be in own staage
-                        bid.DecideTarneebSuit(args.Tarneeb);
-                        this.Logs.Add(new Logging.TarneebSuitLog() { Player = this.currentPlayer, Suit = args.Tarneeb });
-                        FireGameActionEvent(new GameActionEventArgs() { Player = this.currentPlayer, Bid = bid.HighestBid, Tarneeb = args.Tarneeb });
-                        break;
-
-                    case Game.State.TRICK:
-                        // Validate card played
-                        // Local play game, assume card is valid
-                        this.CurrentPlayers[cardsPlayedInRound] = this.currentPlayer;
-                        this.CurrentCards[cardsPlayedInRound] = args.CardPlayed;
-                        cardsPlayedInRound++;
-
-                        /* Remove the card from the player's hand (again, just in case)
-                         * Players may or may not have already done this, but better to do it
-                         * just in case.
-                         */
-                        this.currentPlayer.HandList.Cards.Remove(args.CardPlayed);
-
-                        this.Logs.Add(new Logging.CardPlayedLog() { Player = this.currentPlayer, Card = args.CardPlayed });
-                        FireGameActionEvent(new GameActionEventArgs() { Player = this.currentPlayer, Card = args.CardPlayed, CardsPlayedInRound = this.cardsPlayedInRound - 1 });
-
-                        this.currentPlayer = this.NextPlayer();
-                        break;
+                        case Game.State.TRICK:
+                            this.OnPlayerTrick(args);
+                            break;
+                    }
+                } 
+                catch (Exception e)
+                {
+                    this.NotificationEvent?.Invoke(this, new NotificationEventArgs() { Message = e.Message });
                 }
                 this.Next();
             }
@@ -331,6 +335,30 @@ namespace TarneebClasses
         }
         #endregion
 
+        #region Constructor
+        /// <summary>
+        /// Create a new game.
+        /// </summary>
+        public Game(int maxScore = 41)
+        {
+            // Initialize all fields
+            this.Players = new Player[NUMBER_OF_PLAYERS];
+            this.CurrentCards = new Card[NUMBER_OF_PLAYERS];
+            this.CurrentPlayers = new Player[NUMBER_OF_PLAYERS];
+            this.Logs = new ObservableCollection<Logging.ILog>(); // TODO
+            this._bids = new List<Bid>();
+            this._rounds = new List<Round>();
+            this.CurrentState = State.NEW_GAME;
+            this.TrickCounter = 0;
+            this.MaxScore = maxScore;
+
+            this.bidScore = new int[NUMBER_OF_TEAMS];
+            this.teamScore = new int[NUMBER_OF_TEAMS];
+        }
+        #endregion
+
+        
+
         #region Functions
         /// <summary>
         /// Initialize game state.
@@ -339,20 +367,23 @@ namespace TarneebClasses
         /// <returns>The user's created player.</returns>
         public HumanPlayer Initialize(String playerName)
         {
-            int handSize = this.Deck.Cards.Count / NUMBER_OF_PLAYERS;
             FireNewGameEvent();
+
+            // Create a hand for each player
+            Deck[] hands = CreateHands();
 
             // Create the user's player
             HumanPlayer user = new HumanPlayer(
                 playerName,
                 0,
                 Enums.Team.Blue,
-                null // Cards get dealt in a separate function
+                hands[0] 
             );
             this.Players[0] = user;
 
-            this.Logs.Add(new Logging.PlayerJoinedLog() { Player = user });
+            // Log the player's intial hand
             this.Logs.Add(new Logging.InitialHandLog() { Hand = user.HandList, Player = user });
+            this.Logs.Add(new Logging.PlayerJoinedLog() { Player = user });
             FireGameActionEvent(new GameActionEventArgs() { Player = user });
 
             // Create CPU players
@@ -363,7 +394,7 @@ namespace TarneebClasses
                     Game.cpuNames[playerNum - 1],
                     playerNum,
                     (Enums.Team)(playerNum % 2),
-                    null
+                    hands[playerNum]
                 );
 
                 this.Logs.Add(new Logging.PlayerJoinedLog() { Player = this.Players[playerNum] });
@@ -379,11 +410,11 @@ namespace TarneebClasses
             this.CurrentState = State.BID_STAGE;
             // TODO: Dealer?
             // For now, pick a random player as dealer
-            this.currentPlayer = this.Players[new Random().Next(3)];
+            this._currentPlayer = this.Players[new Random().Next(3)];
             
-            // Start a new bid and deal cards
-            this.Bids.Add(new Bid(this.Players));
-            this.DealCards();
+            // Start a new bid
+            this._bids.Add(new Bid(this.Players));
+
 
             return user;
         }
@@ -402,7 +433,7 @@ namespace TarneebClasses
         /// </summary>
         private void Next()
         {
-            Bid currentBid = this.Bids[this.Bids.Count - 1];
+            Bid currentBid = this._bids[this._bids.Count - 1];
             switch (this.CurrentState)
             {
                 case State.NEW_GAME:
@@ -411,10 +442,10 @@ namespace TarneebClasses
                 case State.BID_STAGE:
                     // Condition: bid must be complete
                     // This is met when Bid.Bids() returns null.
-                    if (this.currentPlayer == null && currentBid.WinningPlayer != null)
+                    if (this._currentPlayer == null && currentBid.WinningPlayer != null)
                     {
                         // Bid is done; winner picks trump suit
-                        this.currentPlayer = currentBid.WinningPlayer;
+                        this._currentPlayer = currentBid.WinningPlayer;
                         this.CurrentState = State.BID_WON;
                         this.Next();
                     }
@@ -430,7 +461,7 @@ namespace TarneebClasses
                     break;
                 case State.TRICK:
                     // Condition: All players must have played a card
-                    if (cardsPlayedInRound == NUMBER_OF_PLAYERS)
+                    if (_cardsPlayedInRound == NUMBER_OF_PLAYERS)
                     {
                         this.CurrentState = State.TRICK_COMPLETE;
                         this.Next();
@@ -463,13 +494,13 @@ namespace TarneebClasses
                         this.Logs.Add(new Logging.TrickCompletedLog() { Player = winner });
 
                         // The winner gets to play the next card
-                        this.currentPlayer = winner;
+                        this._currentPlayer = winner;
 
                         // Move back to the trick stage by default
                         this.CurrentState = State.TRICK;
 
                         // Reset card counter
-                        this.cardsPlayedInRound = 0;
+                        this._cardsPlayedInRound = 0;
 
                         // Always play to 13 rounds
                         if (this.TrickCounter == HAND_SIZE)
@@ -515,7 +546,7 @@ namespace TarneebClasses
                         // Fire game action
                         FireGameActionEvent(new GameActionEventArgs()
                             {
-                                Player = this.currentPlayer,
+                                Player = this._currentPlayer,
                                 Score = score,
                                 WinningTeam = winningTeam,
                                 LosingTeam = losingTeam,
@@ -525,8 +556,8 @@ namespace TarneebClasses
 
 
                         // Score reached?
-                        if (this.teamScore[(int)Enums.Team.Blue] >= MAX_SCORE
-                                || this.teamScore[(int)Enums.Team.Red] >= MAX_SCORE)
+                        if (this.teamScore[(int)Enums.Team.Blue] >= this.MaxScore
+                                || this.teamScore[(int)Enums.Team.Red] >= this.MaxScore)
                         {
                             // Game is done.
                             this.CurrentState = State.DONE;
@@ -534,7 +565,7 @@ namespace TarneebClasses
                         else
                         {
                             // Start a new bid; winner (who is current player) gets first bid
-                            this.Bids.Add(new Bid(this.Players));
+                            this._bids.Add(new Bid(this.Players));
 
                             // Re-deal cards
                             this.DealCards();
@@ -572,8 +603,9 @@ namespace TarneebClasses
         /// </summary>
         private Player NextPlayer()
         {
-            return this.NextPlayer(this.currentPlayer);
+            return this.NextPlayer(this._currentPlayer);
         }
+
         /// <summary>
         /// Get the player that goes after the given player.
         /// </summary>
@@ -591,49 +623,45 @@ namespace TarneebClasses
             }
             return this.Players[nextPlayerIdx];
         }
+
         /// <summary>
         /// (Re-)deal cards to all players.
         /// </summary>
         private void DealCards()
         {
-            // Create a new deck, shuffle it, then hand out cards
-            Deck deck = new Deck();
-            Player dealer = this.currentPlayer;
-            int handsDealt = 0;
-            
+            // Get hands for each player
+            Deck[] hands = this.CreateHands();
 
+            Player dealer = this._currentPlayer;
+            int handsDealt = 0;
+
+            // Give the hands out
             do
             {
-                this.currentPlayer.HandList = deck.Draw(HAND_SIZE);
-                this.currentPlayer = this.NextPlayer(); // Deal cards to the next player
+                this._currentPlayer.HandList = hands[handsDealt];
+                this._currentPlayer = this.NextPlayer(); // Deal cards to the next player
             } while (++handsDealt != NUMBER_OF_PLAYERS);
 
             // Player to the right of the dealer goes first
-            this.currentPlayer = this.NextPlayer(dealer); //TODO: What about bid winner?
-        }
-        /// <summary>
-        /// Raise the PlayerTurnEvent.
-        /// </summary>
-        private void FirePlayerTurnEvent()
-        {
-            // All arguments are the same
-            this.PlayerTurnEvent?.Invoke(
-                this,
-                new PlayerTurnEventArgs() { Player = this.currentPlayer, State = this.CurrentState }
-            );
+            this._currentPlayer = this.NextPlayer(dealer); //TODO: What about bid winner?
         }
 
         /// <summary>
-        /// Fire a game action event.
-        /// Such as when a card is played, or a bid is placed.
+        /// Split a deck and create hands for each player.
         /// </summary>
-        /// <param name="args">The event arguments.</param>
-        /// <see cref="GameActionEventArgs" />
-        private void FireGameActionEvent(GameActionEventArgs args)
+        /// <returns>An array of four decks.</returns>
+        private Deck[] CreateHands()
         {
-            // Set state, just in case TODO
-            args.State = this.CurrentState;
-            this.GameActionEvent?.Invoke(this, args);
+            Deck deck = new Deck();
+            Deck[] hands = new Deck[NUMBER_OF_PLAYERS];
+            deck.Shuffle();
+
+            for (int hand = 0; hand < hands.Length; hand++)
+            {
+                hands[hand] = deck.Draw(HAND_SIZE);
+            }
+
+            return hands;
         }
         #endregion
         #endregion
