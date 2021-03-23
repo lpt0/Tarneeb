@@ -80,11 +80,6 @@ namespace Tarneeb
         private Boolean IsPlayerTurn;
 
         /// <summary>
-        /// The player's name.
-        /// </summary>
-        private string PlayerName;
-
-        /// <summary>
         /// The instance of the Tarneeb game.
         /// </summary>
         private Game Game;
@@ -109,7 +104,9 @@ namespace Tarneeb
             do
             {
                 var promptWindow = new TextInputWindow();
-                promptWindow.Prompt.Content = "What is your name?";
+                promptWindow.Prompt.Content = "What is your name? (This can be changed in settings)";
+                // By default, fill the input with the user's Windows username
+                promptWindow.Input.Text = Environment.UserName;
                 promptWindow.ShowDialog();
                 name = promptWindow.Input.Text.Trim();
 
@@ -133,6 +130,8 @@ namespace Tarneeb
         /// <see cref="PlayerTurnEventArgs"/>
         private void OnPlayerTurn(object sender, PlayerTurnEventArgs e)
         {
+            UpdateAllHands();
+
             this.IsPlayerTurn = (e.Player.PlayerId == this.UserPlayer.PlayerId); // TODO: Fake player
             if (this.IsPlayerTurn)
             {
@@ -170,15 +169,7 @@ namespace Tarneeb
         /// <see cref="GameActionEventArgs"/>
         private void OnGameAction(object sender, GameActionEventArgs e)
         {
-            // On each action after a new game, update all players' hands
-            if (this.Game.CurrentState > Game.State.NEW_GAME)
-            {
-                UpdatePlayerHand(this.UserPlayer);
-                foreach (CPUPlayer player in this.Game.Players.Skip(1).Take(3)) // [1:3]
-                {
-                    UpdatePlayerHand(player);
-                }
-            }
+            UpdateAllHands();
 
             // Match the state to the corresponding function
             switch (e.State)
@@ -377,10 +368,14 @@ namespace Tarneeb
             MessageBox.Show($"{e.Player.PlayerName} won the trick!");
             AddMessage($"{e.Player.PlayerName} won the last trick.");
 
-            // Clear the cards played in the round
+            // Clear the cards played in the round, and the names
             foreach (WrapPanel holder in this.CardsInRoundHolders) 
             {
                 holder.Children.Clear();
+            }
+            foreach (TextBlock textBlock in this.NamesInRoundHolders)
+            {
+                textBlock.Text = "";
             }
 
             // On to the next round!
@@ -403,7 +398,7 @@ namespace Tarneeb
 
             // TODO: State who won the bid in messages
             MessageBox.Show(
-                $"{e.Player.PlayerName} (Team {e.Player.TeamNumber}) won the bid!\n"
+                $"{e.WinningTeam} won the bid!\n"
                 + $"{e.WinningTeam} gains {e.Score} points.\n"
                 + $"{e.LosingTeam} loses {e.Score} points."
             );
@@ -419,6 +414,10 @@ namespace Tarneeb
 
         #region Helper functions
         #region Player hand updates
+        /// <summary>
+        /// Update the user's hand in the GUI.
+        /// </summary>
+        /// <param name="player">The user.</param>
         private void UpdatePlayerHand(HumanPlayer player)
         {
             // Create the card controls, face up
@@ -431,6 +430,10 @@ namespace Tarneeb
             }
             UpdatePlayerHand(0, cards);
         }
+        /// <summary>
+        /// Update a CPU player's hands with face down cards.
+        /// </summary>
+        /// <param name="player">The CPU player.</param>
         private void UpdatePlayerHand(CPUPlayer player)
         {
             /* Create a fake array of card controls.
@@ -446,6 +449,11 @@ namespace Tarneeb
             }
             UpdatePlayerHand(Array.IndexOf(this.Game.Players, player), cards);
         }
+        /// <summary>
+        /// Update the player's hand at the given index, with the provided array of card controls.
+        /// </summary>
+        /// <param name="playerIdx">The index to update.</param>
+        /// <param name="cards">The card controls to use.</param>
         private void UpdatePlayerHand(int playerIdx, CardControl[] cards)
         {
             WrapPanel handPanel = PlayerHands[playerIdx];
@@ -457,6 +465,21 @@ namespace Tarneeb
             foreach (CardControl cc in cards)
             {
                 handPanel.Children.Add(cc);
+            }
+        }
+        /// <summary>
+        /// Update all hands in the GUI.
+        /// </summary>
+        private void UpdateAllHands()
+        {
+            // Only update cards after a new game
+            if (this.Game.CurrentState > Game.State.NEW_GAME)
+            {
+                UpdatePlayerHand(this.UserPlayer);
+                foreach (CPUPlayer player in this.Game.Players.Skip(1).Take(3)) // [1:3]
+                {
+                    UpdatePlayerHand(player);
+                }
             }
         }
         #endregion
@@ -477,7 +500,12 @@ namespace Tarneeb
         /// </summary>
         private void OnWindowLoad(object sender, RoutedEventArgs e)
         {
-            this.PlayerName = PromptPlayerName();
+            // If no name is declared in settings, prompt the user for one, and save the change
+            if (Properties.Settings.Default.PlayerName == "")
+            {
+                Properties.Settings.Default.PlayerName = PromptPlayerName();
+                Properties.Settings.Default.Save();
+            }
 
             // Set needed variables
             this.CardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
@@ -485,11 +513,12 @@ namespace Tarneeb
             this.PlayerHands = new WrapPanel[] { this.MyPlayerHand, this.LeftPlayerHand, this.TopPlayerHand, this.RightPlayerHand }; // Counter-clockwise
 
             // Create a new game, listen for events, and start the game
-            this.Game = new Game();
+            // For the max score, use the max score from settings
+            this.Game = new Game(Properties.Settings.Default.MaxScore);
             this.Game.GameActionEvent += OnGameAction;
             this.Game.PlayerTurnEvent += OnPlayerTurn;
             this.Game.NotificationEvent += OnNotification;
-            this.UserPlayer = this.Game.Initialize(this.PlayerName);
+            this.UserPlayer = this.Game.Initialize(Properties.Settings.Default.PlayerName);
             this.Logs.ItemsSource = this.Game.Logs;
             this.Game.Start();
         }
@@ -563,7 +592,7 @@ namespace Tarneeb
         /// <summary>
         /// Close the playing window and open title window when user clicks on "Settings".
         /// </summary>
-        private void SettingsClicked(object sender, RoutedEventArgs e)
+        private void BackClicked(object sender, RoutedEventArgs e)
         {
             var isLeft = MessageBox.Show("Are you sure to leave the game?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 
