@@ -511,6 +511,7 @@ namespace Tarneeb
             this.CardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
             this.NamesInRoundHolders = new TextBlock[] { this.FirstName, this.SecondName, this.ThirdName, this.FourthName };
             this.PlayerHands = new WrapPanel[] { this.MyPlayerHand, this.LeftPlayerHand, this.TopPlayerHand, this.RightPlayerHand }; // Counter-clockwise
+            this.MaxScore.Text = Properties.Settings.Default.MaxScore.ToString();
 
             // Create a new game, listen for events, and start the game
             // For the max score, use the max score from settings
@@ -598,8 +599,7 @@ namespace Tarneeb
 
             if (isLeft == MessageBoxResult.Yes)
             {
-                var newTitleScreen = new TitleScreen();
-                newTitleScreen.Show();
+                TitleScreen.Instance.Show();
                 this.Close();
             }
         }

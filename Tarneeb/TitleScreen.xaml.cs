@@ -54,7 +54,7 @@ namespace Tarneeb
         /// </summary>
         private void ExitClicked(object sender, RoutedEventArgs e)
         {
-            this.Close(); //TODO
+            this.Close();
         }
 
         /// <summary>
