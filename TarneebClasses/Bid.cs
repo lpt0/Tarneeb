@@ -65,6 +65,8 @@ namespace TarneebClasses
         public Player Bids(Player currentPlayer, int bid)
         {
             var currentIdx = MyPlayers.IndexOf(currentPlayer);
+            var nextIndex = currentIdx + 1 == MyPlayers.Count() ? 0 : currentIdx + 1;
+            var nextPlayer = MyPlayers[nextIndex];
 
             if (bid == -1)
             {
@@ -77,11 +79,13 @@ namespace TarneebClasses
                 }
                 else if (MyPlayers.Count() == 1 && HighestBid != -1)
                 {
+                    MyPlayers.Clear();
+                    MyPlayers = originalPlayers.ToList();
                     return null;
                 }
                 else
                 {
-                    return MyPlayers[currentIdx];
+                    return nextPlayer;
                 }
             }
             else if (!bidValues.Contains(bid))
@@ -95,11 +99,15 @@ namespace TarneebClasses
                 WinningPlayer = currentPlayer;
                 HighestBid = bid;
 
-                if (bid == 13) return null;
+                if (bid == 13)
+                {
+                    MyPlayers.Clear();
+                    MyPlayers = originalPlayers.ToList();
+                    return null;
+                }
             }
 
-            var nextIndex = currentIdx + 1 == MyPlayers.Count() ? 0 : currentIdx + 1;
-            return MyPlayers[nextIndex];
+            return nextPlayer;
         }
 
         /// <summary>
