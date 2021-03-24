@@ -23,7 +23,6 @@ namespace TarneebClasses
         /// </summary>
         public static Dictionary<Enums.CardNumber, int> CardValues =
             new Dictionary<Enums.CardNumber, int> {
-                {Enums.CardNumber.Ace, 13},
                 {Enums.CardNumber.Two, 1},
                 {Enums.CardNumber.Three, 2},
                 {Enums.CardNumber.Four, 3},
@@ -36,6 +35,7 @@ namespace TarneebClasses
                 {Enums.CardNumber.Jack, 10},
                 {Enums.CardNumber.Queen, 11},
                 {Enums.CardNumber.King, 12},
+                {Enums.CardNumber.Ace, 13},
         };
 
         /// <summary>
@@ -111,7 +111,10 @@ namespace TarneebClasses
         /// </summary>
         public void Sort()
         {
-            this.Cards = Cards.OrderBy(card => card.Value).ToList();
+            this.Cards = Cards
+                .OrderBy(card => card.Value)
+                .OrderBy(card => card.Suit)
+                .ToList();  
         }
 
         /// <summary>
