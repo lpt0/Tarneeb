@@ -625,6 +625,28 @@ namespace TarneebClasses
             return this.Players[nextPlayerIdx];
         }
 
+        public Player GetTeammate(Player player)
+        {
+            int currentPlayerIdx = Array.IndexOf(this.Players, player);
+            var teammate = player;
+            switch (currentPlayerIdx)
+            {
+                case 0:
+                    teammate = this.Players[2];
+                    break;
+                case 1:
+                    teammate = this.Players[3];
+                    break;
+                case 2:
+                    teammate = this.Players[0];
+                    break;
+                case 3:
+                    teammate = this.Players[1];
+                    break;
+            }
+            return teammate;
+        }
+
         /// <summary>
         /// (Re-)deal cards to all players.
         /// </summary>
