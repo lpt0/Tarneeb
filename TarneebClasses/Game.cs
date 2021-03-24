@@ -120,7 +120,7 @@ namespace TarneebClasses
         /// <summary>
         /// Internal list of rounds for this game.
         /// </summary>
-        private List<Round> _rounds;
+        private List<Round> _tricks;
 
         #endregion
         #region Public fields
@@ -166,7 +166,7 @@ namespace TarneebClasses
         /// <summary>
         /// TODO
         /// </summary>
-        public List<Round> Rounds { get => this._rounds; } //TODO
+        public List<Round> Tricks { get => this._tricks; } //TODO
 
         /// <summary>
         /// Bids placed in this game.
@@ -347,7 +347,7 @@ namespace TarneebClasses
             this.CurrentPlayers = new Player[NUMBER_OF_PLAYERS];
             this.Logs = new ObservableCollection<Logging.ILog>(); // TODO
             this._bids = new List<Bid>();
-            this._rounds = new List<Round>();
+            this._tricks = new List<Round>();
             this.CurrentState = State.NEW_GAME;
             this.TrickCounter = 0;
             this.MaxScore = maxScore;
@@ -640,7 +640,8 @@ namespace TarneebClasses
             do
             {
                 this._currentPlayer.HandList = hands[handsDealt];
-                this._currentPlayer = this.NextPlayer(); // Deal cards to the next player
+                // Deal cards to the next player
+                this._currentPlayer = this.NextPlayer(); 
             } while (++handsDealt != NUMBER_OF_PLAYERS);
 
             // Player to the right of the dealer goes first
@@ -660,7 +661,10 @@ namespace TarneebClasses
             for (int hand = 0; hand < hands.Length; hand++)
             {
                 hands[hand] = deck.Draw(HAND_SIZE);
+                hands[hand].Sort();
             }
+
+            // Sort the hand
 
             return hands;
         }
