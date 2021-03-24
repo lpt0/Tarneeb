@@ -33,7 +33,7 @@ namespace TarneebClasses.Logging
         /// <returns>The string representation of the log.</returns>
         public override string ToString()
         {
-            string logMessage = $"{this.Player.PlayerName}'s initial hand is:";
+            string logMessage = $"Your initial hand was:";
             foreach (Card card in this.Hand.Cards)
             {
                 logMessage += $"\n{card}";

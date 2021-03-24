@@ -34,7 +34,14 @@ namespace TarneebClasses.Logging
         public override string ToString()
         {
             // TODO
-            return $"{this.Player.PlayerName} placed a bid of {this.Bid}.";
+            if (this.Bid == -1)
+            {
+                return $"{this.Player.PlayerName} passed on their bid.";
+            }
+            else
+            {
+                return $"{this.Player.PlayerName} placed a bid of {this.Bid}.";
+            }
         }
     }
 }
