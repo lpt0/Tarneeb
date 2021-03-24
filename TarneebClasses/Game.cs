@@ -322,7 +322,7 @@ namespace TarneebClasses
                             break;
                     }
                 } 
-                catch (Exception e)
+                catch (GameException e)
                 {
                     this.NotificationEvent?.Invoke(this, new NotificationEventArgs() { Message = e.Message });
                 }
@@ -382,6 +382,7 @@ namespace TarneebClasses
             this.Players[0] = user;
 
             // Log the player's intial hand
+            // TODO: Don't add this to logs, since CPU players can see it
             this.Logs.Add(new Logging.InitialHandLog() { Hand = user.HandList, Player = user });
             this.Logs.Add(new Logging.PlayerJoinedLog() { Player = user });
             FireGameActionEvent(new GameActionEventArgs() { Player = user });
