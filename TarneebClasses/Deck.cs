@@ -180,11 +180,35 @@ namespace TarneebClasses
 
             // Grab a copy of the card at position.
             picked = this.Cards[position];
-            // Remove the Card from the Card List.
-            this.Cards.RemoveAt(position);
 
             // Return Card.
             return picked;
+        }
+
+        /// <summary>
+        /// Remove the card at the specified position.
+        /// </summary>
+        /// <param name="position">The position of the card to be removed.</param>
+        public void Remove(int position)
+        {
+            if (position < 0 || position > this.Cards.Count)
+            {
+                throw new GameException("Invalid card position!");
+            }
+            this.Cards.RemoveAt(position);
+        }
+
+        /// <summary>
+        /// Remove a card from the deck.
+        /// </summary>
+        /// <param name="card">The card to remove.</param>
+        public void Remove(Card card)
+        {
+            if (this.Cards.IndexOf(card) == -1)
+            {
+                throw new GameException("Card is not in deck!");
+            }
+            this.Cards.Remove(card);
         }
     }
 }
