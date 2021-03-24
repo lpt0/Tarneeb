@@ -90,8 +90,16 @@ namespace TarneebClasses
             }
             else if (!bidValues.Contains(bid))
             {
-                Console.WriteLine("Invalid Bid. Please try again.");
-                return currentPlayer;
+                // Throw an error saying the bid was invalid
+                string errorMessage = "Invalid bid.\nValid bids are: ";
+                for (int i = 0; i < bidValues.Count - 1; i++)
+                {
+                    errorMessage += $"{bidValues[i]}, ";
+                }
+                errorMessage += $"or {bidValues[bidValues.Count - 1]}\n";
+                errorMessage += "Or, enter '-1' to pass.\n";
+                errorMessage += "Please try again.";
+                throw new GameException(errorMessage);
             }
             else
             {
