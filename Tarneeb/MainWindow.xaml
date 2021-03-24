@@ -99,8 +99,8 @@
         <Button Margin="20 50"
                 FontSize="24"
                 Grid.Row="4"
-                Click="SettingsClicked">
-            Settings
+                Click="BackClicked">
+            Back to Menu
         </Button>
 
         <Grid Grid.Row="4" Grid.Column="2">

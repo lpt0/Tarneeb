@@ -264,11 +264,25 @@ namespace Tarneeb
         private void PlayerTurnTarneeb()
         {
             // Prompt the user to select the Tarneeb suit
-            var tarneebWindow = new TarneebSuitWindow();
-            tarneebWindow.ShowDialog();
+            Enums.CardSuit tarneebSuit;
+            
+            // Loop until the suit is selected
+            do
+            {
+                var tarneebWindow = new TarneebSuitWindow();
+                tarneebWindow.ShowDialog();
+
+                if (tarneebWindow.Suit == 0)
+                {
+                    MessageBox.Show("A Tarneeb suit must be selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); ;
+                }
+
+                tarneebSuit = tarneebWindow.Suit;
+            } while (tarneebSuit == 0);
+
 
             // Send the selected suit to the game
-            this.UserPlayer.PerformAction(new PlayerActionEventArgs() { Tarneeb = tarneebWindow.Suit });
+            this.UserPlayer.PerformAction(new PlayerActionEventArgs() { Tarneeb = tarneebSuit });
         }
         #endregion
 
@@ -511,6 +525,7 @@ namespace Tarneeb
             this.CardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
             this.NamesInRoundHolders = new TextBlock[] { this.FirstName, this.SecondName, this.ThirdName, this.FourthName };
             this.PlayerHands = new WrapPanel[] { this.MyPlayerHand, this.LeftPlayerHand, this.TopPlayerHand, this.RightPlayerHand }; // Counter-clockwise
+            this.MaxScore.Text = Properties.Settings.Default.MaxScore.ToString();
 
             // Create a new game, listen for events, and start the game
             // For the max score, use the max score from settings
@@ -598,8 +613,7 @@ namespace Tarneeb
 
             if (isLeft == MessageBoxResult.Yes)
             {
-                var newTitleScreen = new TitleScreen();
-                newTitleScreen.Show();
+                TitleScreen.Instance.Show();
                 this.Close();
             }
         }
