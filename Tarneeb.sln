@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TarneebClasses", "TarneebCl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarneebTest", "TarneebTest\TarneebTest.csproj", "{D375E90E-1F95-48B1-9EDD-B8436A5E67DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TarneebConsoleGame", "TarneebConsoleGame\TarneebConsoleGame.csproj", "{C36B0C50-A958-4E03-8052-4C1B3FA7EA38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tarneeb.ConsoleGame", "TarneebConsoleGame\Tarneeb.ConsoleGame.csproj", "{C36B0C50-A958-4E03-8052-4C1B3FA7EA38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
