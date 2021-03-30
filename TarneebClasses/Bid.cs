@@ -107,7 +107,7 @@ namespace TarneebClasses
                 WinningPlayer = currentPlayer;
                 HighestBid = bid;
 
-                if (bid == 13)
+                if (bid == 13 || MyPlayers.Count() == 1)
                 {
                     MyPlayers.Clear();
                     MyPlayers = originalPlayers.ToList();
