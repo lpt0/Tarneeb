@@ -23,7 +23,6 @@ namespace TarneebClasses
         /// </summary>
         public static Dictionary<Enums.CardNumber, int> CardValues =
             new Dictionary<Enums.CardNumber, int> {
-                {Enums.CardNumber.Ace, 13},
                 {Enums.CardNumber.Two, 1},
                 {Enums.CardNumber.Three, 2},
                 {Enums.CardNumber.Four, 3},
@@ -36,6 +35,7 @@ namespace TarneebClasses
                 {Enums.CardNumber.Jack, 10},
                 {Enums.CardNumber.Queen, 11},
                 {Enums.CardNumber.King, 12},
+                {Enums.CardNumber.Ace, 13},
         };
 
         /// <summary>
@@ -111,7 +111,10 @@ namespace TarneebClasses
         /// </summary>
         public void Sort()
         {
-            this.Cards = Cards.OrderBy(card => card.Value).ToList();
+            this.Cards = Cards
+                .OrderBy(card => card.Value)
+                .OrderBy(card => card.Suit)
+                .ToList();  
         }
 
         /// <summary>
@@ -158,7 +161,7 @@ namespace TarneebClasses
         }
 
         /// <summary>
-        /// Given a position in the deck returns that Card, effectively removing it from Deck.
+        /// Given a position in the deck returns that Card.
         /// Returns null if invalid position.
         /// </summary>
         /// <param name="position">Index of the Card to return. Zero based.</param>
@@ -177,11 +180,56 @@ namespace TarneebClasses
 
             // Grab a copy of the card at position.
             picked = this.Cards[position];
-            // Remove the Card from the Card List.
-            this.Cards.RemoveAt(position);
 
             // Return Card.
             return picked;
+        }
+
+        /// <summary>
+        /// Given a card, it is removed from the deck and returned to the caller.
+        /// </summary>
+        /// <param name="target">Card to remove</param>
+        /// <returns>Target Card</returns>
+        public Card Pick(Card target)
+        {
+            Card picked = target;
+
+            if (this.Cards.Contains(target))
+            {
+                this.Cards.Remove(target);
+            }
+            else
+            {
+                return null;
+            }
+
+            return picked;
+        }
+
+        /// <summary>
+        /// Remove the card at the specified position.
+        /// </summary>
+        /// <param name="position">The position of the card to be removed.</param>
+        public void Remove(int position)
+        {
+            if (position < 0 || position > this.Cards.Count)
+            {
+                throw new GameException("Invalid card position!");
+            }
+            this.Cards.RemoveAt(position);
+        }
+
+        /// <summary>
+        /// Remove a card from the deck.
+        /// </summary>
+        /// <param name="card">The card to remove.</param>
+        public void Remove(Card card)
+        {
+            if (this.Cards.IndexOf(card) == -1)
+            {
+                throw new GameException("Card is not in deck!");
+            }
+            this.Cards.Remove(card);
         }
     }
 }

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="MaxScore" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">41</Value>
+      <Value Profile="(Default)">31</Value>
     </Setting>
     <Setting Name="PlayerName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

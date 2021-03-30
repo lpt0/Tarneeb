@@ -25,7 +25,7 @@ namespace Tarneeb.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("41")]
+        [global::System.Configuration.DefaultSettingValueAttribute("31")]
         public int MaxScore {
             get {
                 return ((int)(this["MaxScore"]));
