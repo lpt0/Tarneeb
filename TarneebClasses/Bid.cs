@@ -81,6 +81,7 @@ namespace TarneebClasses
                 {
                     MyPlayers.Clear();
                     MyPlayers = originalPlayers.ToList();
+                    bidValues.Clear();
                     return null;
                 }
                 else
@@ -111,6 +112,7 @@ namespace TarneebClasses
                 {
                     MyPlayers.Clear();
                     MyPlayers = originalPlayers.ToList();
+                    bidValues.Clear();
                     return null;
                 }
             }
