@@ -161,7 +161,7 @@ namespace TarneebClasses
         }
 
         /// <summary>
-        /// Given a position in the deck returns that Card, effectively removing it from Deck.
+        /// Given a position in the deck returns that Card.
         /// Returns null if invalid position.
         /// </summary>
         /// <param name="position">Index of the Card to return. Zero based.</param>
@@ -182,6 +182,27 @@ namespace TarneebClasses
             picked = this.Cards[position];
 
             // Return Card.
+            return picked;
+        }
+
+        /// <summary>
+        /// Given a card, it is removed from the deck and returned to the caller.
+        /// </summary>
+        /// <param name="target">Card to remove</param>
+        /// <returns>Target Card</returns>
+        public Card Pick(Card target)
+        {
+            Card picked = target;
+
+            if (this.Cards.Contains(target))
+            {
+                this.Cards.Remove(target);
+            }
+            else
+            {
+                return null;
+            }
+
             return picked;
         }
 
