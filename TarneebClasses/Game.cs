@@ -244,6 +244,10 @@ namespace TarneebClasses
         #endregion
 
         #region Player action functions
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="args"></param>
         private void OnPlayerBid(PlayerActionEventArgs args)
         {
             Bid bid = this._bids[this._bids.Count - 1];
@@ -264,6 +268,10 @@ namespace TarneebClasses
             this._currentPlayer = nextPlayer;
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="args"></param>
         private void OnPlayerTarneeb(PlayerActionEventArgs args)
         {
             // Validate Tarneeb suit
@@ -274,24 +282,40 @@ namespace TarneebClasses
             FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Bid = bid.HighestBid, Tarneeb = args.Tarneeb });
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="args"></param>
         private void OnPlayerTrick(PlayerActionEventArgs args)
         {
-            // Validate card played
-            // Local play game, assume card is valid
-            this.CurrentPlayers[_cardsPlayedInRound] = this._currentPlayer;
-            this.CurrentCards[_cardsPlayedInRound] = args.CardPlayed;
-            _cardsPlayedInRound++;
-
-            /* Remove the card from the player's hand (again, just in case)
-             * Players may or may not have already done this, but better to do it
-             * just in case.
+            /* Make sure the card is valid; as in, it is allowed to be played
+             * (card is of leading suit, Tarneeb suit, or player has neither and can play
+             * anything).
              */
-            this._currentPlayer.HandList.Cards.Remove(args.CardPlayed);
+            if (this.GetValidCards(this._currentPlayer).Contains(args.CardPlayed))
+            {
+                this.CurrentPlayers[_cardsPlayedInRound] = this._currentPlayer;
+                this.CurrentCards[_cardsPlayedInRound] = args.CardPlayed;
+                _cardsPlayedInRound++;
 
-            this.Logs.Add(new Logging.CardPlayedLog() { Player = this._currentPlayer, Card = args.CardPlayed });
-            FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Card = args.CardPlayed, CardsPlayedInRound = this._cardsPlayedInRound - 1 });
+                /* Remove the card from the player's hand (again, just in case)
+                 * Players may or may not have already done this, but better to do it
+                 * just in case.
+                 */
+                this._currentPlayer.HandList.Cards.Remove(args.CardPlayed);
 
-            this._currentPlayer = this.NextPlayer();
+                this.Logs.Add(new Logging.CardPlayedLog() { Player = this._currentPlayer, Card = args.CardPlayed });
+                FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Card = args.CardPlayed, CardsPlayedInRound = this._cardsPlayedInRound - 1 });
+
+                this._currentPlayer = this.NextPlayer();
+            }
+            else
+            {
+                // Card was not valid; let the player know
+                this.NotificationEvent?.Invoke(this, new NotificationEventArgs() { Message = "Card is not allowed to be played." });
+
+                // Fall-through without moving to next player
+            }
         }
 
         /// <summary>
@@ -390,7 +414,7 @@ namespace TarneebClasses
             // Create CPU players
             for (int playerNum = 1; playerNum < NUMBER_OF_PLAYERS; playerNum++)
             {
-                this.Players[playerNum] = new CPUPlayer(
+                this.Players[playerNum] = new CPUPlayerEasy(
                     this, // Need to pass the game so CPU knows how to listen to event
                     Game.cpuNames[playerNum - 1],
                     playerNum,
@@ -689,6 +713,45 @@ namespace TarneebClasses
             // Sort the hand
 
             return hands;
+        }
+
+        /// <summary>
+        /// Get the valid cards that a player has.
+        /// Valid cards are those that are of the leading suit or Tarneeb suit.
+        /// 
+        /// If the player does not have cards of either suit, all cards are valid;
+        /// they just don't have a score.
+        /// </summary>
+        /// <param name="player">The player to check cards for.</param>
+        /// <returns>The valid cards.</returns>
+        public List<Card> GetValidCards(Player player)
+        {
+            // TODO: If no card is present this might error
+            // TODO: Fix comment ^
+            Enums.CardSuit? leadingSuit = this.CurrentCards[0]?.Suit;
+            Enums.CardSuit? tarneebSuit = this.Bids[this.Bids.Count - 1]?.TarneebSuit;
+
+            // If there is no leading suit, that means this player decides one; so all cards are valid.
+            if (leadingSuit == null)
+            {
+                return player.HandList.Cards;
+            }
+            // Otherwise, there is a leading suit, and it needs to be followed
+            else
+            {
+                List<Card> validCards = player.HandList.Cards
+                    .FindAll(card => (card.Suit == leadingSuit || card.Suit == tarneebSuit));
+
+                // Are there no valid cards?
+                if (validCards.Count == 0)
+                {
+                    // There are no cards with the leading or Tarneeb suit, so all cards are valid
+                    validCards = player.HandList.Cards;
+                }
+
+                // TODO: Sort
+                return validCards;
+            }
         }
         #endregion
         #endregion
