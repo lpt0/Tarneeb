@@ -55,6 +55,12 @@ namespace Tarneeb
             { Enums.CardSuit.Diamond, $"{ASSET_BASE_URI}/cardSuits/diamond.png" },
             { Enums.CardSuit.Club, $"{ASSET_BASE_URI}/cardSuits/club.png" }
         };
+
+        /// <summary>
+        /// A default card, used for cards that need to be face down.
+        /// TODO: Change to CardControl
+        /// </summary>
+        private static Card DEFAULT_CARD = new Card(Enums.CardNumber.Two, Enums.CardSuit.Spades);
         #endregion
 
         #region Variables
@@ -67,27 +73,27 @@ namespace Tarneeb
         /// Same as CardsInRoundHolders, but for the name underneath the card played.
         /// </summary>
         /// <see cref="CardsInRoundHolders"/>
-        private TextBlock[] NamesInRoundHolders;
+        private TextBlock[] _namesInRoundHolders;
 
         /// <summary>
         /// An array of the wrap panels used to store each player's cards.
         /// </summary>
-        private WrapPanel[] PlayerHands;
+        private WrapPanel[] _playerHands;
 
         /// <summary>
         /// Whether or not it is the player's turn.
         /// </summary>
-        private Boolean IsPlayerTurn;
+        private Boolean _isPlayerTurn;
 
         /// <summary>
         /// The instance of the Tarneeb game.
         /// </summary>
-        private Game Game;
+        private Game _game;
 
         /// <summary>
         /// The user's player.
         /// </summary>
-        private HumanPlayer UserPlayer;
+        private HumanPlayer _userPlayer;
 
         #endregion
 
@@ -132,8 +138,8 @@ namespace Tarneeb
         {
             UpdateAllHands();
 
-            this.IsPlayerTurn = (e.Player.PlayerId == this.UserPlayer.PlayerId); // TODO: Fake player
-            if (this.IsPlayerTurn)
+            this._isPlayerTurn = (e.Player.PlayerId == this._userPlayer.PlayerId); // TODO: Fake player
+            if (this._isPlayerTurn)
             {
                 // Perform actions
                 switch (e.State)
@@ -153,7 +159,7 @@ namespace Tarneeb
             else
             {
                 // Not the player's turn; disable the deck from being clicked
-                foreach (CardControl cc in this.PlayerHands[0].Children)
+                foreach (CardControl cc in this._playerHands[0].Children)
                 {
                     cc.Click -= OnCardClicked;
                 }
@@ -217,7 +223,7 @@ namespace Tarneeb
         {
             CardControl cc = sender as CardControl;
             Card card = cc.Card;
-            this.UserPlayer.PerformAction(new PlayerActionEventArgs() { CardPlayed = card });
+            this._userPlayer.PerformAction(new PlayerActionEventArgs() { CardPlayed = card });
         }
         #endregion
 
@@ -245,20 +251,39 @@ namespace Tarneeb
             } while (bid == 0);
 
             // Place the bid
-            this.UserPlayer.PerformAction(new PlayerActionEventArgs() { Bid = bid });
+            this._userPlayer.PerformAction(new PlayerActionEventArgs() { Bid = bid });
         }
 
         private void PlayerTurnCard()
         {
-            // Update the player's cards
-            UpdatePlayerHand(this.UserPlayer);
+            // TODO: Enforce leading suit
+            // Get the valid cards that a player can play
+            List<Card> validCards = this._game.GetValidCards(this._userPlayer);
 
-            // Enable card clicks again
-            foreach (CardControl cc in this.PlayerHands[0].Children)
+            // Create card controls for the valid cards, which should be face up
+            CardControl[] cardControls = new CardControl[this._userPlayer.HandList.Cards.Count];
+            int cardIdx = 0;
+            for (; cardIdx < validCards.Count; cardIdx++)
             {
+                Card c = validCards[cardIdx];
+                CardControl cc = new CardControl(c, false);
+
+                // Set up event handlers for the valid cards
                 cc.Click += OnCardClicked;
+
+                cardControls[cardIdx] = cc;
             }
 
+            // Create controls for the remaining, invalid cards - all face down, with no click handler
+            for (; cardIdx < cardControls.Length; cardIdx++)
+            {
+                cardControls[cardIdx] = new CardControl(DEFAULT_CARD, true);
+                // No click handler for this card
+            }
+
+            // Update the player's cards using the array of CardControls
+            UpdatePlayerHand(0, cardControls);
+            //UpdatePlayerHand(this._userPlayer); // TODO
         }
 
         private void PlayerTurnTarneeb()
@@ -282,7 +307,7 @@ namespace Tarneeb
 
 
             // Send the selected suit to the game
-            this.UserPlayer.PerformAction(new PlayerActionEventArgs() { Tarneeb = tarneebSuit });
+            this._userPlayer.PerformAction(new PlayerActionEventArgs() { Tarneeb = tarneebSuit });
         }
         #endregion
 
@@ -351,7 +376,7 @@ namespace Tarneeb
              * is raised signifying that, that means the card is valid;
              * so, it should be removed from the player's deck.
              */
-            if (e.Player == this.UserPlayer)
+            if (e.Player == this._userPlayer)
             {
                 this.MyPlayerHand.Children.Remove(cc);
             }
@@ -363,7 +388,7 @@ namespace Tarneeb
 
             // Add the card to the cards played in round, and the name of the player who played it
             this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Add(cc);
-            this.NamesInRoundHolders[e.CardsPlayedInRound].Text = e.Player.PlayerName;
+            this._namesInRoundHolders[e.CardsPlayedInRound].Text = e.Player.PlayerName;
         }
 
         /// <summary>
@@ -387,7 +412,7 @@ namespace Tarneeb
             {
                 holder.Children.Clear();
             }
-            foreach (TextBlock textBlock in this.NamesInRoundHolders)
+            foreach (TextBlock textBlock in this._namesInRoundHolders)
             {
                 textBlock.Text = "";
             }
@@ -459,9 +484,10 @@ namespace Tarneeb
             CardControl[] cards = new CardControl[numberOfCards];
             for (int cardIdx = 0; cardIdx < numberOfCards; cardIdx++)
             {
+                // TODO: Enforce leading suit
                 cards[cardIdx] = new CardControl(fakeCard, true);
             }
-            UpdatePlayerHand(Array.IndexOf(this.Game.Players, player), cards);
+            UpdatePlayerHand(Array.IndexOf(this._game.Players, player), cards);
         }
         /// <summary>
         /// Update the player's hand at the given index, with the provided array of card controls.
@@ -470,7 +496,7 @@ namespace Tarneeb
         /// <param name="cards">The card controls to use.</param>
         private void UpdatePlayerHand(int playerIdx, CardControl[] cards)
         {
-            WrapPanel handPanel = PlayerHands[playerIdx];
+            WrapPanel handPanel = _playerHands[playerIdx];
 
             // Clear the existing cards
             handPanel.Children.Clear();
@@ -487,10 +513,10 @@ namespace Tarneeb
         private void UpdateAllHands()
         {
             // Only update cards after a new game
-            if (this.Game.CurrentState > Game.State.NEW_GAME)
+            if (this._game.CurrentState > Game.State.NEW_GAME)
             {
-                UpdatePlayerHand(this.UserPlayer);
-                foreach (CPUPlayer player in this.Game.Players.Skip(1).Take(3)) // [1:3]
+                UpdatePlayerHand(this._userPlayer);
+                foreach (CPUPlayer player in this._game.Players.Skip(1).Take(3)) // [1:3]
                 {
                     UpdatePlayerHand(player);
                 }
@@ -523,85 +549,19 @@ namespace Tarneeb
 
             // Set needed variables
             this.CardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
-            this.NamesInRoundHolders = new TextBlock[] { this.FirstName, this.SecondName, this.ThirdName, this.FourthName };
-            this.PlayerHands = new WrapPanel[] { this.MyPlayerHand, this.LeftPlayerHand, this.TopPlayerHand, this.RightPlayerHand }; // Counter-clockwise
+            this._namesInRoundHolders = new TextBlock[] { this.FirstName, this.SecondName, this.ThirdName, this.FourthName };
+            this._playerHands = new WrapPanel[] { this.MyPlayerHand, this.LeftPlayerHand, this.TopPlayerHand, this.RightPlayerHand }; // Counter-clockwise
             this.MaxScore.Text = Properties.Settings.Default.MaxScore.ToString();
 
             // Create a new game, listen for events, and start the game
             // For the max score, use the max score from settings
-            this.Game = new Game(Properties.Settings.Default.MaxScore);
-            this.Game.GameActionEvent += OnGameAction;
-            this.Game.PlayerTurnEvent += OnPlayerTurn;
-            this.Game.NotificationEvent += OnNotification;
-            this.UserPlayer = this.Game.Initialize(Properties.Settings.Default.PlayerName);
-            this.Logs.ItemsSource = this.Game.Logs;
-            this.Game.Start();
-        }
-
-        /// <summary>
-        /// Generates a hand and put them into the Player's Hand.
-        /// </summary>
-        private void TestCardControlPlayerHand()
-        {
-            // Generate 13 Cards to new Deck.
-            Deck aDeck = new Deck();
-            aDeck.Shuffle();
-            Deck aHand = aDeck.Draw(13);
-            
-            // For each Card in Hand, generate CardControls
-            foreach(Card aCard in aHand.Cards)
-            {
-                // Create CardControl with Card. 
-                CardControl cc = new CardControl(aCard);
-                // Attach generic Click event listener.
-                cc.Click += new RoutedEventHandler(Card_Click);
-                // Append the CardControl to the PlayerHand Area.
-                this.MyPlayerHand.Children.Add(cc);
-
-                // Sample place holder decks
-
-                // Create CardControl with Card. 
-                CardControl cc2 = new CardControl(aCard, true);
-                // Append the CardControl to the PlayerHand Area.
-                this.TopPlayerHand.Children.Add(cc2);
-
-                // Create CardControl with Card. 
-                CardControl cc3 = new CardControl(aCard, true);
-                // Append the CardControl to the PlayerHand Area.
-                this.LeftPlayerHand.Children.Add(cc3);
-
-                // Create CardControl with Card. 
-                CardControl cc4 = new CardControl(aCard, true);
-                // Append the CardControl to the PlayerHand Area.
-                this.RightPlayerHand.Children.Add(cc4);
-            }
-
-            Card aRandomCard1 = aDeck.Draw(1).Cards[0];
-            CardControl aRandomCardControl1 = new CardControl(aRandomCard1);
-            this.FirstCard.Children.Add(aRandomCardControl1);
-
-            Card aRandomCard2 = aDeck.Draw(1).Cards[0];
-            CardControl aRandomCardControl2 = new CardControl(aRandomCard2);
-            this.SecondCard.Children.Add(aRandomCardControl2);
-
-            Card aRandomCard3 = aDeck.Draw(1).Cards[0];
-            CardControl aRandomCardControl3 = new CardControl(aRandomCard3);
-            this.ThirdCard.Children.Add(aRandomCardControl3);
-
-            Card aRandomCard4 = aDeck.Draw(1).Cards[0];
-            CardControl aRandomCardControl4 = new CardControl(aRandomCard4);
-            this.FourthCard.Children.Add(aRandomCardControl4);
-        }
-
-        /// <summary>
-        /// Generic Click event handler for the CardControls.
-        /// </summary>
-        private void Card_Click(object sender, EventArgs e)
-        {
-            // Change sender to CardControl.
-            CardControl cc = sender as CardControl;
-            // Display what Card was 'Click' ed.
-            MessageBox.Show(cc.Card.ToString());
+            this._game = new Game(Properties.Settings.Default.MaxScore);
+            this._game.GameActionEvent += OnGameAction;
+            this._game.PlayerTurnEvent += OnPlayerTurn;
+            this._game.NotificationEvent += OnNotification;
+            this._userPlayer = this._game.Initialize(Properties.Settings.Default.PlayerName);
+            this.Logs.ItemsSource = this._game.Logs;
+            this._game.Start();
         }
 
         /// <summary>
