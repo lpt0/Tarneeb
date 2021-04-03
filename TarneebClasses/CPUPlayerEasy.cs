@@ -213,13 +213,7 @@ namespace TarneebClasses
                 {
                     case Game.State.BID_STAGE:
                         // Perform bid logic
-                        //var previousBid = game.Logs.Where(log => log.Type == Logging.Type.BID_PLACED).ToList();
-
                         this.PerformAction(new Events.PlayerActionEventArgs() { Bid = getAiBid(highestBid) });
-
-
-                        // For now, CPU players will pass
-                        //this.PerformAction(new Events.PlayerActionEventArgs() { Bid = -1 });
                         break;
                     case Game.State.BID_WON:
                         // Perform Tarneeb logic
@@ -228,17 +222,9 @@ namespace TarneebClasses
                     case Game.State.TRICK:
                         // Perform trick logic
 
-                        //var previousPlayed = game.Logs.Where(log => log.Type == Logging.Type.CARD_PLAYED).ToList();
-
-                        //var relatedTrick = previousPlayed.GetRange(previousPlayed.Count-game.CurrentCards.GetLength(0), previousPlayed.Count-1);
-
                         Card card = calculateAiCard();
                         this.PerformAction(new Events.PlayerActionEventArgs() { CardPlayed = card });
 
-                        //// For now, just draw a random card
-                        //int cardIdx = new Random().Next(this.game.GetValidCards(this).Count);
-                        //Card card = this.HandList.Pick(cardIdx);
-                        //this.PerformAction(new Events.PlayerActionEventArgs() { CardPlayed = card });
                         break;
                     default:
                         throw new Exception("Unknown state!");
@@ -328,8 +314,6 @@ namespace TarneebClasses
             // Card to return
             Card toPick = null;
 
-            bool playAnything = false;
-
             // If the player's team is not winning, 
             if (!isWinningCardTeamMine)
             {
@@ -345,9 +329,6 @@ namespace TarneebClasses
                     .OrderBy(card => card.Number)
                     .ToList();
 
-                // Card to return
-                toPick = null;
-
                 // If there are choices available, determine a valid card.
                 if (trickSuitCards.Count > 0)
                 {
@@ -359,20 +340,11 @@ namespace TarneebClasses
                 {
                     toPick = tarneebSuitCards.First();
                 }
-                // Else play any low card.
-                else
-                {
-                    playAnything = true;
-                }
-            }
-            // Else play any low card.
-            else
-            {
-                playAnything = true;
+                // toPick is null, play any low card.
             }
 
-            // If play any low card.
-            if (playAnything)
+            // If toPick is null (no good card to play), then any low card is fine.
+            if (toPick == null)
             {
                 // Pick the lowest valued card to throw, order by the number and prioritize non-tarneeb cards
                 toPick = this.HandList.Cards
