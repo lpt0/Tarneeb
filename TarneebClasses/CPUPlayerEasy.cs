@@ -318,6 +318,8 @@ namespace TarneebClasses
             // Card to return
             Card toPick = null;
 
+            bool playAnything = false;
+
             // If the player's team is not winning, 
             if (!isWinningCardTeamMine)
             {
@@ -347,18 +349,30 @@ namespace TarneebClasses
                 {
                     toPick = tarneebSuitCards.First();
                 }
-                // Pick the lowest valued card to throw, order by the number and prioritize non-tarneeb cards
+                // Else play any low card.
                 else
                 {
-                    toPick = this.HandList.Cards
-                        .OrderBy(card => card.Number)
-                        .OrderBy(card => {
-                            int value = -1;
-                            if (card.Suit == tarneebSuit) value = 1;
-                            return value;
-                        })
-                        .FirstOrDefault();
+                    playAnything = true;
                 }
+            }
+            // Else play any low card.
+            else
+            {
+                playAnything = true;
+            }
+
+            // If play any low card.
+            if (playAnything)
+            {
+                // Pick the lowest valued card to throw, order by the number and prioritize non-tarneeb cards
+                toPick = this.HandList.Cards
+                       .OrderBy(card => card.Number)
+                       .OrderBy(card => {
+                           int value = -1;
+                           if (card.Suit == tarneebSuit) value = 1;
+                           return value;
+                       })
+                       .FirstOrDefault();
             }
 
             return toPick;
