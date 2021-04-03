@@ -120,24 +120,40 @@
 
                         <WrapPanel x:Name="FirstCard" 
                            Grid.Column="0">
+                            <Image Source="./assets/cards/blankPlayingCard.png"
+                                   Height="116"
+                                   Width="100"
+                                   />
                         </WrapPanel>
                         <TextBlock Grid.Row="1">1st Card</TextBlock>
                         <TextBlock Grid.Row="2" x:Name="FirstName"></TextBlock>
 
                         <WrapPanel x:Name="SecondCard" 
                            Grid.Column="1">
+                            <Image Source="./assets/cards/blankPlayingCard.png"
+                                   Height="116"
+                                   Width="100"
+                            />
                         </WrapPanel>
                         <TextBlock Grid.Row="1" Grid.Column="1">2nd Card</TextBlock>
                         <TextBlock Grid.Row="2" x:Name="SecondName" Grid.Column="1"></TextBlock>
 
                         <WrapPanel x:Name="ThirdCard" 
                            Grid.Column="2">
+                            <Image Source="./assets/cards/blankPlayingCard.png"
+                                   Height="116"
+                                   Width="100"
+                            />
                         </WrapPanel>
                         <TextBlock Grid.Row="1" Grid.Column="2">3rd Card</TextBlock>
                         <TextBlock Grid.Row="2" x:Name="ThirdName" Grid.Column="2"></TextBlock>
 
                         <WrapPanel x:Name="FourthCard" 
                            Grid.Column="3">
+                            <Image Source="./assets/cards/blankPlayingCard.png"
+                                   Height="116"
+                                   Width="100"
+                            />
                         </WrapPanel>
                         <TextBlock Grid.Row="1" Grid.Column="3">4rd Card</TextBlock>
                         <TextBlock Grid.Row="2" x:Name="FourthName" Grid.Column="3"></TextBlock>
@@ -159,7 +175,7 @@
 
                 <Grid Grid.Row="4"
                       Margin="170 25 170 0"
-                      Background="DarkGray">
+                      Background="LightGray">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*" />
@@ -306,7 +322,7 @@
               Width="180"
               Canvas.Top="20"
               Canvas.Left="400"
-              Background="DarkGray">
+              Background="LightGray">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="*" />
@@ -329,7 +345,7 @@
               Width="60"
               Canvas.Top="380"
               Canvas.Left="10"
-              Background="DarkGray">
+              Background="LightGray">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="2.5*" />
@@ -352,7 +368,7 @@
               Width="60"
               Canvas.Top="380"
               Canvas.Right="210"
-              Background="DarkGray">
+              Background="LightGray">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2.5*" />
                 <ColumnDefinition Width="1*" />

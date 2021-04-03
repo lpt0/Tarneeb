@@ -362,6 +362,7 @@ namespace Tarneeb
             }
 
             // Add the card to the cards played in round, and the name of the player who played it
+            this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Clear();
             this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Add(cc);
             this.NamesInRoundHolders[e.CardsPlayedInRound].Text = e.Player.PlayerName;
         }
@@ -386,6 +387,15 @@ namespace Tarneeb
             foreach (WrapPanel holder in this.CardsInRoundHolders) 
             {
                 holder.Children.Clear();
+
+                var blankCardImage = new Image
+                {
+                    Source = new BitmapImage(new Uri("./assets/cards/blankPlayingCard.png", UriKind.Relative)),
+                    Height = 116,
+                    Width = 100
+                };
+
+                holder.Children.Add(blankCardImage);
             }
             foreach (TextBlock textBlock in this.NamesInRoundHolders)
             {
@@ -535,6 +545,18 @@ namespace Tarneeb
             this.Game.NotificationEvent += OnNotification;
             this.UserPlayer = this.Game.Initialize(Properties.Settings.Default.PlayerName);
             this.Logs.ItemsSource = this.Game.Logs;
+
+            this.MyPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(UserPlayer.TeamNumber.ToString());
+            this.TopPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(UserPlayer.TeamNumber.ToString());
+            this.MyPlayerName.Text = this.UserPlayer.PlayerName;
+            this.TopPlayerName.Text = this.Game.Players[2].PlayerName;
+
+            var opponentTeamColour = UserPlayer.TeamNumber.ToString().Equals("Blue") ? "Red" : "Blue";
+            this.LeftPlayerColor.Background = UserPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
+            this.RightPlayerColor.Background = UserPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
+            this.LeftPlayerName.Text = this.Game.Players[1].PlayerName;
+            this.RightPlayerName.Text = this.Game.Players[3].PlayerName;
+
             this.Game.Start();
         }
 
