@@ -17,184 +17,358 @@
             MinHeight="1000" MinWidth="1200" MaxHeight="1000" MaxWidth="1200"
             WindowStartupLocation="CenterScreen"
             Loaded="OnWindowLoad">
-    <Grid Background="WhiteSmoke">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.75*" />
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="1.75*" />
-            <ColumnDefinition Width="1.5*" />
-        </Grid.ColumnDefinitions>
+    <Canvas>
+        <Grid Background="WhiteSmoke" Height="969" Width="1192">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.75*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="1.75*" />
+                <ColumnDefinition Width="1.5*" />
+            </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2.5*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2.5*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2.5*" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2.5*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2.5*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2.5*" />
+            </Grid.RowDefinitions>
 
-        <Grid.Resources>
-            <Style TargetType="WrapPanel">
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-        </Grid.Resources>
+            <Grid.Resources>
+                <Style TargetType="WrapPanel">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+            </Grid.Resources>
 
-        <!--Row number 1-->
-        <TextBlock FontSize="24" 
+            <!--Row number 1-->
+            <TextBlock FontSize="24" 
                    Margin="0 30"
                    HorizontalAlignment="Center">
             Current Bid:<LineBreak/>
             <TextBlock x:Name="CurrentBid" FontSize="60">13</TextBlock>
         </TextBlock>
 
-        <Grid Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="24" />
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                </Style>
-            </Grid.Resources>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="24" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                </Grid.Resources>
 
-            <!--Scoring window inspired by https://viptarneeb.com/-->
-            <TextBlock x:Name="MaxScore" Grid.Column="0" Grid.ColumnSpan="2">25</TextBlock>
-            <TextBlock Grid.Column="0" Grid.Row="1">Blue</TextBlock>
-            <TextBlock x:Name="Team0TrickWins" Grid.Column="0" Grid.Row="2">0</TextBlock>
-            <TextBlock x:Name="Team0TotalScore" Grid.Column="0" Grid.Row="3">0</TextBlock>
-            <TextBlock Grid.Column="1" Grid.Row="1">Red</TextBlock>
-            <TextBlock x:Name="Team1TrickWins" Grid.Column="1" Grid.Row="2">0</TextBlock>
-            <TextBlock x:Name="Team1TotalScore" Grid.Column="1" Grid.Row="3">12</TextBlock>
-        </Grid>
+                <!--Scoring window inspired by https://viptarneeb.com/-->
+                <TextBlock x:Name="MaxScore" Grid.Column="0" Grid.ColumnSpan="2">25</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="1" Foreground="Blue" FontWeight="Bold">Blue</TextBlock>
+                <TextBlock x:Name="Team0TrickWins" Grid.Column="0" Grid.Row="2">0</TextBlock>
+                <TextBlock x:Name="Team0TotalScore" Grid.Column="0" Grid.Row="3">0</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" Foreground="Red" FontWeight="Bold">Red</TextBlock>
+                <TextBlock x:Name="Team1TrickWins" Grid.Column="1" Grid.Row="2">0</TextBlock>
+                <TextBlock x:Name="Team1TotalScore" Grid.Column="1" Grid.Row="3">12</TextBlock>
+            </Grid>
 
-        <WrapPanel x:Name="TopPlayerHand" 
+            <WrapPanel x:Name="TopPlayerHand" 
                    Grid.Column="1">
-        </WrapPanel>
+            </WrapPanel>
 
-        <!--Row number 4-->
-        <Border Margin="20"
+            <Grid Grid.Row="1"
+                  Grid.Column="1"
+                  Grid.RowSpan="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="3.15*" />
+                </Grid.RowDefinitions>
+
+                <Grid Margin="40 0"
+                        Grid.Row="1"
+                        Background="LightGray">
+                    <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="FontWeight" Value="SemiBold" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="0.5*" />
+                            <RowDefinition Height="0.5*" />
+                        </Grid.RowDefinitions>
+
+                        <WrapPanel x:Name="FirstCard" 
+                           Grid.Column="0">
+                        </WrapPanel>
+                        <TextBlock Grid.Row="1">1st Card</TextBlock>
+                        <TextBlock Grid.Row="2" x:Name="FirstName"></TextBlock>
+
+                        <WrapPanel x:Name="SecondCard" 
+                           Grid.Column="1">
+                        </WrapPanel>
+                        <TextBlock Grid.Row="1" Grid.Column="1">2nd Card</TextBlock>
+                        <TextBlock Grid.Row="2" x:Name="SecondName" Grid.Column="1"></TextBlock>
+
+                        <WrapPanel x:Name="ThirdCard" 
+                           Grid.Column="2">
+                        </WrapPanel>
+                        <TextBlock Grid.Row="1" Grid.Column="2">3rd Card</TextBlock>
+                        <TextBlock Grid.Row="2" x:Name="ThirdName" Grid.Column="2"></TextBlock>
+
+                        <WrapPanel x:Name="FourthCard" 
+                           Grid.Column="3">
+                        </WrapPanel>
+                        <TextBlock Grid.Row="1" Grid.Column="3">4rd Card</TextBlock>
+                        <TextBlock Grid.Row="2" x:Name="FourthName" Grid.Column="3"></TextBlock>
+                    </Grid>
+                </Grid>
+
+                <Border Margin="40 20 40 20"
+                        Grid.Row="2"
+                        Grid.RowSpan="2"
+                        BorderBrush="Black"
+                        BorderThickness="1">
+                    <TextBlock Background="White"
+                               FontSize="16"
+                               TextWrapping="Wrap"
+                               x:Name="Messages">
+
+                    </TextBlock>
+                </Border>
+
+                <Grid Grid.Row="4"
+                      Margin="170 25 170 0"
+                      Background="DarkGray">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock FontSize="20"
+                               x:Name="MyPlayerName"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontStyle="Italic">
+                        Default Value
+                    </TextBlock>
+
+                    <TextBlock Grid.Row="1"
+                                   x:Name="MyPlayerColor"
+                                   Background="Black"/>
+                </Grid>
+
+                <WrapPanel x:Name="MyPlayerHand"
+                           Grid.Row="5">
+                </WrapPanel>
+            </Grid>
+
+            <!--Row number 4-->
+            <!--<Border Margin="20"
                 Grid.Row="3"
                 Grid.Column="1"
                 BorderBrush="Black"
                 BorderThickness="1">
-            <TextBlock Background="White"
+                <TextBlock Background="White"
                        FontSize="16"
                        TextWrapping="Wrap"
                        x:Name="Messages">
-                
-            </TextBlock>
-        </Border>
 
-        <!--Row number 5-->
-        <Button Margin="20 50"
+                </TextBlock>
+            </Border>-->
+
+            <!--Row number 5-->
+            <Button Margin="20 50"
                 FontSize="24"
                 Grid.Row="4"
                 Click="BackClicked">
-            Back to Menu
-        </Button>
+                Back to Menu
+            </Button>
 
-        <Grid Grid.Row="4" Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="8*"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
-            <Image x:Name="TarneebSuitImage" Source="./assets/cards/cardSuits/heart.png"></Image>
-            <TextBlock 
+            <Grid Grid.Row="4" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <Image x:Name="TarneebSuitImage" Source="./assets/cards/cardSuits/heart.png"></Image>
+                <TextBlock 
                 FontSize="24" 
                 HorizontalAlignment="Center" 
                 Grid.Row="1">
                 Trump Suit
-            </TextBlock>
-        </Grid>
+                </TextBlock>
+            </Grid>
 
-        <WrapPanel x:Name="MyPlayerHand"
-                   Grid.Column="1"
-                   Grid.Row="4">
-        </WrapPanel>
+            <!--<WrapPanel x:Name="MyPlayerHand"
+                   Grid.Row="4"
+                   Grid.Column="1">
+            </WrapPanel>-->
 
-        <!--Vertical hands-->
-        <WrapPanel x:Name="LeftPlayerHand" 
+            <!--Vertical hands-->
+            <WrapPanel x:Name="LeftPlayerHand" 
                    Grid.Row="1" 
                    Grid.RowSpan="3"
                    Orientation="Vertical">
-        </WrapPanel>
+            </WrapPanel>
 
-        <WrapPanel x:Name="RightPlayerHand"
+            <WrapPanel x:Name="RightPlayerHand"
                    Grid.Column="2" 
                    Grid.Row="1"
                    Grid.RowSpan="3"
                    Orientation="Vertical">
-        </WrapPanel>
+            </WrapPanel>
 
-        <!--Center area for current cards-->
-        <Grid Grid.Row="2"
+            <!--Center area for current cards-->
+            <!--<Grid Grid.Row="2"
               Grid.Column="1"
               Margin="40 0">
-            <Grid ShowGridLines="True">
-                <Grid.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="20" />
-                        <Setter Property="FontWeight" Value="SemiBold" />
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                    </Style>
-                </Grid.Resources>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                <Grid ShowGridLines="True">
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="20" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="0.5*" />
-                    <RowDefinition Height="0.5*" />
-                </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="0.5*" />
+                    </Grid.RowDefinitions>
 
-                <WrapPanel x:Name="FirstCard" 
+                    <WrapPanel x:Name="FirstCard" 
                            Grid.Column="0">
-                </WrapPanel>
-                <TextBlock Grid.Row="1">1st Card</TextBlock>
-                <TextBlock Grid.Row="2" x:Name="FirstName"></TextBlock>
+                    </WrapPanel>
+                    <TextBlock Grid.Row="1">1st Card</TextBlock>
+                    <TextBlock Grid.Row="2" x:Name="FirstName"></TextBlock>
 
-                <WrapPanel x:Name="SecondCard" 
+                    <WrapPanel x:Name="SecondCard" 
                            Grid.Column="1">
-                </WrapPanel>
-                <TextBlock Grid.Row="1" Grid.Column="1">2nd Card</TextBlock>
-                <TextBlock Grid.Row="2" x:Name="SecondName" Grid.Column="1"></TextBlock>
+                    </WrapPanel>
+                    <TextBlock Grid.Row="1" Grid.Column="1">2nd Card</TextBlock>
+                    <TextBlock Grid.Row="2" x:Name="SecondName" Grid.Column="1"></TextBlock>
 
-                <WrapPanel x:Name="ThirdCard" 
+                    <WrapPanel x:Name="ThirdCard" 
                            Grid.Column="2">
-                </WrapPanel>
-                <TextBlock Grid.Row="1" Grid.Column="2">3rd Card</TextBlock>
-                <TextBlock Grid.Row="2" x:Name="ThirdName" Grid.Column="2"></TextBlock>
+                    </WrapPanel>
+                    <TextBlock Grid.Row="1" Grid.Column="2">3rd Card</TextBlock>
+                    <TextBlock Grid.Row="2" x:Name="ThirdName" Grid.Column="2"></TextBlock>
 
-                <WrapPanel x:Name="FourthCard" 
+                    <WrapPanel x:Name="FourthCard" 
                            Grid.Column="3">
-                </WrapPanel>
-                <TextBlock Grid.Row="1" Grid.Column="3">4rd Card</TextBlock>
-                <TextBlock Grid.Row="2" x:Name="FourthName" Grid.Column="3"></TextBlock>
-            </Grid>
-        </Grid>
+                    </WrapPanel>
+                    <TextBlock Grid.Row="1" Grid.Column="3">4rd Card</TextBlock>
+                    <TextBlock Grid.Row="2" x:Name="FourthName" Grid.Column="3"></TextBlock>
+                </Grid>
+            </Grid>-->
 
-        <!--Logs section-->
-        <Border BorderBrush="Black"
+            <!--Logs section-->
+            <Border BorderBrush="Black"
                 BorderThickness="1" 
                 Grid.Column="3" 
                 Grid.RowSpan="6">
-            <ListView x:Name="Logs">
+                <ListView x:Name="Logs">
 
-            </ListView>
-        </Border>
-    </Grid>
+                </ListView>
+            </Border>
+
+
+        </Grid>
+        <Grid Height="40"
+              Width="180"
+              Canvas.Top="20"
+              Canvas.Left="400"
+              Background="DarkGray">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock FontSize="20"
+                       x:Name="TopPlayerName"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontStyle="Italic">
+                Jim
+            </TextBlock>
+
+            <TextBlock Grid.Row="1"
+                       x:Name="TopPlayerColor"
+                       Background="Black"/>
+        </Grid>
+
+        <Grid Height="180"
+              Width="60"
+              Canvas.Top="380"
+              Canvas.Left="10"
+              Background="DarkGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2.5*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="LeftPlayerColor"
+                       Background="Black"/>
+
+            <TextBlock FontSize="20"
+                           x:Name="LeftPlayerName"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontStyle="Italic"
+                           Grid.Column="1">
+                    Tim
+            </TextBlock>
+        </Grid>
+
+        <Grid Height="180"
+              Width="60"
+              Canvas.Top="380"
+              Canvas.Right="210"
+              Background="DarkGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.5*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock FontSize="20"
+                       x:Name="RightPlayerName"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontStyle="Italic">
+                Bim
+            </TextBlock>
+
+            <TextBlock x:Name="RightPlayerColor"
+                           Background="Black"
+                           Grid.Column="1"/>
+        </Grid>
+    </Canvas>
 </Window>

@@ -609,7 +609,7 @@ namespace Tarneeb
         /// </summary>
         private void BackClicked(object sender, RoutedEventArgs e)
         {
-            var isLeft = MessageBox.Show("Are you sure to leave the game?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            var isLeft = MessageBox.Show("Do you want to leave the game?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 
             if (isLeft == MessageBoxResult.Yes)
             {
