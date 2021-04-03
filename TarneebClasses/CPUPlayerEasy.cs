@@ -74,6 +74,11 @@ namespace TarneebClasses
 
         #endregion
 
+        /// <summary>
+        /// The game that this CPU player is a part of.
+        /// </summary>
+        private readonly Game game;
+
         #region Constructor
         /// <summary>
         /// Create a new Easy CPU player.
@@ -85,8 +90,13 @@ namespace TarneebClasses
         public CPUPlayerEasy(Game game, String playerName, int playerId, Enums.Team teamNumber, Deck handList)
             : base(game, playerName, playerId, teamNumber, handList)
         {
+            // Store reference to the game, for getting valid cards in a round
+            this.game = game;
+
             // Subscribe to events.
             game.GameActionEvent += OnGameActionEvent;
+            game.PlayerTurnEvent -= base.OnPlayerTurn;
+            game.PlayerTurnEvent += OnPlayerTurn;
 
             // Create new personality for this CPU Player based of there name so they are consistent.
             personalitySeed = new Random(
@@ -222,11 +232,11 @@ namespace TarneebClasses
 
                         //var relatedTrick = previousPlayed.GetRange(previousPlayed.Count-game.CurrentCards.GetLength(0), previousPlayed.Count-1);
 
-                        Card card = this.HandList.Pick(calculateAiCard());
+                        Card card = calculateAiCard();
                         this.PerformAction(new Events.PlayerActionEventArgs() { CardPlayed = card });
 
                         //// For now, just draw a random card
-                        //int cardIdx = new Random().Next(this.HandList.Cards.Count);
+                        //int cardIdx = new Random().Next(this.game.GetValidCards(this).Count);
                         //Card card = this.HandList.Pick(cardIdx);
                         //this.PerformAction(new Events.PlayerActionEventArgs() { CardPlayed = card });
                         break;
@@ -322,13 +332,13 @@ namespace TarneebClasses
             if (!isWinningCardTeamMine)
             {
                 // Determine trick suit options.
-                trickSuitCards = this.HandList.Cards
+                trickSuitCards = this.game.GetValidCards(this)
                     .Where(card => (card.Suit == winningCard.Suit) && card.Number > winningCard.Number)
                     .OrderBy(card => card.Number)
                     .ToList();
 
                 // Determine tarneeb suit options.
-                tarneebSuitCards = this.HandList.Cards
+                tarneebSuitCards = this.game.GetValidCards(this)
                     .Where(card => card.Suit == tarneebSuit)
                     .OrderBy(card => card.Number)
                     .ToList();
@@ -350,7 +360,7 @@ namespace TarneebClasses
                 // Pick the lowest valued card to throw, order by the number and prioritize non-tarneeb cards
                 else
                 {
-                    toPick = this.HandList.Cards
+                    toPick = this.game.GetValidCards(this)
                         .OrderBy(card => card.Number)
                         .OrderBy(card => {
                             int value = -1;

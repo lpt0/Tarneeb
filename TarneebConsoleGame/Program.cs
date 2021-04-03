@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using TarneebClasses;
 using TarneebClasses.Events;
 
-namespace TarneebTest
+namespace Tarneeb.ConsoleGame
 {
     /// <summary>
-    /// Test class for the Tarneeb classes.
+    /// Console game for testing Tarneeb.
     /// </summary>
-    class TarneebTest
+    class ConsoleGame
     {
         static void PrintHeader()
         {
@@ -41,22 +41,6 @@ namespace TarneebTest
 
         private static Player consoleUser;
         private static Game game;
-
-        // TODO Add to Player class
-        /// <summary>
-        /// Raised when this player places a bid.
-        /// </summary>
-        public static event EventHandler<PlayerPlaceBidEventArgs> PlayerPlacesBidEvent;
-
-        /// <summary>
-        /// Raised when this player plays a card.
-        /// </summary>
-        public static event EventHandler<PlayerPlayCardEventArgs> PlayerPlaysCardEvent;
-
-        /// <summary>
-        /// Raised when this player decides on a tarneeb suit.
-        /// </summary>
-        public static event EventHandler<PlayerDecideTarneebEventArgs> PlayerDecidesTarneebEvent;
 
         static void OnNewPlayer(object sender, NewPlayerEventArgs args)
         {
@@ -147,7 +131,7 @@ namespace TarneebTest
                     Console.WriteLine($"{args.Player.PlayerName} has won the trick.");
                     Console.WriteLine("=========================");
                     break;
-                case Game.State.BID_REACHED:
+                case Game.State.BID_COMPLETE:
                     Console.WriteLine("=========================");
                     Console.WriteLine("The bid has been reached.");
                     Console.WriteLine($"{args.Player.PlayerName} has won the bid!");
@@ -173,7 +157,7 @@ namespace TarneebTest
 
             // Listen to events
             game.NewGameEvent += OnNewGame; // TODO: Can ignore sender arg
-            game.NewPlayerEvent += OnNewPlayer;
+            //game.NewPlayerEvent += OnNewPlayer;
             game.PlayerTurnEvent += OnPlayerTurn;
             game.GameActionEvent += OnGameAction;
 
