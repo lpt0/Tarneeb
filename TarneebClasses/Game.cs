@@ -15,8 +15,30 @@ namespace TarneebClasses
     /// </summary>
     public class Game
     {
+        #region Enums
         /// <summary>
-        /// Enums for representing game state.
+        /// The outcome of the game.
+        /// </summary>
+        public enum Outcome
+        {
+            /// <summary>
+            /// The player won the game.
+            /// </summary>
+            WIN,
+
+            /// <summary>
+            /// The player lost the game.
+            /// </summary>
+            LOSS,
+
+            /// <summary>
+            /// The game ended in a tie.
+            /// </summary>
+            TIE
+        }
+
+        /// <summary>
+        /// Enum for representing game state.
         /// </summary>
         public enum State
         {
@@ -61,6 +83,7 @@ namespace TarneebClasses
             /// </summary>
             DONE
         }
+        #endregion
 
         #region Constants
         /// <summary>
@@ -79,8 +102,8 @@ namespace TarneebClasses
         public const int HAND_SIZE = 13;
         #endregion
 
-        #region Fields
-        #region Internal fields
+        #region Variables/fields
+        #region Internal variables
         /// <summary>
         /// TODO: Counts number of bids placed
         /// </summary>
@@ -121,7 +144,6 @@ namespace TarneebClasses
         /// Internal list of rounds for this game.
         /// </summary>
         private List<Round> _tricks;
-
         #endregion
         #region Public fields
         /// <summary>
@@ -212,7 +234,7 @@ namespace TarneebClasses
         /// <param name="args">The arguments for the event.</param>
         public void FireNewGameEvent()
         {
-            this.Logs.Add(new Logging.NewGameLog());
+            this.AddLog(new Logging.NewGameLog());
             NewGameEvent?.Invoke(this, new NewGameEventArgs());
         }
 
@@ -260,7 +282,7 @@ namespace TarneebClasses
             // And if it is invalid, don't log the bid, and don't send the event out
             if (this._currentPlayer != nextPlayer || bidCount >= 3) // TODO: Need to find a new way of validation
             {
-                this.Logs.Add(new Logging.BidPlacedLog() { Player = this._currentPlayer, Bid = args.Bid });
+                this.AddLog(new Logging.BidPlacedLog() { Player = this._currentPlayer, Bid = args.Bid });
                 FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Bid = args.Bid });
                 bidCount++;
             }
@@ -278,7 +300,7 @@ namespace TarneebClasses
             // Assume the suit is valid for a local game
             Bid bid = this._bids[this._bids.Count - 1];
             bid.DecideTarneebSuit(args.Tarneeb);
-            this.Logs.Add(new Logging.TarneebSuitLog() { Player = this._currentPlayer, Suit = args.Tarneeb });
+            this.AddLog(new Logging.TarneebSuitLog() { Player = this._currentPlayer, Suit = args.Tarneeb });
             FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Bid = bid.HighestBid, Tarneeb = args.Tarneeb });
         }
 
@@ -304,7 +326,7 @@ namespace TarneebClasses
                  */
                 this._currentPlayer.HandList.Cards.Remove(args.CardPlayed);
 
-                this.Logs.Add(new Logging.CardPlayedLog() { Player = this._currentPlayer, Card = args.CardPlayed });
+                this.AddLog(new Logging.CardPlayedLog() { Player = this._currentPlayer, Card = args.CardPlayed });
                 FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Card = args.CardPlayed, CardsPlayedInRound = this._cardsPlayedInRound - 1 });
 
                 this._currentPlayer = this.NextPlayer();
@@ -381,16 +403,18 @@ namespace TarneebClasses
         }
         #endregion
 
-        
-
         #region Functions
         /// <summary>
         /// Initialize game state.
         /// </summary>
         /// <param name="playerName">The name of the user.</param>
         /// <returns>The user's created player.</returns>
-        public HumanPlayer Initialize(String playerName)
+        public HumanPlayer Initialize(string playerName)
         {
+            // Set up the database
+            Database.Connect();
+            Database.Initialize();
+
             FireNewGameEvent();
 
             // Create a hand for each player
@@ -407,8 +431,8 @@ namespace TarneebClasses
 
             // Log the player's intial hand
             // TODO: Don't add this to logs, since CPU players can see it
-            this.Logs.Add(new Logging.InitialHandLog() { Hand = user.HandList, Player = user });
-            this.Logs.Add(new Logging.PlayerJoinedLog() { Player = user });
+            this.AddLog(new Logging.InitialHandLog() { Hand = user.HandList, Player = user });
+            this.AddLog(new Logging.PlayerJoinedLog() { Player = user });
             FireGameActionEvent(new GameActionEventArgs() { Player = user });
 
             // Create CPU players
@@ -422,7 +446,7 @@ namespace TarneebClasses
                     hands[playerNum]
                 );
 
-                this.Logs.Add(new Logging.PlayerJoinedLog() { Player = this.Players[playerNum] });
+                this.AddLog(new Logging.PlayerJoinedLog() { Player = this.Players[playerNum] });
                 FireGameActionEvent(new GameActionEventArgs() { Player = this.Players[playerNum] });
             }
 
@@ -516,7 +540,7 @@ namespace TarneebClasses
 
                         // Fire off the event and log it
                         FireGameActionEvent(new GameActionEventArgs() { Player = winner, BidScores = this.bidScore });
-                        this.Logs.Add(new Logging.TrickCompletedLog() { Player = winner });
+                        this.AddLog(new Logging.TrickCompletedLog() { Player = winner });
 
                         // The winner gets to play the next card
                         this._currentPlayer = winner;
@@ -560,7 +584,7 @@ namespace TarneebClasses
                         this.TrickCounter = 0;
 
                         // TODO: Log bid completion
-                        this.Logs.Add(new Logging.BidCompleteLog()
+                        this.AddLog(new Logging.BidCompleteLog()
                         {
                             Score = score,
                             WinningTeam = winningTeam,
@@ -610,6 +634,7 @@ namespace TarneebClasses
                         Enums.Team losingTeam = (Enums.Team)((int)winningTeam ^ 1);
 
                         // TODO: Log game competion
+                        // TODO: Game outcome
                         FireGameActionEvent(new GameActionEventArgs()
                             {
                                 WinningTeam = winningTeam,
@@ -752,6 +777,16 @@ namespace TarneebClasses
                 // TODO: Sort
                 return validCards;
             }
+        }
+
+        /// <summary>
+        /// Add a log to the list of logs and database.
+        /// </summary>
+        /// <param name="log">The log to add.</param>
+        private void AddLog(Logging.ILog log)
+        {
+            this.Logs.Add(log);
+            Database.InsertLog(log);
         }
         #endregion
         #endregion
