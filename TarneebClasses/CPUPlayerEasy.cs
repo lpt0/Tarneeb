@@ -126,7 +126,7 @@ namespace TarneebClasses
             switch(args.State)
             {
                 case Game.State.NEW_GAME:
-                    highestBid = 0;
+                    highestBid = MIN_BID;
                     isHighestBidTeamMine = false;
                     winningCard = null;
                     isWinningCardTeamMine = false;
@@ -145,7 +145,7 @@ namespace TarneebClasses
 
                 case Game.State.BID_COMPLETE:
                     // Once bid is complete, reset the highest.
-                    highestBid = 0;
+                    highestBid = MIN_BID;
                     isHighestBidTeamMine = false;
                     break;
 
@@ -217,14 +217,12 @@ namespace TarneebClasses
                         break;
                     case Game.State.BID_WON:
                         // Perform Tarneeb logic
-                        // noop
+                        this.PerformAction(new Events.PlayerActionEventArgs() { Tarneeb = decideOnTarneeb() });
                         break;
                     case Game.State.TRICK:
                         // Perform trick logic
-
                         Card card = calculateAiCard();
                         this.PerformAction(new Events.PlayerActionEventArgs() { CardPlayed = card });
-
                         break;
                     default:
                         throw new Exception("Unknown state!");
@@ -245,18 +243,23 @@ namespace TarneebClasses
         {
             // The bid the AI will submit.
             int bid = currentBid;
+            // Variation based on the AI's personality.
+            int swing = personalitySeed.Next(MIN_AI_SAFE_SWING, MAX_AI_SAFE_SWING);
+            // The cpu has decided to throw.
+            bool throwBid = false;
 
-            // 10% chance that if AI might just bump the current bid to max if its at 12, regardless if their team is winning.
-            if (currentBid + 1 == MAX_BID && personalitySeed.Next(0, 10) > 8)
+            // The first bid therefore, minimum should be choosen
+            if (bid <= MIN_BID)
             {
-                bid = MAX_BID;
+                bid = MIN_BID + swing;
             }
-            // There are no current bids.
-            else if (currentBid == 0)
+            // Current bid is maximum, pass.
+            else if (bid >= MAX_BID)
             {
-                // TODO: Perhaps consider cards?
-                bid += MIN_BID + personalitySeed.Next(0, MIN_AI_SAFE_SWING);
+                bid = BID_PASS;
             }
+            //// 10% chance that if AI might just bump the current bid to max if its at 12, regardless if their team is winning.
+            //else if (bid + 1 == MAX_BID && personalitySeed.Next(0, 10) > 8) { bid = MAX_BID; }
             else
             {
                 // The AI's Team is not winning, therefore motivated to be the bid winner.
@@ -264,38 +267,83 @@ namespace TarneebClasses
                 {
                     // TODO: consider Cards in hand.
 
-                    // Check if the AI wants to throw, if not attempt to bid.
+                    // Check if the AI wants to throw
                     if (personalitySeed.Next(0, 10) > MIN_AI_BID_THROW)
                     {
-                        // If the bid is less than their safe bid amount.
-                        if (currentBid < MAX_AI_SAFE_BID)
-                        {
-                            bid += personalitySeed.Next(MIN_AI_SAFE_SWING, MAX_AI_SAFE_SWING);
-                        }
-                        // If the bid is risky
-                        else if (currentBid < MAX_AI_RISK_BID)
-                        {
-                            bid += personalitySeed.Next(MIN_AI_RISK_SWING, MAX_AI_RISK_SWING);
-                        }
+                        throwBid = true;
+                        
                     }
-                    // The bid is thrown.
+                    // CPU attempt to figure out if it is a good idea to bid..
                     else
                     {
-                        bid = BID_PASS;
+                        // If the bid is less than their safe bid amount.
+                        if ((bid + swing) < MAX_AI_SAFE_BID)
+                        {
+                            bid += swing;
+                        }
+                        // If the bid is risky
+                        else if ((bid + swing) < MAX_AI_RISK_BID)
+                        {
+                            bid += swing;
+                        }
+                        else
+                        {
+                            throwBid = true;
+                        }
                     }
                 }
                 // The AI knows it winning.
                 // TODO: The AI can decide whether or not it should go first versus his teammate
                 else
                 {
-                    bid = BID_PASS;
+                    // No special action if it wants to take lead, pass if team is winning.
+                    throwBid = true;
                 }
             }
 
             // Constraint in case the random generator goes off course.
-            if (bid > MAX_BID) bid = MAX_BID;
+            if (bid > MAX_BID) bid = BID_PASS;
+            // If CPU has decide to throw, set bid to pass.
+            else if (throwBid) bid = BID_PASS;
 
             return bid;
+        }
+
+        /// <summary>
+        /// AI decision making for selecting a tarneeb.
+        /// This decision is based off of the number of cards the users has of a card.
+        /// </summary>
+        /// <returns></returns>
+        public Enums.CardSuit decideOnTarneeb()
+        {
+            // Suit to return.
+            Enums.CardSuit newTarneeb;
+
+            // List of counts.
+            List<int> counts = new List<int>();
+            // Get the cards by suit.
+            List<Card> clubs = this.HandList.Cards.Where(card => card.Suit == Enums.CardSuit.Club).OrderBy(card => card.Number).ToList();
+            List<Card> diamonds = this.HandList.Cards.Where(card => card.Suit == Enums.CardSuit.Diamond).OrderBy(card => card.Number).ToList();
+            List<Card> hearts = this.HandList.Cards.Where(card => card.Suit == Enums.CardSuit.Heart).OrderBy(card => card.Number).ToList();
+            List<Card> spades = this.HandList.Cards.Where(card => card.Suit == Enums.CardSuit.Spades).OrderBy(card => card.Number).ToList();
+
+            // Tally all the counts
+            counts.Add(clubs.Count);
+            counts.Add(diamonds.Count);
+            counts.Add(hearts.Count);
+            counts.Add(spades.Count);
+
+            // Check for more clubs than diamonds
+            switch (counts.IndexOf(counts.Max()))
+            {
+                case 0: newTarneeb = Enums.CardSuit.Club; break;
+                case 1: newTarneeb = Enums.CardSuit.Diamond; break;
+                case 2: newTarneeb = Enums.CardSuit.Heart; break;
+                case 3: newTarneeb = Enums.CardSuit.Spades; break;
+                default: newTarneeb = Enums.CardSuit.Club; break;
+            }
+
+            return newTarneeb;
         }
 
         /// <summary>
@@ -314,8 +362,41 @@ namespace TarneebClasses
             // Card to return
             Card toPick = null;
 
+            // The AI first to play.
+            if (winningCard == null)
+            {
+                // Pick their strongest of trick suit.
+                trickSuitCards = this.game.GetValidCards(this)
+                    .OrderByDescending(card => card.Number)
+                    .OrderBy(card => {
+                        // Priorities non-tarneeb suit cards
+                        int value = -1;
+                        if (card.Suit == tarneebSuit) value = 1;
+                        return value;
+                    })
+                    .ToList();
+                //
+                if (trickSuitCards.Count > 0)
+                {
+                    // Pick the trick suit over tarneeb.
+                    toPick = trickSuitCards.First();
+                }
+                // No card of the choosen tarneeb (shouldn't be but maybe)
+                else
+                {
+                    tarneebSuitCards = this.game.GetValidCards(this)
+                        .Where(card => card.Suit == tarneebSuit)
+                        .OrderBy(card => card.Number)
+                        .ToList();
+                    if (tarneebSuitCards.Count > 0)
+                    {
+                        toPick = tarneebSuitCards.First();
+                    }
+                }
+
+            }
             // If the player's team is not winning, 
-            if (!isWinningCardTeamMine)
+            else if (!isWinningCardTeamMine)
             {
                 // Determine trick suit options.
                 trickSuitCards = this.game.GetValidCards(this)
@@ -347,9 +428,10 @@ namespace TarneebClasses
             if (toPick == null)
             {
                 // Pick the lowest valued card to throw, order by the number and prioritize non-tarneeb cards
-                toPick = this.HandList.Cards
+                toPick = this.game.GetValidCards(this)
                        .OrderBy(card => card.Number)
                        .OrderBy(card => {
+                           // Priorities non-tarneeb suit cards
                            int value = -1;
                            if (card.Suit == tarneebSuit) value = 1;
                            return value;
@@ -359,6 +441,7 @@ namespace TarneebClasses
 
             return toPick;
         }
+        
         #endregion
     }
 }
