@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
 using System.Linq;
-using TarneebClasses.Events;
-using TarneebClasses.Logging;
 using System.Security.Cryptography;
 
 /**
  * @author  Andrew Kuo
- * @date    2021-03-10
+ * @date    2021-04-04
  */
-
 namespace TarneebClasses
 {
     /// <summary>
-    /// CPUPlayerEasy class, 
+    /// CPUPlayerEasy class
     /// </summary>
     class CPUPlayerEasy : CPUPlayer
     {
@@ -120,7 +116,7 @@ namespace TarneebClasses
         /// <param name="args">Information about the game.</param>
         public void OnGameActionEvent(object sender, Events.GameActionEventArgs args)
         {
-            var game = sender as Game;
+            //var game = sender as Game;
             
             // Determine action based on Game's current state.
             switch(args.State)
@@ -207,7 +203,7 @@ namespace TarneebClasses
             if (args.Player == this)
             {
                 // Retrieve the current game state.
-                var game = sender as Game;
+                //var game = sender as Game;
 
                 switch (args.State)
                 {
@@ -311,7 +307,7 @@ namespace TarneebClasses
 
         /// <summary>
         /// AI decision making for selecting a tarneeb.
-        /// This decision is based off of the number of cards the users has of a card.
+        /// This decision is based off of the number of cards the users has of a card suit.
         /// </summary>
         /// <returns></returns>
         public Enums.CardSuit decideOnTarneeb()
