@@ -147,6 +147,11 @@ namespace TarneebClasses
         #endregion
         #region Public fields
         /// <summary>
+        /// Identifier for the current game, for database insertions.
+        /// </summary>
+        public int ID { get; private set; }
+
+        /// <summary>
         /// Current game state.
         /// The state can be read by any class, but can only be changed inside of the class.
         /// </summary>
@@ -334,7 +339,7 @@ namespace TarneebClasses
             else
             {
                 // Card was not valid; let the player know
-                this.NotificationEvent?.Invoke(this, new NotificationEventArgs() { Message = "Card is not allowed to be played." });
+                throw new GameException("Card is not allowed to be played.");
 
                 // Fall-through without moving to next player
             }
@@ -411,9 +416,10 @@ namespace TarneebClasses
         /// <returns>The user's created player.</returns>
         public HumanPlayer Initialize(string playerName)
         {
-            // Set up the database
+            // Set up the database, add a new game
             Database.Connect();
             Database.Initialize();
+            this.ID = Database.InsertGame(DateTime.Now);
 
             FireNewGameEvent();
 
@@ -548,8 +554,9 @@ namespace TarneebClasses
                         // Move back to the trick stage by default
                         this.CurrentState = State.TRICK;
 
-                        // Reset card counter
+                        // Reset card counter and re-initialize cards in play
                         this._cardsPlayedInRound = 0;
+                        this.CurrentCards = new Card[NUMBER_OF_PLAYERS];
 
                         // Always play to 13 rounds
                         if (this.TrickCounter == HAND_SIZE)
@@ -635,6 +642,17 @@ namespace TarneebClasses
 
                         // TODO: Log game competion
                         // TODO: Game outcome
+                        // Did the player win?
+                        if (winningTeam == this.Players[0].TeamNumber)
+                        {
+                            Database.InsertOutcome(DateTime.Now, this.ID, Outcome.WIN);
+                        }
+                        // Player lost
+                        else
+                        {
+                            Database.InsertOutcome(DateTime.Now, this.ID, Outcome.LOSS);
+                        }
+                        // TODO: What is a tie?
                         FireGameActionEvent(new GameActionEventArgs()
                             {
                                 WinningTeam = winningTeam,
