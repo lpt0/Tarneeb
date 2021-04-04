@@ -438,10 +438,10 @@ namespace Tarneeb
 
             // Update everyone else's hands
             // TODO: Prevent leaks in Game class
-            //foreach (Player p in this.Game.Players)
+            //foreach (Player p in this._game.Players)
             //{
             //    UpdateNonPlayerHand(
-            //        Array.IndexOf(this.Game.Players, p),
+            //        Array.IndexOf(this._game.Players, p),
             //        p.HandList
             //    );
             //}
@@ -597,16 +597,16 @@ namespace Tarneeb
             // Use the log observable collection, to be able to see logs.
             this.Logs.ItemsSource = this._game.Logs;
 
-            this.MyPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(UserPlayer.TeamNumber.ToString());
-            this.TopPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(UserPlayer.TeamNumber.ToString());
-            this.MyPlayerName.Text = this.UserPlayer.PlayerName;
-            this.TopPlayerName.Text = this.Game.Players[2].PlayerName;
+            this.MyPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_userPlayer.TeamNumber.ToString());
+            this.TopPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_userPlayer.TeamNumber.ToString());
+            this.MyPlayerName.Text = this._userPlayer.PlayerName;
+            this.TopPlayerName.Text = this._game.Players[2].PlayerName;
 
-            var opponentTeamColour = UserPlayer.TeamNumber.ToString().Equals("Blue") ? "Red" : "Blue";
-            this.LeftPlayerColor.Background = UserPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
-            this.RightPlayerColor.Background = UserPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
-            this.LeftPlayerName.Text = this.Game.Players[1].PlayerName;
-            this.RightPlayerName.Text = this.Game.Players[3].PlayerName;
+            var opponentTeamColour = _userPlayer.TeamNumber.ToString().Equals("Blue") ? "Red" : "Blue";
+            this.LeftPlayerColor.Background = _userPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
+            this.RightPlayerColor.Background = _userPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
+            this.LeftPlayerName.Text = this._game.Players[1].PlayerName;
+            this.RightPlayerName.Text = this._game.Players[3].PlayerName;
 
             this._game.Start();      
         }
