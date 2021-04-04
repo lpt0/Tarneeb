@@ -234,6 +234,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="assets\cards\blankPlayingCard.png" />
     <Content Include="TarneebData.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

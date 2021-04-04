@@ -388,6 +388,7 @@ namespace Tarneeb
             }
 
             // Add the card to the cards played in round, and the name of the player who played it
+            this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Clear();
             this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Add(cc);
             this._namesInRoundHolders[e.CardsPlayedInRound].Text = e.Player.PlayerName;
         }
@@ -412,6 +413,15 @@ namespace Tarneeb
             foreach (WrapPanel holder in this.CardsInRoundHolders) 
             {
                 holder.Children.Clear();
+
+                var blankCardImage = new Image
+                {
+                    Source = new BitmapImage(new Uri("./assets/cards/blankPlayingCard.png", UriKind.Relative)),
+                    Height = 116,
+                    Width = 100
+                };
+
+                holder.Children.Add(blankCardImage);
             }
             foreach (TextBlock textBlock in this._namesInRoundHolders)
             {
@@ -586,7 +596,19 @@ namespace Tarneeb
 
             // Use the log observable collection, to be able to see logs.
             this.Logs.ItemsSource = this._game.Logs;
-            this._game.Start();
+
+            this.MyPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(UserPlayer.TeamNumber.ToString());
+            this.TopPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(UserPlayer.TeamNumber.ToString());
+            this.MyPlayerName.Text = this.UserPlayer.PlayerName;
+            this.TopPlayerName.Text = this.Game.Players[2].PlayerName;
+
+            var opponentTeamColour = UserPlayer.TeamNumber.ToString().Equals("Blue") ? "Red" : "Blue";
+            this.LeftPlayerColor.Background = UserPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
+            this.RightPlayerColor.Background = UserPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
+            this.LeftPlayerName.Text = this.Game.Players[1].PlayerName;
+            this.RightPlayerName.Text = this.Game.Players[3].PlayerName;
+
+            this._game.Start();      
         }
 
         /// <summary>
@@ -594,7 +616,7 @@ namespace Tarneeb
         /// </summary>
         private void BackClicked(object sender, RoutedEventArgs e)
         {
-            var isLeft = MessageBox.Show("Are you sure to leave the game?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            var isLeft = MessageBox.Show("Do you want to leave the game?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 
             if (isLeft == MessageBoxResult.Yes)
             {
