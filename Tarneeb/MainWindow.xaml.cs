@@ -200,6 +200,7 @@ namespace Tarneeb
                     this.OnBidComplete(e);
                     break;
                 case Game.State.DONE:
+                    this.OnGameDone(e);
                     break; //TODO
             }
         }
@@ -449,6 +450,19 @@ namespace Tarneeb
             this.Team1TrickWins.Text = "0";
 
         }
+
+        private void OnGameDone(GameActionEventArgs e)
+        {
+            if (e.WinningTeam == this._userPlayer.TeamNumber)
+            {
+                MessageBox.Show("You won!");
+            }
+            else
+            {
+                MessageBox.Show("You lost.");
+            }
+            throw new Exception("Not implemented");
+        }
         #endregion
 
         #region Helper functions
@@ -553,13 +567,24 @@ namespace Tarneeb
             this._playerHands = new WrapPanel[] { this.MyPlayerHand, this.LeftPlayerHand, this.TopPlayerHand, this.RightPlayerHand }; // Counter-clockwise
             this.MaxScore.Text = Properties.Settings.Default.MaxScore.ToString();
 
-            // Create a new game, listen for events, and start the game
-            // For the max score, use the max score from settings
+            /* Create a new game
+             * For the max score, use the max score from settings
+             */
             this._game = new Game(Properties.Settings.Default.MaxScore);
+
+            // Set up events
             this._game.GameActionEvent += OnGameAction;
             this._game.PlayerTurnEvent += OnPlayerTurn;
             this._game.NotificationEvent += OnNotification;
-            this._userPlayer = this._game.Initialize(Properties.Settings.Default.PlayerName);
+
+            /* Initialize game with player name from settings, 
+             * and this program's app data path for the database. TODO
+             */
+            this._userPlayer = this._game.Initialize(
+                Properties.Settings.Default.PlayerName 
+            );
+
+            // Use the log observable collection, to be able to see logs.
             this.Logs.ItemsSource = this._game.Logs;
             this._game.Start();
         }
