@@ -49,14 +49,14 @@ namespace TarneebClasses
         /// Used to check if tables exist.
         /// </summary>
         private const string STMT_GET_TABLES = (
-            "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Logs' OR TABLE_NAME = 'Statistics';"
+            "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Logs' OR TABLE_NAME = 'Statistics' OR TABLE_NAME = 'Games';"
         );
 
         /// <summary>
         /// Statement to create all required tables.
         /// </summary>
         private const string STMT_CREATE_TABLES = (@"CREATE TABLE Logs (DateTime DATETIME, GameID INT, Action TEXT); 
-CREATE TABLE Stats (DateTime DATETIME, Outcome TINYINT);
+CREATE TABLE Stats (DateTime DATETIME, GameID INT, Outcome TINYINT);
 CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
 
         /// <summary>
@@ -72,22 +72,27 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// <summary>
         /// Statement to add a log to the logs table.
         /// </summary>
-        private const string STMT_INSERT_LOG = "INSERT INTO Logs (DateTime, GameID, Action) VALUES (@DateTime, @GameID, @Action);";
+        private const string STMT_INSERT_LOG = "INSERT INTO Logs VALUES (@DateTime, @GameID, @Action);";
 
         /// <summary>
         /// Statement to add a game outcome into the statistics table.
         /// </summary>
-        private const string STMT_INSERT_OUTCOME = "INSERT INTO Stats VALUES (@DateTime, @Outcome);";
+        private const string STMT_INSERT_OUTCOME = "INSERT INTO Stats VALUES (@DateTime, @GameID, @Outcome);";
 
         /// <summary>
         /// TODO
         /// </summary>
-        private const string STMT_INSERT_GAME = "INSERT INTO Games (StartTime) VALUES (@StartTime); SELECT @@IDENTITY;";
+        private const string STMT_INSERT_GAME = "INSERT INTO Games (Start) VALUES (@Start); SELECT @@IDENTITY;";
 
         /// <summary>
         /// Statement to get logs from the database.
         /// </summary>
         private const string STMT_GET_LOGS = "SELECT DateTime, GameID, Action FROM Logs;";
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        private const string STMT_GET_LOGS_FOR_GAME = "SELECT DateTime AS \"Date and Time\",  Action FROM Logs WHERE GameID = @GameID;";
 
         /// <summary>
         /// TODO
@@ -147,7 +152,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         public static void Initialize()
         {
             // TODO: Explain how this is used to make sure there are two tables
-            if (new SqlCommand(STMT_GET_TABLES, _connection).ExecuteNonQuery() != 2)
+            if (new SqlCommand(STMT_GET_TABLES, _connection).ExecuteNonQuery() != 3)
             {
                 Database.Drop(); // TODO: Explain that this is done to clear the tables if there are issues
                 // Create and execute the command to create the tables, and ignore the return value.
@@ -237,6 +242,18 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// <summary>
         /// TODO
         /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
+        public static SqlCommand GetLogsForDataTable(int gameId)
+        {
+            var cmdSelect = new SqlCommand(STMT_GET_LOGS_FOR_GAME, _connection);
+            cmdSelect.Parameters.AddWithValue("@GameID", gameId); // TODO
+            return cmdSelect;
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
         /// <param name="outcome"></param>
         /// <returns></returns>
         public static int GetOutcomeCount(Game.Outcome outcome)
@@ -255,11 +272,11 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// TODO
         /// </summary>
         /// <returns>The game ID.</returns>
-        public static int InsertGame()
+        public static int InsertGame(DateTime start)
         {
             // Set up the command and add the parameters
             var cmdInsert = new SqlCommand(STMT_INSERT_GAME, _connection);
-            cmdInsert.Parameters.AddWithValue("@StartTime", DateTime.Now);
+            cmdInsert.Parameters.AddWithValue("@Start", DateTime.Now);
 
             /* Since the query returns the most recent identity value, and only that
              * value, execute the query as scalar and return whatever comes back.
@@ -300,15 +317,17 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// </summary>
         /// <param name="dateTime">The date and time the outcome occurred.</param>
         /// <param name="outcome">The outcome (win/loss/tie)</param>
-        public static void InsertOutcome(DateTime dateTime, Game.Outcome outcome)
+        public static void InsertOutcome(DateTime dateTime, int gameId, Game.Outcome outcome)
         {
             // Create the SQL command, set up the parameter data types
             var cmdInsert = new SqlCommand(STMT_INSERT_OUTCOME, _connection);
             cmdInsert.Parameters.Add("@DateTime", SqlDbType.DateTime);
+            cmdInsert.Parameters.Add("@GameID", SqlDbType.Int);
             cmdInsert.Parameters.Add("@Outcome", SqlDbType.TinyInt);
 
             // Set the values for the parameters
             cmdInsert.Parameters["@DateTime"].Value = dateTime;
+            cmdInsert.Parameters["@GameID"].Value = gameId;
             cmdInsert.Parameters["@Outcome"].Value = (int)outcome;
 
             // Execute the command; return value must be 1.
