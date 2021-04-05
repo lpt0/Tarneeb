@@ -15,7 +15,7 @@ using System.Security.Cryptography;
 namespace TarneebClasses
 {
     /// <summary>
-    /// CPUPlayerEasy class, 
+    /// CPUPlayerMedium class, 
     /// </summary>
     class CPUPlayerMedium : CPUPlayer
     {
