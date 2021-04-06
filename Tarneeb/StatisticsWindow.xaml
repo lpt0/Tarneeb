@@ -12,6 +12,7 @@
         xmlns:local="clr-namespace:Tarneeb"
         mc:Ignorable="d"
         Title="Tarneeb - Game Logs" Height="450" Width="800"
+        Loaded="OnWindowLoad"
         MinHeight="450" MinWidth="800">
     <Grid Background="WhiteSmoke">
         <Label 
@@ -38,5 +39,16 @@
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
+        <Button
+            Height="50"
+            Width="250"
+            VerticalAlignment="Bottom"
+            Margin="0 0 0 15"
+            Click="OnCloseClicked"
+        >
+            Close    
+        </Button>
+
+            
     </Grid>
 </Window>
