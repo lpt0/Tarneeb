@@ -14,6 +14,11 @@ namespace TarneebClasses
     /// </summary>
     public class CPUPlayer : Player
     {
+        /// <summary>
+        /// Reference to the current game.
+        /// </summary>
+        private Game _game;
+
         #region Constructor
         /// <summary>
         /// Create a new CPU player.
@@ -25,8 +30,9 @@ namespace TarneebClasses
         public CPUPlayer(Game game, String playerName, int playerId, Enums.Team teamNumber, Deck handList) 
             : base(playerName, playerId, teamNumber, handList)
         {
+            this._game = game;
             // Setup the event listener
-            game.PlayerTurnEvent += OnPlayerTurn;
+            this._game.PlayerTurnEvent += OnPlayerTurn;
         }
         #endregion
 
@@ -45,19 +51,19 @@ namespace TarneebClasses
                         this.PerformAction(new Events.PlayerActionEventArgs() { Bid = -1 });
                         break;
                     case Game.State.BID_WON:
-                        // Perform Tarneeb logic
+                        // Perform Tarneeb logic; doesn't happen for this CPU player
                         // noop
                         break;
                     case Game.State.TRICK:
                         // Perform trick logic
                         // For now, just draw a random card
-                        int cardIdx = new Random().Next(this.HandList.Cards.Count);
-                        Card card = this.HandList.Pick(cardIdx);
+                        List<Card> validCards = this._game.GetValidCards(this);
+                        int cardIdx = new Random().Next(validCards.Count);
+                        Card card = validCards[cardIdx];
                         this.PerformAction(new Events.PlayerActionEventArgs() { CardPlayed = card });
                         break;
                     default:
                         throw new Exception("Unknown state!");
-                        break;
                 }
             }
         }
