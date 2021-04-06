@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 
 /**
- * @author  Andrew Kuo
+ * @author  Andrew Kuo, Hoang Quoc Bao Nguyen
  * @date    2021-04-04
  */
 namespace TarneebClasses
