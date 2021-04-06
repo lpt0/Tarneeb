@@ -8,9 +8,9 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Tarneeb")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The game of Tarneeb.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Haran, Andrew, Tan, Domenic, and Johnny")]
 [assembly: AssemblyProduct("Tarneeb")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
