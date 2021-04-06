@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace TarneebClasses
         /// Records the highest bid in memory.
         /// </summary>
         protected int highestBid;
-        
+
         /// <summary>
         /// Records whether or not this player's team is the bid winning.
         /// </summary>
@@ -55,17 +55,6 @@ namespace TarneebClasses
         /// <summary>
         /// AI Personality constants used for decision making.
         /// </summary>
-        protected const int MIN_AI_SAFE_BID = 7;
-        protected const int MAX_AI_SAFE_BID = 9;
-        protected const int MIN_AI_SAFE_SWING = 1;
-        protected const int MAX_AI_SAFE_SWING = 3;
-        protected const int MIN_AI_RISK_BID = 10;
-        protected const int MAX_AI_RISK_BID = 11;
-        protected const int MIN_AI_RISK_SWING = 1;
-        protected const int MAX_AI_RISK_SWING = 2;
-        protected const int MIN_AI_BID_THROW = 6;   // Possibility that the AI player will throw. X/10
-        protected const int MIN_BID = 7;
-        protected const int MAX_BID = 13;
         protected const int BID_PASS = -1;
 
         #endregion
@@ -119,7 +108,7 @@ namespace TarneebClasses
             //var game = sender as Game;
             
             // Determine action based on Game's current state.
-            switch(args.State)
+            switch (args.State)
             {
                 case Game.State.NEW_GAME:
                     highestBid = MIN_BID;
@@ -168,7 +157,7 @@ namespace TarneebClasses
                         isWinningCardTeamMine = args.Player.TeamNumber == this.TeamNumber;
                     }
                     // If played card is of low suit in memory, compare the number.
-                    else if  (args.Card.Suit == trickSuit)
+                    else if (args.Card.Suit == trickSuit)
                     {
                         if (args.Card.Number > winningCard.Number)
                         {
@@ -230,8 +219,7 @@ namespace TarneebClasses
         #region Methods
 
         /// <summary>
-        /// Custom logic for AI to decide what their bid should be. It considers it's constants 
-        /// and what it gathers from the GameActionEvents it receives.
+        /// AI will pass biding, will not join into the bidding stage 
         /// </summary>
         /// <param name="currentBid">The current bid to be considered</param>
         /// <returns>A bid number</returns>
@@ -396,14 +384,10 @@ namespace TarneebClasses
             {
                 // Determine trick suit options.
                 trickSuitCards = this.game.GetValidCards(this)
-                    .Where(card => (card.Suit == winningCard.Suit) && card.Number > winningCard.Number)
-                    .OrderBy(card => card.Number)
                     .ToList();
 
                 // Determine tarneeb suit options.
                 tarneebSuitCards = this.game.GetValidCards(this)
-                    .Where(card => card.Suit == tarneebSuit)
-                    .OrderBy(card => card.Number)
                     .ToList();
 
                 // If there are choices available, determine a valid card.

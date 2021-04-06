@@ -200,6 +200,7 @@ namespace Tarneeb
                     this.OnBidComplete(e);
                     break;
                 case Game.State.DONE:
+                    this.OnGameDone(e);
                     break; //TODO
             }
         }
@@ -387,6 +388,7 @@ namespace Tarneeb
             }
 
             // Add the card to the cards played in round, and the name of the player who played it
+            this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Clear();
             this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Add(cc);
             this._namesInRoundHolders[e.CardsPlayedInRound].Text = e.Player.PlayerName;
         }
@@ -411,6 +413,15 @@ namespace Tarneeb
             foreach (WrapPanel holder in this.CardsInRoundHolders) 
             {
                 holder.Children.Clear();
+
+                var blankCardImage = new Image
+                {
+                    Source = new BitmapImage(new Uri("./assets/cards/blankPlayingCard.png", UriKind.Relative)),
+                    Height = 116,
+                    Width = 100
+                };
+
+                holder.Children.Add(blankCardImage);
             }
             foreach (TextBlock textBlock in this._namesInRoundHolders)
             {
@@ -427,10 +438,10 @@ namespace Tarneeb
 
             // Update everyone else's hands
             // TODO: Prevent leaks in Game class
-            //foreach (Player p in this.Game.Players)
+            //foreach (Player p in this._game.Players)
             //{
             //    UpdateNonPlayerHand(
-            //        Array.IndexOf(this.Game.Players, p),
+            //        Array.IndexOf(this._game.Players, p),
             //        p.HandList
             //    );
             //}
@@ -448,6 +459,19 @@ namespace Tarneeb
             this.Team1TotalScore.Text = e.TeamScores[1].ToString();
             this.Team1TrickWins.Text = "0";
 
+        }
+
+        private void OnGameDone(GameActionEventArgs e)
+        {
+            if (e.WinningTeam == this._userPlayer.TeamNumber)
+            {
+                MessageBox.Show("You won!");
+            }
+            else
+            {
+                MessageBox.Show("You lost.");
+            }
+            throw new Exception("Not implemented");
         }
         #endregion
 
@@ -553,15 +577,38 @@ namespace Tarneeb
             this._playerHands = new WrapPanel[] { this.MyPlayerHand, this.LeftPlayerHand, this.TopPlayerHand, this.RightPlayerHand }; // Counter-clockwise
             this.MaxScore.Text = Properties.Settings.Default.MaxScore.ToString();
 
-            // Create a new game, listen for events, and start the game
-            // For the max score, use the max score from settings
+            /* Create a new game
+             * For the max score, use the max score from settings
+             */
             this._game = new Game(Properties.Settings.Default.MaxScore);
+
+            // Set up events
             this._game.GameActionEvent += OnGameAction;
             this._game.PlayerTurnEvent += OnPlayerTurn;
             this._game.NotificationEvent += OnNotification;
-            this._userPlayer = this._game.Initialize(Properties.Settings.Default.PlayerName);
+
+            /* Initialize game with player name from settings, 
+             * and this program's app data path for the database. TODO
+             */
+            this._userPlayer = this._game.Initialize(
+                Properties.Settings.Default.PlayerName 
+            );
+
+            // Use the log observable collection, to be able to see logs.
             this.Logs.ItemsSource = this._game.Logs;
-            this._game.Start();
+
+            this.MyPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_userPlayer.TeamNumber.ToString());
+            this.TopPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_userPlayer.TeamNumber.ToString());
+            this.MyPlayerName.Text = this._userPlayer.PlayerName;
+            this.TopPlayerName.Text = this._game.Players[2].PlayerName;
+
+            var opponentTeamColour = _userPlayer.TeamNumber.ToString().Equals("Blue") ? "Red" : "Blue";
+            this.LeftPlayerColor.Background = _userPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
+            this.RightPlayerColor.Background = _userPlayer.TeamNumber.ToString().Equals("Blue") ? Brushes.Red : Brushes.Blue;
+            this.LeftPlayerName.Text = this._game.Players[1].PlayerName;
+            this.RightPlayerName.Text = this._game.Players[3].PlayerName;
+
+            this._game.Start();      
         }
 
         /// <summary>
@@ -569,7 +616,7 @@ namespace Tarneeb
         /// </summary>
         private void BackClicked(object sender, RoutedEventArgs e)
         {
-            var isLeft = MessageBox.Show("Are you sure to leave the game?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            var isLeft = MessageBox.Show("Do you want to leave the game?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 
             if (isLeft == MessageBoxResult.Yes)
             {
