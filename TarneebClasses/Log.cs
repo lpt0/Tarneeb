@@ -30,7 +30,7 @@ namespace TarneebClasses
         /// Create a game log, with the date and time.
         /// </summary>
         /// <param name="dateTime">The date and time the action took place.</param>
-        /// <param name="gameId">The identifier for the associated game.</param>
+        /// <param name="gameId">The identifier for the game that the action took place.</param>
         /// <param name="action">The action that took place.</param>
         public Log (DateTime dateTime, int gameId, string action)
         {
@@ -42,7 +42,7 @@ namespace TarneebClasses
         /// <summary>
         /// Create a new log.
         /// </summary>
-        /// <param name="gameId">The identifier for the game.</param>
+        /// <param name="gameId">The identifier for the game that the action took place.</param>
         /// <param name="action">The action that took place.</param>
         public Log(int gameId, string action)
             : this(DateTime.Now, gameId, action)

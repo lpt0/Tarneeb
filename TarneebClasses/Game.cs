@@ -83,6 +83,27 @@ namespace TarneebClasses
             /// </summary>
             DONE
         }
+
+        /// <summary>
+        /// The difficulty level of the game.
+        /// </summary>
+        public enum Difficulty
+        {
+            /// <summary>
+            /// A game composed of easy CPU players.
+            /// </summary>
+            EASY,
+
+            /// <summary>
+            /// A game composed of medium difficulty CPU players.
+            /// </summary>
+            MEDIUM,
+
+            /// <summary>
+            /// A game with hard CPU players.
+            /// </summary>
+            HARD
+        }
         #endregion
 
         #region Constants
@@ -189,6 +210,11 @@ namespace TarneebClasses
         /// The score that needs to be reached to win.
         /// </summary>
         public int MaxScore { get; private set; }
+
+        /// <summary>
+        /// The difficulty level of this game.
+        /// </summary>
+        public Difficulty DifficultyLevel { get; private set; }
 
         /// <summary>
         /// TODO
@@ -390,7 +416,9 @@ namespace TarneebClasses
         /// <summary>
         /// Create a new game.
         /// </summary>
-        public Game(int maxScore = 41)
+        /// <param name="difficulty">The difficulty level of the game.</param>
+        /// <param name="maxScore">The score of the game to be reached before the game is won.</param>
+        public Game(int maxScore = 41, Difficulty difficulty = Difficulty.EASY)
         {
             // Initialize all fields
             this.Players = new Player[NUMBER_OF_PLAYERS];
@@ -402,6 +430,7 @@ namespace TarneebClasses
             this.CurrentState = State.NEW_GAME;
             this.TrickCounter = 0;
             this.MaxScore = maxScore;
+            this.DifficultyLevel = difficulty;
 
             this.bidScore = new int[NUMBER_OF_TEAMS];
             this.teamScore = new int[NUMBER_OF_TEAMS];
@@ -444,16 +473,52 @@ namespace TarneebClasses
             // Create CPU players
             for (int playerNum = 1; playerNum < NUMBER_OF_PLAYERS; playerNum++)
             {
-                this.Players[playerNum] = new CPUPlayerEasy(
-                    this, // Need to pass the game so CPU knows how to listen to event
-                    Game.cpuNames[playerNum - 1],
-                    playerNum,
-                    (Enums.Team)(playerNum % 2),
-                    hands[playerNum]
-                );
+                CPUPlayer player;
 
-                this.AddLog(new Logging.PlayerJoinedLog() { Player = this.Players[playerNum] });
-                FireGameActionEvent(new GameActionEventArgs() { Player = this.Players[playerNum] });
+                // Determine what level of CPU player is needed, and create them
+                switch (this.DifficultyLevel)
+                {
+                    case Difficulty.EASY:
+                        player = new CPUPlayerEasy(
+                            this, // Need to pass the game so CPU knows how to listen to event
+                            Game.cpuNames[playerNum - 1],
+                            playerNum,
+                            (Enums.Team)(playerNum % 2),
+                            hands[playerNum]
+                        );
+                        break;
+                    case Difficulty.MEDIUM:
+                        player = new CPUPlayerMedium(
+                            this, 
+                            Game.cpuNames[playerNum - 1],
+                            playerNum,
+                            (Enums.Team)(playerNum % 2),
+                            hands[playerNum]
+                        );
+                        break;
+                    case Difficulty.HARD:
+                        player = new CPUPlayerHard(
+                            this, 
+                            Game.cpuNames[playerNum - 1],
+                            playerNum,
+                            (Enums.Team)(playerNum % 2),
+                            hands[playerNum]
+                        );
+                        break;
+                    default: // Unknown CPU level
+                        player = player = new CPUPlayer(
+                            this,
+                            Game.cpuNames[playerNum - 1],
+                            playerNum,
+                            (Enums.Team)(playerNum % 2),
+                            hands[playerNum]
+                        );
+                        break;
+                }
+                this.Players[playerNum] = player;
+
+                this.AddLog(new Logging.PlayerJoinedLog() { Player = player });
+                FireGameActionEvent(new GameActionEventArgs() { Player = player});
             }
 
             // Setup event listeners
@@ -678,7 +743,7 @@ namespace TarneebClasses
         /// Get the player that goes after the given player.
         /// </summary>
         /// <param name="player">The starting player.</param>
-        /// <returns></returns>
+        /// <returns>The player who plays next.</returns>
         private Player NextPlayer(Player player)
         {
             int nextPlayerIdx = Array.IndexOf(this.Players, player) - 1;
@@ -692,6 +757,11 @@ namespace TarneebClasses
             return this.Players[nextPlayerIdx];
         }
 
+        /// <summary>
+        /// Get a player's teammate.
+        /// </summary>
+        /// <param name="player">The player to get the teammate for.</param>
+        /// <returns>The teammate.</returns>
         public Player GetTeammate(Player player)
         {
             int currentPlayerIdx = Array.IndexOf(this.Players, player);
@@ -750,10 +820,9 @@ namespace TarneebClasses
             for (int hand = 0; hand < hands.Length; hand++)
             {
                 hands[hand] = deck.Draw(HAND_SIZE);
+                // Sort the hand
                 hands[hand].Sort();
             }
-
-            // Sort the hand
 
             return hands;
         }
