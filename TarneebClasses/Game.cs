@@ -131,12 +131,6 @@ namespace TarneebClasses
         private int bidCount = 0;
 
         /// <summary>
-        /// Hardcoded list of CPU player names.
-        /// TODO: Remove in final.
-        /// </summary>
-        private static readonly string[] cpuNames = { "Jim", "Tim", "Bim" };
-
-        /// <summary>
         /// The player that gets to make the next move (trick, bid, etc).
         /// </summary>
         private Player _currentPlayer;
@@ -474,6 +468,9 @@ namespace TarneebClasses
             for (int playerNum = 1; playerNum < NUMBER_OF_PLAYERS; playerNum++)
             {
                 CPUPlayer player;
+                string cpuPlayerName = $"Player {playerNum + 1}";
+                Enums.Team team = (Enums.Team)(playerNum % 2);
+                Deck hand = hands[playerNum];
 
                 // Determine what level of CPU player is needed, and create them
                 switch (this.DifficultyLevel)
@@ -481,37 +478,37 @@ namespace TarneebClasses
                     case Difficulty.EASY:
                         player = new CPUPlayerEasy(
                             this, // Need to pass the game so CPU knows how to listen to event
-                            Game.cpuNames[playerNum - 1],
+                            cpuPlayerName,
                             playerNum,
-                            (Enums.Team)(playerNum % 2),
-                            hands[playerNum]
+                            team,
+                            hand
                         );
                         break;
                     case Difficulty.MEDIUM:
                         player = new CPUPlayerMedium(
-                            this, 
-                            Game.cpuNames[playerNum - 1],
+                            this,
+                            cpuPlayerName,
                             playerNum,
-                            (Enums.Team)(playerNum % 2),
-                            hands[playerNum]
+                            team,
+                            hand
                         );
                         break;
                     case Difficulty.HARD:
                         player = new CPUPlayerHard(
-                            this, 
-                            Game.cpuNames[playerNum - 1],
+                            this,
+                            cpuPlayerName,
                             playerNum,
-                            (Enums.Team)(playerNum % 2),
-                            hands[playerNum]
+                            team,
+                            hand
                         );
                         break;
                     default: // Unknown CPU level
                         player = player = new CPUPlayer(
                             this,
-                            Game.cpuNames[playerNum - 1],
+                            cpuPlayerName,
                             playerNum,
-                            (Enums.Team)(playerNum % 2),
-                            hands[playerNum]
+                            team,
+                            hand
                         );
                         break;
                 }
