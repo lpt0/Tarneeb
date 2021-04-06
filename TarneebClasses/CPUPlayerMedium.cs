@@ -8,14 +8,14 @@ using TarneebClasses.Logging;
 using System.Security.Cryptography;
 
 /**
- * @author  Hoang Quoc Bao Nguyen
+ * @author  Andrew Kuo, Hoang Quoc Bao Nguyen
  * @date    2021-04-04
  */
 
 namespace TarneebClasses
 {
     /// <summary>
-    /// CPUPlayerMedium class, 
+    /// CPUPlayerMedium class
     /// </summary>
     class CPUPlayerMedium : CPUPlayer
     {
@@ -59,13 +59,6 @@ namespace TarneebClasses
         /// <summary>
         /// AI Personality constants used for decision making.
         /// </summary>
-        protected const int MIN_AI_SAFE_BID = 7;
-        protected const int MAX_AI_SAFE_BID = 9;
-        protected const int MIN_AI_SAFE_SWING = 1;
-        protected const int MAX_AI_SAFE_SWING = 3;
-        protected const int MIN_AI_BID_THROW = 6;   // Possibility that the AI player will throw. X/10
-        protected const int MIN_BID = 7;
-        protected const int MAX_BID = 13;
         protected const int BID_PASS = -1;
 
         #endregion
@@ -77,7 +70,7 @@ namespace TarneebClasses
 
         #region Constructor
         /// <summary>
-        /// Create a new Easy CPU player.
+        /// Create a new Medium CPU player.
         /// </summary>
         /// <param name="playerName">The name of the player.</param>
         /// <param name="playerId">The player's ID.</param>
@@ -246,8 +239,7 @@ namespace TarneebClasses
         #region Methods
 
         /// <summary>
-        /// AI bids safely by consconsidering it's constants and what 
-        /// it gathers from the GameActionEvents it receives.
+        /// AI will pass biding, will not join into the bidding stage 
         /// </summary>
         /// <param name="currentBid">The current bid to be considered</param>
         /// <returns>A bid number</returns>
@@ -256,55 +248,13 @@ namespace TarneebClasses
             // The bid the AI will submit.
             int bid = currentBid;
 
-            // 10% chance that if AI might just bump the current bid to max if its at 12, regardless if their team is winning.
-            if (currentBid + 1 == MAX_BID && personalitySeed.Next(0, 10) > 8)
-            {
-                bid = MAX_BID;
-            }
-            // There are no current bids.
-            else if (currentBid == 0)
-            {
-                // TODO: Perhaps consider cards?
-                bid += MIN_BID + personalitySeed.Next(0, MIN_AI_SAFE_SWING);
-            }
-            else
-            {
-                // The AI's Team is not winning, therefore motivated to be the bid winner.
-                if (!isWinningCardTeamMine)
-                {
-                    // TODO: consider Cards in hand.
-
-                    // Check if the AI wants to throw, if not attempt to bid.
-                    if (personalitySeed.Next(0, 10) > MIN_AI_BID_THROW)
-                    {
-                        // If the bid is less than their safe bid amount.
-                        if (currentBid < MAX_AI_SAFE_BID)
-                        {
-                            bid += personalitySeed.Next(MIN_AI_SAFE_SWING, MAX_AI_SAFE_SWING);
-                        }
-                    }
-                    // The bid is thrown.
-                    else
-                    {
-                        bid = BID_PASS;
-                    }
-                }
-                // The AI knows it winning.
-                // TODO: The AI can decide whether or not it should go first versus his teammate
-                else
-                {
-                    bid = BID_PASS;
-                }
-            }
-
-            // Constraint in case the random generator goes off course.
-            if (bid > MAX_BID) bid = MAX_BID;
+            bid = BID_PASS;
 
             return bid;
         }
 
         /// <summary>
-        /// Calculates the best card for the AI to play.
+        /// Play valid cards only 
         /// </summary>
         /// <returns>Card from the HandList</returns>
         public Card calculateAiCard()
@@ -324,14 +274,10 @@ namespace TarneebClasses
             {
                 // Determine trick suit options.
                 trickSuitCards = this.game.GetValidCards(this)
-                    .Where(card => (card.Suit == winningCard.Suit) && card.Number > winningCard.Number)
-                    .OrderBy(card => card.Number)
                     .ToList();
 
                 // Determine tarneeb suit options.
                 tarneebSuitCards = this.game.GetValidCards(this)
-                    .Where(card => card.Suit == tarneebSuit)
-                    .OrderBy(card => card.Number)
                     .ToList();
 
                 // Card to return

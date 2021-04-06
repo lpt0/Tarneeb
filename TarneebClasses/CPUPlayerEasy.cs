@@ -8,14 +8,13 @@ using TarneebClasses.Logging;
 using System.Security.Cryptography;
 
 /**
- * @author  Hoang Quoc Bao Nguyen
+ * @author  Andrew Kuo, Hoang Quoc Bao Nguyen
  * @date    2021-04-04
  */
-
 namespace TarneebClasses
 {
     /// <summary>
-    /// CPUPlayerEasy class, 
+    /// CPUPlayerEasy class
     /// </summary>
     class CPUPlayerEasy : CPUPlayer
     {
@@ -248,7 +247,7 @@ namespace TarneebClasses
             // The bid the AI will submit.
             int bid = currentBid;
 
-            bid = BID_PASS; 
+            bid = BID_PASS;
 
             return bid;
         }
