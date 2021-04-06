@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Linq;
 using TarneebClasses.Events;
-using TarneebClasses.Logging;
 using System.Security.Cryptography;
 
 /**
