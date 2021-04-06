@@ -292,9 +292,9 @@ namespace TarneebClasses
 
         #region Player action functions
         /// <summary>
-        /// TODO
+        /// A player has placed a bid; it needs to be validated and placed.
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">The arguments with the player's bid.</param>
         private void OnPlayerBid(PlayerActionEventArgs args)
         {
             Bid bid = this._bids[this._bids.Count - 1];
@@ -316,9 +316,10 @@ namespace TarneebClasses
         }
 
         /// <summary>
-        /// TODO
+        /// A player has decided on a Tarneeb suit. 
+        /// Set the Tarneeb suit for the current bid.
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">The arguments, with the chosen Tarneeb suit.</param>
         private void OnPlayerTarneeb(PlayerActionEventArgs args)
         {
             // Validate Tarneeb suit
@@ -330,9 +331,10 @@ namespace TarneebClasses
         }
 
         /// <summary>
-        /// TODO
+        /// A player has played a card during a trick.
+        /// Validate whether the card can be played, and add it to the cards played.
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">The arguments, with the card that was played.</param>
         private void OnPlayerTrick(PlayerActionEventArgs args)
         {
             /* Make sure the card is valid; as in, it is allowed to be played
@@ -535,6 +537,7 @@ namespace TarneebClasses
 
             return user;
         }
+
         /// <summary>
         /// Start the game.
         /// </summary>
@@ -727,6 +730,7 @@ namespace TarneebClasses
             }
             FirePlayerTurnEvent();
         }
+
         #region Helper functions
         /// <summary>
         /// Move on to the next player's trick, in counter-clockwise direction.
