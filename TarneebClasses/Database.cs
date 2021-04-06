@@ -49,7 +49,7 @@ namespace TarneebClasses
         /// Used to check if tables exist.
         /// </summary>
         private const string STMT_GET_TABLES = (
-            "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Logs' OR TABLE_NAME = 'Statistics' OR TABLE_NAME = 'Games';"
+            "SELECT COUNT(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Logs' OR TABLE_NAME = 'Stats' OR TABLE_NAME = 'Games';"
         );
 
         /// <summary>
@@ -92,7 +92,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// <summary>
         /// TODO
         /// </summary>
-        private const string STMT_GET_LOGS_FOR_GAME = "SELECT DateTime AS \"Date and Time\",  Action FROM Logs WHERE GameID = @GameID;";
+        private const string STMT_GET_LOGS_FOR_GAME = "SELECT DateTime, Action FROM Logs WHERE GameID = @GameID;";
 
         /// <summary>
         /// TODO
@@ -116,7 +116,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// The location of the default database file, to be copied.
         /// TODO
         /// </summary>
-        private const string DB_PATH = "./TarneebData.mdf";
+        private const string DB_PATH = "../../TarneebData.mdf";
         #endregion
 
         #region Variables
@@ -151,8 +151,9 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// </summary>
         public static void Initialize()
         {
-            // TODO: Explain how this is used to make sure there are two tables
-            if (new SqlCommand(STMT_GET_TABLES, _connection).ExecuteNonQuery() != 3)
+            int numberOfTables = (int)new SqlCommand(STMT_GET_TABLES, _connection).ExecuteScalar();
+            // TODO: Explain how this is used to make sure there are three tables
+            if (numberOfTables != 3)
             {
                 Database.Drop(); // TODO: Explain that this is done to clear the tables if there are issues
                 // Create and execute the command to create the tables, and ignore the return value.
@@ -197,7 +198,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
             using (var reader = cmdSelect.ExecuteReader())
             {
                 // Read records until there are no more records
-                while (reader.Read() != false)
+                while (reader.Read() == true)
                 {
                     /* Read the latest row, and create an object to represent the row.
                      * The order of the columns is defined in the SELECT query at the top of the file.
@@ -226,7 +227,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
 
             using (var reader = cmdSelect.ExecuteReader())
             {
-                while (reader.Read() != false)
+                while (reader.Read() == true)
                 {
                     logs.Add(new Log(
                         reader.GetDateTime(0),
@@ -240,15 +241,31 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         }
 
         /// <summary>
-        /// TODO
+        /// Get logs for the specified game.
         /// </summary>
-        /// <param name="gameId"></param>
-        /// <returns></returns>
-        public static SqlCommand GetLogsForDataTable(int gameId)
+        /// <param name="gameId">The game to retrieve logs for.</param>
+        /// <returns>The list of game logs.</returns>
+        public static List<Log> GetLogs(int gameId)
         {
+            // Same idea as GetLogs without gameId
+            var logs = new List<Log>();
             var cmdSelect = new SqlCommand(STMT_GET_LOGS_FOR_GAME, _connection);
-            cmdSelect.Parameters.AddWithValue("@GameID", gameId); // TODO
-            return cmdSelect;
+            cmdSelect.Parameters.AddWithValue("@GameID", gameId);
+
+            using (var reader = cmdSelect.ExecuteReader())
+            {
+                while (reader.Read() == true)
+                {
+                    // Creatr the log object and add it to the list of logs
+                    logs.Add(new Log(
+                        reader.GetDateTime(0),
+                        gameId,
+                        reader.GetString(1)
+                    ));
+                }
+            }
+
+            return logs;
         }
 
         /// <summary>
@@ -281,7 +298,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
             /* Since the query returns the most recent identity value, and only that
              * value, execute the query as scalar and return whatever comes back.
              */
-            return (int)cmdInsert.ExecuteScalar();
+            return (int)((Decimal)cmdInsert.ExecuteScalar());
         }
 
         /// <summary>

@@ -12,6 +12,7 @@
         xmlns:local="clr-namespace:Tarneeb"
         mc:Ignorable="d"
         Title="Tarneeb - Game Logs" Height="450" Width="800"
+        Loaded="OnWindowLoad"
         MinHeight="450" MinWidth="800">
     <Grid Background="WhiteSmoke">
         <Label 
@@ -22,21 +23,27 @@
             Game Logs
         </Label>
 
-        <StackPanel
-            VerticalAlignment="Center"
-            Orientation="Vertical"
+        <Grid
             Margin="80"
         >
             <!-- Creating a data grid and turning AutoGenerateColumns to false so we can manually name columns -->
             <DataGrid Name="logsGrid" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-
-                    <DataGridTextColumn Header="Date and Time" Binding="{Binding DateTime}"/>
-
-                    <DataGridTextColumn Header="Action" Binding="{Binding Action}"/>
-
+                    <DataGridTextColumn Header="Date and Time" Width="0.125*" Binding="{Binding DateTime}"/>
+                    <DataGridTextColumn Header="Action" Width="1*"  Binding="{Binding Action}"/>
                 </DataGrid.Columns>
             </DataGrid>
-        </StackPanel>
+        </Grid>
+        <Button
+            Height="50"
+            Width="250"
+            VerticalAlignment="Bottom"
+            Margin="0 0 0 15"
+            Click="OnCloseClicked"
+        >
+            Close    
+        </Button>
+
+            
     </Grid>
 </Window>

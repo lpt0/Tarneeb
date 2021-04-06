@@ -14,17 +14,17 @@ namespace TarneebClasses
         /// <summary>
         /// The date and time the action took place.
         /// </summary>
-        public readonly DateTime DateTime;
+        public DateTime DateTime { get; private set; }
 
         /// <summary>
         /// The action that took place, such a card being played or a bid being placed.
         /// </summary>
-        public readonly string Action;
+        public string Action { get; private set; }
 
         /// <summary>
         /// The identifier for the game that the action took place.
         /// </summary>
-        public readonly int GameID;
+        public int GameID { get; private set; }
 
         /// <summary>
         /// Create a game log, with the date and time.
