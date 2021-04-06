@@ -305,7 +305,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// Insert a log into the Logs table.
         /// </summary>
         /// <param name="log">The log to add.</param>
-        public static void InsertLog(Logging.ILog log)
+        public static void InsertLog(Log log)
         {
             // Create the SQL command
             var cmdInsert = new SqlCommand(STMT_INSERT_LOG, _connection);
@@ -313,11 +313,11 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
             // Set up data types for the query params
             cmdInsert.Parameters.Add("@DateTime", SqlDbType.DateTime);
             cmdInsert.Parameters.Add("@Action", SqlDbType.Text);
-            cmdInsert.Parameters.AddWithValue("@GameID", 1); //TODO
+            cmdInsert.Parameters.AddWithValue("@GameID", log.GameID); //TODO
 
             // Set the values; action is the string rep of the log.
             cmdInsert.Parameters["@DateTime"].Value = log.DateTime;
-            cmdInsert.Parameters["@Action"].Value = log.ToString();
+            cmdInsert.Parameters["@Action"].Value = log.Action;
 
             // Execute the command; return value must be 1.
             // If it is not 1, there has been an error TODO.

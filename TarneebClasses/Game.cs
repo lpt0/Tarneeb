@@ -224,7 +224,7 @@ namespace TarneebClasses
         /// Game logs; TODO
         /// TODO: https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.readonlyobservablecollection-1?view=net-5.0
         /// </summary>
-        public ObservableCollection<Logging.ILog> Logs { get; private set; } //TODO: Public get and private set, and block Add access for get
+        public ObservableCollection<Log> Logs { get; private set; } //TODO: Public get and private set, and block Add access for get
         #endregion
         #endregion
 
@@ -259,7 +259,7 @@ namespace TarneebClasses
         /// <param name="args">The arguments for the event.</param>
         public void FireNewGameEvent()
         {
-            this.AddLog(new Logging.NewGameLog());
+            this.AddLog($"An {this.DifficultyLevel.ToString().ToLower()} game was started.");
             NewGameEvent?.Invoke(this, new NewGameEventArgs());
         }
 
@@ -307,7 +307,17 @@ namespace TarneebClasses
             // And if it is invalid, don't log the bid, and don't send the event out
             if (this._currentPlayer != nextPlayer || bidCount >= 3) // TODO: Need to find a new way of validation
             {
-                this.AddLog(new Logging.BidPlacedLog() { Player = this._currentPlayer, Bid = args.Bid });
+                // Create the log
+                string action = $"{this._currentPlayer.PlayerName} ";
+                if (args.Bid != -1)
+                {
+                    action += $"has placed a bid of {args.Bid}.";
+                }
+                else
+                {
+                    action += "has passed on their bid.";
+                }
+                this.AddLog(action);
                 FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Bid = args.Bid });
                 bidCount++;
             }
@@ -326,7 +336,7 @@ namespace TarneebClasses
             // Assume the suit is valid for a local game
             Bid bid = this._bids[this._bids.Count - 1];
             bid.DecideTarneebSuit(args.Tarneeb);
-            this.AddLog(new Logging.TarneebSuitLog() { Player = this._currentPlayer, Suit = args.Tarneeb });
+            this.AddLog($"{this._currentPlayer.PlayerName} has decided on {args.Tarneeb} for the trump suit.");
             FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Bid = bid.HighestBid, Tarneeb = args.Tarneeb });
         }
 
@@ -352,8 +362,7 @@ namespace TarneebClasses
                  * just in case.
                  */
                 this._currentPlayer.HandList.Cards.Remove(args.CardPlayed);
-
-                this.AddLog(new Logging.CardPlayedLog() { Player = this._currentPlayer, Card = args.CardPlayed });
+                this.AddLog($"{this._currentPlayer.PlayerName} has played a {args.CardPlayed}");
                 FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Card = args.CardPlayed, CardsPlayedInRound = this._cardsPlayedInRound - 1 });
 
                 this._currentPlayer = this.NextPlayer();
@@ -420,7 +429,7 @@ namespace TarneebClasses
             this.Players = new Player[NUMBER_OF_PLAYERS];
             this.CurrentCards = new Card[NUMBER_OF_PLAYERS];
             this.CurrentPlayers = new Player[NUMBER_OF_PLAYERS];
-            this.Logs = new ObservableCollection<Logging.ILog>(); // TODO
+            this.Logs = new ObservableCollection<Log>(); // TODO
             this._bids = new List<Bid>();
             this._tricks = new List<Round>();
             this.CurrentState = State.NEW_GAME;
@@ -461,9 +470,15 @@ namespace TarneebClasses
             this.Players[0] = user;
 
             // Log the player's intial hand
-            // TODO: Don't add this to logs, since CPU players can see it
-            this.AddLog(new Logging.InitialHandLog() { Hand = user.HandList, Player = user });
-            this.AddLog(new Logging.PlayerJoinedLog() { Player = user });
+            string initialHandLog = "Your initial hand was:";
+            foreach (Card card in user.HandList.Cards)
+            {
+                initialHandLog += $"\n{card}";
+            }
+            this.AddLog(initialHandLog);
+
+            // Log the player join
+            this.AddLog($"{user.PlayerName} has joined.");
             FireGameActionEvent(new GameActionEventArgs() { Player = user });
 
             // Create CPU players
@@ -516,7 +531,7 @@ namespace TarneebClasses
                 }
                 this.Players[playerNum] = player;
 
-                this.AddLog(new Logging.PlayerJoinedLog() { Player = player });
+                this.AddLog($"{player.PlayerName} has joined.");
                 FireGameActionEvent(new GameActionEventArgs() { Player = player});
             }
 
@@ -611,7 +626,7 @@ namespace TarneebClasses
 
                         // Fire off the event and log it
                         FireGameActionEvent(new GameActionEventArgs() { Player = winner, BidScores = this.bidScore });
-                        this.AddLog(new Logging.TrickCompletedLog() { Player = winner });
+                        this.AddLog($"{winner.PlayerName} has won the trick.");
 
                         // The winner gets to play the next card
                         this._currentPlayer = winner;
@@ -656,13 +671,7 @@ namespace TarneebClasses
                         this.TrickCounter = 0;
 
                         // TODO: Log bid completion
-                        this.AddLog(new Logging.BidCompleteLog()
-                        {
-                            Score = score,
-                            WinningTeam = winningTeam,
-                            LosingTeam = losingTeam
-                        }
-                        );
+                        this.AddLog($"{winningTeam} has won the bid with a score of {score}.");
 
                         // Fire game action
                         FireGameActionEvent(new GameActionEventArgs()
@@ -868,11 +877,12 @@ namespace TarneebClasses
         }
 
         /// <summary>
-        /// Add a log to the list of logs and database.
+        /// Create a log for the given action, and add it to the list and database of logs.
         /// </summary>
-        /// <param name="log">The log to add.</param>
-        private void AddLog(Logging.ILog log)
+        /// <param name="action">The action to create a log for and add.</param>
+        private void AddLog(string action)
         {
+            var log = new Log(this.ID, action);
             this.Logs.Add(log);
             Database.InsertLog(log);
         }
