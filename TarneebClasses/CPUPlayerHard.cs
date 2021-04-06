@@ -17,7 +17,7 @@ namespace TarneebClasses
     /// <summary>
     /// CPUPlayerAdvance class, 
     /// </summary>
-    class CPUPlayerAdvance : CPUPlayer
+    class CPUPlayerHard : CPUPlayer
     {
         #region AIMemory
 
@@ -87,7 +87,7 @@ namespace TarneebClasses
         /// <param name="playerId">The player's ID.</param>
         /// <param name="teamNumber">The player's team number.</param>
         /// <param name="handList">The player's hand.</param>
-        public CPUPlayerAdvance(Game game, String playerName, int playerId, Enums.Team teamNumber, Deck handList)
+        public CPUPlayerHard(Game game, String playerName, int playerId, Enums.Team teamNumber, Deck handList)
             : base(game, playerName, playerId, teamNumber, handList)
         {
             // Store reference to the game, for getting valid cards in a round
