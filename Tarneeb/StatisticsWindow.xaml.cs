@@ -34,6 +34,8 @@ namespace Tarneeb
         private void OnWindowLoad(object sender, EventArgs e)
         {
             Database.Connect();
+            var logs = Database.GetLogs(1);
+            this.logsGrid.ItemsSource = logs;
         }
 
         /// <summary>
