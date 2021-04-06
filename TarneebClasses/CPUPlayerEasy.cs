@@ -8,7 +8,7 @@ using TarneebClasses.Logging;
 using System.Security.Cryptography;
 
 /**
- * @author  Hoang Quoc Bao Nguyen
+ * @author  Andrew Kuo, Hoang Quoc Bao Nguyen
  * @date    2021-04-04
  */
 
