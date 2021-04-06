@@ -110,7 +110,7 @@ namespace Tarneeb
             do
             {
                 var promptWindow = new TextInputWindow();
-                promptWindow.Prompt.Content = "What is your name? (This can be changed in settings)";
+                promptWindow.Prompt.Content = "What is your name?\n(This can be later changed in settings.)";
                 // By default, fill the input with the user's Windows username
                 promptWindow.Input.Text = Environment.UserName;
                 promptWindow.ShowDialog();
