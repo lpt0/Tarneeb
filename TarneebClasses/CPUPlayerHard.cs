@@ -70,7 +70,7 @@ namespace TarneebClasses
 
         #region Constructor
         /// <summary>
-        /// Create a new Easy CPU player.
+        /// Create a new Hard CPU player.
         /// </summary>
         /// <param name="playerName">The name of the player.</param>
         /// <param name="playerId">The player's ID.</param>
