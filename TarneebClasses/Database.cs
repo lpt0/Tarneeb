@@ -36,6 +36,15 @@ namespace TarneebClasses
             this.GameID = gameId;
             this.Start = start;
         }
+
+        /// <summary>
+        /// Get this game entry as a string.
+        /// </summary>
+        /// <returns>The game entry in the format of "Game $GameID at $Start"</returns>
+        public override string ToString()
+        {
+            return $"Game {GameID} at {Start}";
+        }
     }
 
     /// <summary>

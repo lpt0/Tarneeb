@@ -15,35 +15,40 @@
         Loaded="OnWindowLoad"
         MinHeight="450" MinWidth="800">
     <Grid Background="WhiteSmoke">
-        <Label 
-            HorizontalAlignment="Center"
-            FontFamily="Segoe UI SemiLight"
-            FontSize="24"
-        >
-            Game Logs
-        </Label>
+        <StackPanel Orientation="Vertical">
+            <Label 
+                FontFamily="Segoe UI SemiLight"
+                FontSize="24"
+                HorizontalAlignment="Center"
+            >
+                Game Logs
+            </Label>
 
-        <Grid
-            Margin="80"
-        >
-            <!-- Creating a data grid and turning AutoGenerateColumns to false so we can manually name columns -->
-            <DataGrid Name="logsGrid" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Date and Time" Width="0.125*" Binding="{Binding DateTime}"/>
-                    <DataGridTextColumn Header="Action" Width="1*"  Binding="{Binding Action}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-        <Button
-            Height="50"
-            Width="250"
-            VerticalAlignment="Bottom"
-            Margin="0 0 0 15"
-            Click="OnCloseClicked"
-        >
-            Close    
-        </Button>
+            <!-- Stack panel for the game selector -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label>Games:</Label>
+                <ComboBox x:Name="GamesList" SelectionChanged="OnGameSelected" Width="210"></ComboBox>
+            </StackPanel>
+        </StackPanel>
 
-            
+        <!-- TODO: Fix grid scrolling; data grids with bigger row sizes break it -->
+            <Grid Margin="80">
+                <!-- Creating a data grid and turning AutoGenerateColumns to false so we can manually name columns -->
+                <DataGrid Name="logsGrid" AutoGenerateColumns="False" Visibility="Hidden">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Date and Time" Width="0.25*" Binding="{Binding DateTime}"/>
+                        <DataGridTextColumn Header="Action" Width="1*"  Binding="{Binding Action}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+            <Button
+                Height="50"
+                Width="250"
+                VerticalAlignment="Bottom"
+                Margin="0 0 0 15"
+                Click="OnCloseClicked"
+            >
+                Close
+            </Button>
     </Grid>
 </Window>
