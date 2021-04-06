@@ -620,7 +620,7 @@ namespace Tarneeb
 
             if (isLeft == MessageBoxResult.Yes)
             {
-                TitleScreen.Instance.Show();
+                (new TitleScreen()).Show();
                 this.Close();
             }
         }
