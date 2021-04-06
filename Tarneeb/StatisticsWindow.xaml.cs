@@ -27,15 +27,19 @@ namespace Tarneeb
         }
 
         /// <summary>
-        /// Executes when the window is loaded, and retrieves data from the database.
+        /// Executes when the window is loaded, and retrieves a list of games from the database.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWindowLoad(object sender, EventArgs e)
         {
+            // Start a database connection, load the games, and populate the combo box
             Database.Connect();
-            var logs = Database.GetLogs(1);
-            this.logsGrid.ItemsSource = logs;
+            var games = Database.GetGames();
+            this.GamesList.ItemsSource = games;
+
+            // Select the first game by default
+            this.GamesList.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -44,6 +48,26 @@ namespace Tarneeb
         private void OnCloseClicked(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        /// <summary>
+        /// A game was selected from the combo box, retrieve the logs for it.
+        /// </summary>
+        private void OnGameSelected(object sender, EventArgs e)
+        {
+            // Make sure something is selected before trying to cast it
+            if (this.GamesList.SelectedIndex != -1)
+            {
+                // Get the selected game as a database game entry
+                var game = (DatabaseGameEntry)this.GamesList.SelectedItem;
+
+                // Load the logs for that game, and use it for the data grid
+                this.logsGrid.ItemsSource = Database.GetLogs(game.GameID);
+
+                // Show the grid
+                this.logsGrid.Visibility = Visibility.Visible;
+            }
+
         }
     }
 }
