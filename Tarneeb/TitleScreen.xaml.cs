@@ -20,12 +20,10 @@ namespace Tarneeb
     /// </summary>
     public partial class TitleScreen : Window
     {
-        public static TitleScreen Instance;
 
         public TitleScreen()
         {
             InitializeComponent();
-            Instance = this;
         }
 
         /// <summary>
@@ -35,9 +33,8 @@ namespace Tarneeb
         {
             //TODO
             MainWindow mainWin = new MainWindow();
+            this.Close();
             mainWin.Show();
-            Instance.Close(); //TODO
-            
         }
 
         /// <summary>
@@ -47,6 +44,16 @@ namespace Tarneeb
         {
             // Open the settings window and have it take focus
             (new SettingsWindow()).ShowDialog();
+        }
+
+        /// <summary>
+        /// Logs/statistics button clicked, open relevant window
+        /// </summary>
+        private void LogsClicked(object sender, RoutedEventArgs e)
+        {
+
+            // Open the logs/statistcs window and have it take focus
+            (new StatisticsWindow()).ShowDialog();
         }
 
         /// <summary>

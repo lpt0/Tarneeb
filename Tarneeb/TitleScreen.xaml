@@ -25,7 +25,7 @@
         <StackPanel
             VerticalAlignment="Center"
             Orientation="Vertical"
-            Margin="80"
+            Margin="80 0 80 0"
         >
             <!-- Child element styles: https://stackoverflow.com/a/932609 -->
             <StackPanel.Resources>
@@ -36,6 +36,7 @@
             </StackPanel.Resources>
             <Button Click="LocalPlayClicked">Play</Button>
             <Button Click="ManualClicked">User Manual (opens in browser)</Button>
+            <Button Click="LogsClicked">Logs/Statistics</Button>
             <Button Click="SettingsClicked">Settings</Button>
             <Button Click="AboutClicked">About Us</Button>
             <Button Click="ExitClicked">Exit</Button>
