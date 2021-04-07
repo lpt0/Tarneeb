@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tarneeb"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterOwner"  WindowStyle="None"
+        WindowStartupLocation="CenterScreen"  WindowStyle="ToolWindow"
         Title="Select a difficulty" Height="150" Width="225">
     <Grid HorizontalAlignment="Center">
         <Grid.RowDefinitions>
