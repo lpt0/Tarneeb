@@ -3,6 +3,9 @@
     
     Author: Domenic Catalano
     Date: 2021-04-04
+    
+    Modified by: Haran
+    Date: 2021-04-06
 -->
 <Window x:Class="Tarneeb.StatisticsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -25,14 +28,24 @@
             </Label>
 
             <!-- Stack panel for the game selector -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label>Games:</Label>
-                <ComboBox x:Name="GamesList" SelectionChanged="OnGameSelected" Width="210"></ComboBox>
+            <StackPanel x:Name="stpGames" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label HorizontalContentAlignment="Center">Games:</Label>
+                <ComboBox x:Name="cmbGames" SelectionChanged="OnGameSelected" Width="210"></ComboBox>
             </StackPanel>
         </StackPanel>
 
         <!-- TODO: Fix grid scrolling; data grids with bigger row sizes break it -->
             <Grid Margin="80">
+                <Label 
+                    x:Name="lblNoGames" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    FontFamily="Segoe UI SemiLight"
+                    Visibility="Hidden"
+                >
+                    There are no games to view logs for. Please play a game and come back!
+                </Label>
                 <!-- Creating a data grid and turning AutoGenerateColumns to false so we can manually name columns -->
                 <DataGrid Name="logsGrid" AutoGenerateColumns="False" Visibility="Hidden">
                     <DataGrid.Columns>
