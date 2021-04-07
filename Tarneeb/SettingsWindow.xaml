@@ -12,15 +12,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*" />
             <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.5*" />
             <RowDefinition Height="0.25*" />
         </Grid.RowDefinitions>
         <Grid.Resources>
             <Style TargetType="StackPanel">
-                <Setter Property="Margin" Value="24 24 24 0" />
-            </Style>
-            <Style TargetType="Button">
-                <Setter Property="Width" Value="125" />
-                <Setter Property="Height" Value="35" />
+                <Setter Property="Margin" Value="24 12 24 0" />
             </Style>
         </Grid.Resources>
 
@@ -39,16 +36,26 @@
             </Label>
             <TextBox x:Name="MaxScore"></TextBox>
         </StackPanel>
+        
+        <!-- Reset logs/stats -->
+        <StackPanel Grid.Row="2">
+            <Label>
+                Reset logs and statistics?
+            </Label>
+            <Button Click="OnResetClicked">
+                Yes, clear all data.
+            </Button>
+        </StackPanel>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="Save" Grid.Column="0" Click="OnSaveClicked">Save and Exit</Button>
-                <Button x:Name="Exit" Grid.Column="1" Click="OnExitClicked">Exit without Saving</Button>
+                <Button x:Name="Save" Grid.Column="0" Click="OnSaveClicked" Width="125" Height="35">Save and Exit</Button>
+                <Button x:Name="Exit" Grid.Column="1" Click="OnExitClicked" Width="125" Height="35">Exit without Saving</Button>
             </Grid>
         </Grid>
     </Grid>

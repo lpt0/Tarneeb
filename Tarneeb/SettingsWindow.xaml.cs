@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TarneebClasses;
 
 namespace Tarneeb
 {
@@ -42,6 +43,16 @@ namespace Tarneeb
         {
             this.PlayerName.Text = originalPlayerName;
             this.MaxScore.Text = originalMaxScore;
+        }
+
+        /// <summary>
+        /// Reset button clicked; reset the database to clear all logs and stats.
+        /// </summary>
+        private void OnResetClicked(object sender, EventArgs e)
+        {
+            // Call the database reset method
+            Database.Reset();
+            MessageBox.Show("Data has been reset.");
         }
 
         /// <summary>

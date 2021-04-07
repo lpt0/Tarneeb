@@ -187,6 +187,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// </summary>
         public static void Reset()
         {
+            Database.Connect();
             Database.Drop();
             Database.Initialize();
         }
