@@ -174,6 +174,7 @@
                 </Border>
 
                 <Grid Grid.Row="4"
+                      x:Name="FirstHolder"
                       Margin="170 25 170 0"
                       Background="LightGray">
 
@@ -319,6 +320,7 @@
 
         </Grid>
         <Grid Height="40"
+              x:Name="ThirdHolder"
               Width="180"
               Canvas.Top="20"
               Canvas.Left="400"
@@ -342,6 +344,7 @@
         </Grid>
 
         <Grid Height="180"
+              x:Name="SecondHolder"
               Width="60"
               Canvas.Top="380"
               Canvas.Left="10"
@@ -368,6 +371,7 @@
         </Grid>
 
         <Grid Height="180"
+              x:Name="FourthHolder"
               Width="60"
               Canvas.Top="380"
               Canvas.Right="210"
