@@ -36,10 +36,23 @@ namespace Tarneeb
             // Start a database connection, load the games, and populate the combo box
             Database.Connect();
             var games = Database.GetGames();
-            this.GamesList.ItemsSource = games;
 
-            // Select the first game by default
-            this.GamesList.SelectedIndex = 0;
+            // If there are no games to choose from...
+            if (games.Count == 0)
+            {
+                /* Hide the combo box, and show the label telling the user to 
+                 * play a game and come back.
+                 */
+                this.stpGames.Visibility = Visibility.Hidden;
+                this.lblNoGames.Visibility = Visibility.Visible;
+            }
+            // Otherwise, there are games to select from, so show them.
+            else
+            {
+                this.cmbGames.ItemsSource = games;
+                // Select the first game by default
+                this.cmbGames.SelectedIndex = 0;
+            }
         }
 
         /// <summary>
@@ -56,10 +69,10 @@ namespace Tarneeb
         private void OnGameSelected(object sender, EventArgs e)
         {
             // Make sure something is selected before trying to cast it
-            if (this.GamesList.SelectedIndex != -1)
+            if (this.cmbGames.SelectedIndex != -1)
             {
                 // Get the selected game as a database game entry
-                var game = (DatabaseGameEntry)this.GamesList.SelectedItem;
+                var game = (DatabaseGameEntry)this.cmbGames.SelectedItem;
 
                 // Load the logs for that game, and use it for the data grid
                 this.logsGrid.ItemsSource = Database.GetLogs(game.GameID);
