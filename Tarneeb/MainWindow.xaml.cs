@@ -67,13 +67,18 @@ namespace Tarneeb
         /// <summary>
         /// An array of the wrap panels used to hold the 4 cards in play for the round.
         /// </summary>
-        private WrapPanel[] CardsInRoundHolders;
+        private WrapPanel[] _cardsInRoundHolders;
 
         /// <summary>
-        /// Same as CardsInRoundHolders, but for the name underneath the card played.
+        /// Same as _cardsInRoundHolders, but for the name underneath the card played.
         /// </summary>
-        /// <see cref="CardsInRoundHolders"/>
+        /// <see cref="_cardsInRoundHolders"/>
         private TextBlock[] _namesInRoundHolders;
+
+        /// <summary>
+        /// Same as _namesInRoundHolders, but for the grid that hold the nameplates.
+        /// </summary>
+        private Grid[] _nameplateHolders;
 
         /// <summary>
         /// An array of the wrap panels used to store each player's cards.
@@ -137,6 +142,7 @@ namespace Tarneeb
         private void OnPlayerTurn(object sender, PlayerTurnEventArgs e)
         {
             UpdateAllHands();
+            UpdateCurrentPlayer(e.Player.PlayerId);
 
             this._isPlayerTurn = (e.Player.PlayerId == this._userPlayer.PlayerId); // TODO: Fake player
             if (this._isPlayerTurn)
@@ -387,8 +393,8 @@ namespace Tarneeb
             }
 
             // Add the card to the cards played in round, and the name of the player who played it
-            this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Clear();
-            this.CardsInRoundHolders[e.CardsPlayedInRound].Children.Add(cc);
+            this._cardsInRoundHolders[e.CardsPlayedInRound].Children.Clear();
+            this._cardsInRoundHolders[e.CardsPlayedInRound].Children.Add(cc);
             this._namesInRoundHolders[e.CardsPlayedInRound].Text = e.Player.PlayerName;
         }
 
@@ -409,7 +415,7 @@ namespace Tarneeb
             AddMessage($"{e.Player.PlayerName} won the last trick.");
 
             // Clear the cards played in the round, and the names
-            foreach (WrapPanel holder in this.CardsInRoundHolders) 
+            foreach (WrapPanel holder in this._cardsInRoundHolders) 
             {
                 holder.Children.Clear();
 
@@ -546,6 +552,7 @@ namespace Tarneeb
             }
         }
         #endregion
+
         #region Messages
         private void ClearMessages()
         {
@@ -556,8 +563,24 @@ namespace Tarneeb
             this.Messages.Text += text + "\n";
         }
         #endregion
+
+        /// <summary>
+        /// Update the name plate colour of the player who is currently playing.
+        /// </summary>
+        /// <param name="activePlayerIdx">The index of the player who is currently playing.</param>
+        private void UpdateCurrentPlayer(int activePlayerIdx)
+        {
+            for (int i = 0; i < this._nameplateHolders.Length; i++)
+            {
+                /* The background colour of the name is from the grid - the name plate holder.
+                 * The active player is GOLD, while other players are light gray.
+                 */
+                this._nameplateHolders[i].Background = (i == activePlayerIdx ? Brushes.Gold : Brushes.LightGray);
+            }
+        }
         #endregion
 
+        #region Window event handlers
         /// <summary>
         /// Window Loaded handler. Runs when Mainwindow is ready.
         /// </summary>
@@ -575,8 +598,9 @@ namespace Tarneeb
             difficultySelect.ShowDialog();
 
             // Set needed variables
-            this.CardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
+            this._cardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
             this._namesInRoundHolders = new TextBlock[] { this.FirstName, this.SecondName, this.ThirdName, this.FourthName };
+            this._nameplateHolders = new Grid[] { this.FirstHolder, this.SecondHolder, this.ThirdHolder, this.FourthHolder };
             this._playerHands = new WrapPanel[] { this.MyPlayerHand, this.LeftPlayerHand, this.TopPlayerHand, this.RightPlayerHand }; // Counter-clockwise
             this.MaxScore.Text = Properties.Settings.Default.MaxScore.ToString();
 
@@ -584,7 +608,7 @@ namespace Tarneeb
              * For the max score, use the max score from settings
              * Use the difficulty from the difficulty select window
              */
-            this._game = new Game(Properties.Settings.Default.MaxScore, difficultySelect.SelectedDifficulty);
+                this._game = new Game(Properties.Settings.Default.MaxScore, difficultySelect.SelectedDifficulty);
 
             // Set up events
             this._game.GameActionEvent += OnGameAction;
@@ -628,5 +652,6 @@ namespace Tarneeb
                 this.Close();
             }
         }
+        #endregion
     }
 }
