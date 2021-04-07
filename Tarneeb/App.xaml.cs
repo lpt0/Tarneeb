@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using TarneebClasses;
 
 namespace Tarneeb
 {
@@ -13,5 +14,12 @@ namespace Tarneeb
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Executes when the program closes. Closes the database connection.
+        /// </summary>
+        private void OnClose(object sender, ExitEventArgs e)
+        {
+            Database.Close();
+        }
     }
 }

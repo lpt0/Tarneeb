@@ -190,6 +190,18 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
             Database.Drop();
             Database.Initialize();
         }
+
+        /// <summary>
+        /// Closes the database connection.
+        /// </summary>
+        public static void Close()
+        {
+            // Only close the connection if it is set, and it is open
+            if (_connection != null && _connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+        }
         #endregion
 
         #region Retrieve methods
