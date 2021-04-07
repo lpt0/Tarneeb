@@ -65,7 +65,7 @@ namespace TarneebClasses
         /// Statement to create all required tables.
         /// </summary>
         private const string STMT_CREATE_TABLES = (@"CREATE TABLE Logs (DateTime DATETIME, GameID INT, Action TEXT); 
-CREATE TABLE Stats (DateTime DATETIME, GameID INT, Outcome TINYINT);
+CREATE TABLE Stats (GameID INT PRIMARY KEY, DateTime DATETIME, Outcome TINYINT);
 CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
 
         /// <summary>
