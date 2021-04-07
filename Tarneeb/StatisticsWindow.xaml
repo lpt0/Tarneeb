@@ -35,33 +35,34 @@
         </StackPanel>
 
         <!-- TODO: Fix grid scrolling; data grids with bigger row sizes break it -->
-            <Grid Margin="80">
-                <Label 
-                    x:Name="lblNoGames" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center"
-                    FontSize="16"
-                    FontFamily="Segoe UI SemiLight"
-                    Visibility="Hidden"
-                >
-                    There are no games to view logs for. Please play a game and come back!
-                </Label>
-                <!-- Creating a data grid and turning AutoGenerateColumns to false so we can manually name columns -->
-                <DataGrid Name="logsGrid" AutoGenerateColumns="False" Visibility="Hidden">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Date and Time" Width="0.25*" Binding="{Binding DateTime}"/>
-                        <DataGridTextColumn Header="Action" Width="1*"  Binding="{Binding Action}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-            <Button
-                Height="50"
-                Width="250"
-                VerticalAlignment="Bottom"
-                Margin="0 0 0 15"
-                Click="OnCloseClicked"
+        <Grid Margin="80">
+            <Label 
+                x:Name="lblNoGames" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontFamily="Segoe UI SemiLight"
+                Visibility="Hidden"
             >
-                Close
-            </Button>
+                There are no games to view logs for. Please play a game and come back!
+            </Label>
+                <!-- Creating a data grid and turning AutoGenerateColumns to false so we can manually name columns -->
+            <DataGrid Name="logsGrid" AutoGenerateColumns="False" Visibility="Hidden">
+                <DataGrid.Columns>
+                    <!-- Need to be set to OneWay so cells cannot be edited -->
+                    <DataGridTextColumn Header="Date and Time" Width="0.25*" Binding="{Binding DateTime, Mode = OneWay}"/>
+                    <DataGridTextColumn Header="Action" Width="1*"  Binding="{Binding Action, Mode = OneWay}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Button
+            Height="50"
+            Width="250"
+            VerticalAlignment="Bottom"
+            Margin="0 0 0 15"
+            Click="OnCloseClicked"
+        >
+            Close
+        </Button>
     </Grid>
 </Window>
