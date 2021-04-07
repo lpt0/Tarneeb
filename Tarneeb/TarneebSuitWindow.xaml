@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tarneeb"
         mc:Ignorable="d"
-        WindowStyle="ToolWindow"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterOwner" WindowStyle="None"
         Title="Select the Tarneeb suit" Height="150" Width="265">
     <Grid>
         <Grid.RowDefinitions>
