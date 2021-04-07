@@ -75,7 +75,7 @@
                 <TextBlock x:Name="Team0TotalScore" Grid.Column="0" Grid.Row="3">0</TextBlock>
                 <TextBlock Grid.Column="1" Grid.Row="1" Foreground="Red" FontWeight="Bold">Red</TextBlock>
                 <TextBlock x:Name="Team1TrickWins" Grid.Column="1" Grid.Row="2">0</TextBlock>
-                <TextBlock x:Name="Team1TotalScore" Grid.Column="1" Grid.Row="3">12</TextBlock>
+                <TextBlock x:Name="Team1TotalScore" Grid.Column="1" Grid.Row="3">0</TextBlock>
             </Grid>
 
             <WrapPanel x:Name="TopPlayerHand" 

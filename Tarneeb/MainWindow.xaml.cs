@@ -154,7 +154,6 @@ namespace Tarneeb
                         this.PlayerTurnCard();
                         break;
                 }
-                
             }
             else
             {
@@ -571,6 +570,10 @@ namespace Tarneeb
                 Properties.Settings.Default.Save();
             }
 
+            // Get the user's desired difficulty level
+            var difficultySelect = (new DifficultySelectWindow());
+            difficultySelect.ShowDialog();
+
             // Set needed variables
             this.CardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
             this._namesInRoundHolders = new TextBlock[] { this.FirstName, this.SecondName, this.ThirdName, this.FourthName };
@@ -579,8 +582,9 @@ namespace Tarneeb
 
             /* Create a new game
              * For the max score, use the max score from settings
+             * Use the difficulty from the difficulty select window
              */
-            this._game = new Game(Properties.Settings.Default.MaxScore);
+            this._game = new Game(Properties.Settings.Default.MaxScore, difficultySelect.SelectedDifficulty);
 
             // Set up events
             this._game.GameActionEvent += OnGameAction;
