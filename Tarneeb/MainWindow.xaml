@@ -159,6 +159,29 @@
                     </Grid>
                 </Grid>
 
+                <Grid Grid.Row="2"
+                      Grid.RowSpan="2"
+                      Margin="40 20 40 0"
+                      x:Name="DialogBox">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <TextBlock x:Name="DialogBoxTitle"
+                                   FontSize="24"
+                                   HorizontalAlignment="Center"
+                                   FontWeight="SemiBold">
+                            Dialog Box Title Placeholder
+                        </TextBlock>
+                    </Grid>
+
+                    <Grid Grid.Row="1" x:Name="DialogBoxControl">
+                        
+                    </Grid>
+                </Grid>
+
                 <Grid Grid.Row="4"
                       x:Name="FirstHolder"
                       Margin="200 25 200 0"

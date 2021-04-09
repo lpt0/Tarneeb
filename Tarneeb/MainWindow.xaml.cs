@@ -579,8 +579,13 @@ namespace Tarneeb
             }
 
             // Get the user's desired difficulty level
-            var difficultySelect = (new DifficultySelectWindow());
-            difficultySelect.ShowDialog();
+            //difficultySelect.ShowDialog();
+
+            this.DialogBoxTitle.Text = "Please select a difficulty level:";
+            var difficultySelect = new DifficultySelectUserControl();
+            this.DialogBoxControl.Children.Add(difficultySelect);
+
+            // TODO: await for one of the button is clicked, then continue.
 
             // Set needed variables
             this._cardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
