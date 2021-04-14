@@ -86,7 +86,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// <summary>
         /// Statement to add a game outcome into the statistics table.
         /// </summary>
-        private const string STMT_INSERT_OUTCOME = "INSERT INTO Stats VALUES (@DateTime, @GameID, @Outcome);";
+        private const string STMT_INSERT_OUTCOME = "INSERT INTO Stats (DateTime, GameID, Outcome) VALUES (@DateTime, @GameID, @Outcome);";
 
         /// <summary>
         /// TODO
