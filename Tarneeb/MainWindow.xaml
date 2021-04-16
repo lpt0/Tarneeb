@@ -23,7 +23,6 @@
                 <ColumnDefinition Width="1.75*" />
                 <ColumnDefinition Width="4*" />
                 <ColumnDefinition Width="1.75*" />
-                <ColumnDefinition Width="1.5*" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -94,9 +93,8 @@
                     <RowDefinition Height="3.15*" />
                 </Grid.RowDefinitions>
 
-                <Grid Margin="40 80 40 40"
+                <Grid Margin="40 0"
                         Grid.Row="1"
-                        Grid.RowSpan="2"
                         Background="LightGray">
                     <Grid>
                         <Grid.Resources>
@@ -161,9 +159,23 @@
                     </Grid>
                 </Grid>
 
+                <Border Grid.Row="2"
+                        Grid.RowSpan="2"
+                        BorderThickness="1"
+                        BorderBrush="Black"
+                        Background="White"
+                        Margin="70 20 70 0">
+                    <TextBlock x:Name="Messages"
+                               FontSize="24"
+                               HorizontalAlignment="Center"
+                               FontWeight="Bold">
+                                    
+                    </TextBlock>
+                </Border>
+
                 <Grid Grid.Row="4"
                       x:Name="FirstHolder"
-                      Margin="170 25 170 0"
+                      Margin="220 25 220 0"
                       Background="LightGray">
 
                     <Grid.RowDefinitions>
@@ -225,23 +237,12 @@
                    Orientation="Vertical">
             </WrapPanel>
 
-            <!--Logs section-->
-            <Border BorderBrush="Black"
-                BorderThickness="1" 
-                Grid.Column="3" 
-                Grid.RowSpan="6">
-                <ListView x:Name="Logs">
-
-                </ListView>
-            </Border>
-
-
         </Grid>
         <Grid Height="40"
               x:Name="ThirdHolder"
-              Width="180"
-              Canvas.Top="20"
-              Canvas.Left="400"
+              Width="200"
+              Canvas.Top="10"
+              Canvas.Left="498"
               Background="LightGray">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
@@ -292,7 +293,7 @@
               x:Name="FourthHolder"
               Width="60"
               Canvas.Top="380"
-              Canvas.Right="210"
+              Canvas.Right="10"
               Background="LightGray">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2.5*" />

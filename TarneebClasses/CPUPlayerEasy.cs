@@ -210,15 +210,15 @@ namespace TarneebClasses
                 {
                     case Game.State.BID_STAGE:
                         // Perform bid logic
-                        this.PerformAction(new Events.PlayerActionEventArgs() { Bid = getAiBid(highestBid) });
+                        this.PerformAction(new Events.PlayerActionEventArgs() { Bid = CalculateAiBid(highestBid) });
                         break;
                     case Game.State.BID_WON:
                         // Perform Tarneeb logic
-                        this.PerformAction(new Events.PlayerActionEventArgs() { Tarneeb = decideOnTarneeb() });
+                        this.PerformAction(new Events.PlayerActionEventArgs() { Tarneeb = CalculateAiTarneeb() });
                         break;
                     case Game.State.TRICK:
                         // Perform trick logic
-                        Card card = calculateAiCard();
+                        Card card = CalculateAiCard();
                         this.PerformAction(new Events.PlayerActionEventArgs() { CardPlayed = card });
                         break;
                     default:
@@ -236,7 +236,7 @@ namespace TarneebClasses
         /// </summary>
         /// <param name="currentBid">The current bid to be considered</param>
         /// <returns>A bid number</returns>
-        public int getAiBid(int currentBid)
+        public int CalculateAiBid(int currentBid)
         {
             // The bid the AI will submit.
             int bid = currentBid;
@@ -311,7 +311,7 @@ namespace TarneebClasses
         /// This decision is based off of the number of cards the users has of a card suit.
         /// </summary>
         /// <returns></returns>
-        public Enums.CardSuit decideOnTarneeb()
+        public Enums.CardSuit CalculateAiTarneeb()
         {
             // Suit to return.
             Enums.CardSuit newTarneeb;
@@ -347,7 +347,7 @@ namespace TarneebClasses
         /// Calculates the best card for the AI to play.
         /// </summary>
         /// <returns>Card from the HandList</returns>
-        public Card calculateAiCard()
+        public Card CalculateAiCard()
         {
 
             // Holds trick suit options.

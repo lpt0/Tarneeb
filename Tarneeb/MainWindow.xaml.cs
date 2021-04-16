@@ -406,7 +406,6 @@ namespace Tarneeb
         private void OnRoundComplete(GameActionEventArgs e)
         {
             ClearMessages();
-
             // Update the trick scores
             this.Team0TrickWins.Text = e.BidScores[0].ToString();
             this.Team1TrickWins.Text = e.BidScores[1].ToString();
@@ -594,8 +593,11 @@ namespace Tarneeb
             }
 
             // Get the user's desired difficulty level
-            var difficultySelect = (new DifficultySelectWindow());
+            var difficultySelect = new DifficultySelectWindow();
+            difficultySelect.Topmost = true;
             difficultySelect.ShowDialog();
+
+            // TODO: await for one of the button is clicked, then continue.
 
             // Set needed variables
             this._cardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
@@ -623,7 +625,7 @@ namespace Tarneeb
             );
 
             // Use the log observable collection, to be able to see logs.
-            this.Logs.ItemsSource = this._game.Logs;
+            //this.Logs.ItemsSource = this._game.Logs;
 
             this.MyPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_userPlayer.TeamNumber.ToString());
             this.TopPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_userPlayer.TeamNumber.ToString());

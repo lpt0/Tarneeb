@@ -251,6 +251,59 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\cards\blankPlayingCard.png" />
+    <None Include="assets\cards\clubs\cg_2.png" />
+    <None Include="assets\cards\clubs\cg_3.png" />
+    <None Include="assets\cards\clubs\cg_4.png" />
+    <None Include="assets\cards\clubs\cg_5.png" />
+    <None Include="assets\cards\clubs\cg_6.png" />
+    <None Include="assets\cards\clubs\cg_7.png" />
+    <None Include="assets\cards\clubs\cg_8.png" />
+    <None Include="assets\cards\clubs\cg_9.png" />
+    <None Include="assets\cards\clubs\cg_10.png" />
+    <None Include="assets\cards\clubs\cg_a.png" />
+    <None Include="assets\cards\clubs\cg_j.png" />
+    <None Include="assets\cards\clubs\cg_k.png" />
+    <None Include="assets\cards\clubs\cg_q.png" />
+    <None Include="assets\cards\diamonds\dg_4.png" />
+    <None Include="assets\cards\diamonds\dg_5.png" />
+    <None Include="assets\cards\diamonds\dg_6.png" />
+    <None Include="assets\cards\diamonds\dg_7.png" />
+    <None Include="assets\cards\diamonds\dg_8.png" />
+    <None Include="assets\cards\diamonds\dg_9.png" />
+    <None Include="assets\cards\diamonds\dg_10.png" />
+    <None Include="assets\cards\diamonds\dg_a.png" />
+    <None Include="assets\cards\diamonds\dg_j.png" />
+    <None Include="assets\cards\diamonds\dg_k.png" />
+    <None Include="assets\cards\diamonds\dg_q.png" />
+    <None Include="assets\cards\diamonds\dg_2.png" />
+    <None Include="assets\cards\diamonds\dg_3.png" />
+    <None Include="assets\cards\hearts\hg_5.png" />
+    <None Include="assets\cards\hearts\hg_6.png" />
+    <None Include="assets\cards\hearts\hg_7.png" />
+    <None Include="assets\cards\hearts\hg_8.png" />
+    <None Include="assets\cards\hearts\hg_9.png" />
+    <None Include="assets\cards\hearts\hg_10.png" />
+    <None Include="assets\cards\hearts\hg_a.png" />
+    <None Include="assets\cards\hearts\hg_j.png" />
+    <None Include="assets\cards\hearts\hg_k.png" />
+    <None Include="assets\cards\hearts\hg_q.png" />
+    <None Include="assets\cards\hearts\hg_2.png" />
+    <None Include="assets\cards\hearts\hg_3.png" />
+    <None Include="assets\cards\hearts\hg_4.png" />
+    <None Include="assets\cards\spades\sg_8.png" />
+    <None Include="assets\cards\spades\sg_9.png" />
+    <None Include="assets\cards\spades\sg_10.png" />
+    <None Include="assets\cards\spades\sg_a.png" />
+    <None Include="assets\cards\spades\sg_j.png" />
+    <None Include="assets\cards\spades\sg_k.png" />
+    <None Include="assets\cards\spades\sg_q.png" />
+    <None Include="assets\cards\spades\sg_2.png" />
+    <None Include="assets\cards\spades\sg_3.png" />
+    <None Include="assets\cards\spades\sg_4.png" />
+    <None Include="assets\cards\spades\sg_5.png" />
+    <None Include="assets\cards\spades\sg_6.png" />
+    <None Include="assets\cards\spades\sg_7.png" />
+    <None Include="assets\cards\blankPlayingCard2.png" />
     <Content Include="TarneebData.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -270,5 +323,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
