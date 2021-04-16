@@ -75,58 +75,90 @@ namespace TarneebTest
             //selection2.ForEach(card => Console.Write($"{card}, "));
             //Console.WriteLine();
 
+            //Deck handList = d.Draw(13);
+            //handList.Cards.ForEach(card => Console.Write($"{card}, "));
+            //Console.WriteLine();
+
+            //Card winningCard = new Card(Enums.CardNumber.Ace, Enums.CardSuit.Club);
+            ////Enums.CardSuit trickSuit = Enums.CardSuit.Club;
+            //Enums.CardSuit tarneebSuit = Enums.CardSuit.Spades;
+
+            //List<Card> trickSuitCards = handList.Cards.Where(card => (card.Suit == winningCard.Suit) && card.Number > winningCard.Number).OrderBy(card => card.Number).ToList();
+            //trickSuitCards.ForEach(card => Console.Write($"{card}, "));
+            //Console.WriteLine();
+
+            //List<Card> tarneebSuitCards = handList.Cards.Where(card => card.Suit == tarneebSuit).OrderBy(card => card.Number).ToList();
+            //tarneebSuitCards.ForEach(card => Console.Write($"{card}, "));
+            //Console.WriteLine();
+
+
+            //Card toPick = null;
+
+            //// If there are choices available, determine a valid card.
+            //if (trickSuitCards.Count > 0)
+            //{
+            //    // Set default option and continue to the list if anything.
+            //    toPick = trickSuitCards.First();
+            //}
+            //else if (tarneebSuitCards.Count > 0)
+            //{
+            //    toPick = tarneebSuitCards.First();
+            //}
+            //// Pick the lowest valued card to throw, order by the number and prioritize non-tarneeb cards
+            //else
+            //{
+            //    toPick = handList.Cards
+            //        .OrderBy(card => card.Number)
+            //        .OrderBy(card => {
+            //            int value = -1;
+            //            if (card.Suit == tarneebSuit) value = 1;
+            //            return value;
+            //        })
+            //        .FirstOrDefault();
+            //}
+
+            //Console.WriteLine(toPick);
+            //handList.Cards
+            //    .OrderBy(card => card.Number)
+            //    .OrderBy(card => {
+            //        int value = -1;
+            //        if (card.Suit == tarneebSuit) value = 1;
+            //        return value;
+            //    })
+            //    .ToList()
+            //    .ForEach(card => Console.Write($"{card}, ")); ;
+
+
+            //d.Cards = d.Cards
+            //    .OrderByDescending(card => card.Number)
+            //    .ToList();
+
+            //Deck handList = d.Draw(13);
+            //handList.Cards.ForEach(card => Console.Write($"{card}, "));
+
+            //int handValue = 0;
+            //handList.Cards.ForEach(card => handValue += (int) card.Number );
+
+            //Console.WriteLine($"{ handValue }");    // 154
+            //// the best hand is 154.
+
+            d.Cards = d.Cards
+                .OrderBy(card => card.Number)
+                .ToList();
+
             Deck handList = d.Draw(13);
             handList.Cards.ForEach(card => Console.Write($"{card}, "));
-            Console.WriteLine();
 
-            Card winningCard = new Card(Enums.CardNumber.Ace, Enums.CardSuit.Club);
-            //Enums.CardSuit trickSuit = Enums.CardSuit.Club;
-            Enums.CardSuit tarneebSuit = Enums.CardSuit.Spades;
+            int handValue = 0;
+            handList.Cards.ForEach(card => handValue += (int)card.Number);
 
-            List<Card> trickSuitCards = handList.Cards.Where(card => (card.Suit == winningCard.Suit) && card.Number > winningCard.Number).OrderBy(card => card.Number).ToList();
-            trickSuitCards.ForEach(card => Console.Write($"{card}, "));
-            Console.WriteLine();
+            Console.WriteLine($"{ handValue }");    // 28
+            // the worst hand is 28
 
-            List<Card> tarneebSuitCards = handList.Cards.Where(card => card.Suit == tarneebSuit).OrderBy(card => card.Number).ToList();
-            tarneebSuitCards.ForEach(card => Console.Write($"{card}, "));
-            Console.WriteLine();
+            //   ((B-W)/2)+W
+            // ((154-28)/2)+28
+            // Average hand = 91
 
-
-            Card toPick = null;
-            
-            // If there are choices available, determine a valid card.
-            if (trickSuitCards.Count > 0)
-            {
-                // Set default option and continue to the list if anything.
-                toPick = trickSuitCards.First();
-            }
-            else if (tarneebSuitCards.Count > 0)
-            {
-                toPick = tarneebSuitCards.First();
-            }
-            // Pick the lowest valued card to throw, order by the number and prioritize non-tarneeb cards
-            else
-            {
-                toPick = handList.Cards
-                    .OrderBy(card => card.Number)
-                    .OrderBy(card => {
-                        int value = -1;
-                        if (card.Suit == tarneebSuit) value = 1;
-                        return value;
-                    })
-                    .FirstOrDefault();
-            }
-
-            Console.WriteLine(toPick);
-            handList.Cards
-                .OrderBy(card => card.Number)
-                .OrderBy(card => {
-                    int value = -1;
-                    if (card.Suit == tarneebSuit) value = 1;
-                    return value;
-                })
-                .ToList()
-                .ForEach(card => Console.Write($"{card}, ")); ;
         }
 
         /// <summary>
