@@ -79,9 +79,6 @@
     <Compile Include="CardControl.xaml.cs">
       <DependentUpon>CardControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DifficultySelectUserControl.xaml.cs">
-      <DependentUpon>DifficultySelectUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DifficultySelectWindow.xaml.cs">
       <DependentUpon>DifficultySelectWindow.xaml</DependentUpon>
     </Compile>
@@ -101,10 +98,6 @@
       <DependentUpon>TitleScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="CardControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DifficultySelectUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
