@@ -54,7 +54,6 @@ namespace TarneebClasses
     {
         #region Queries
         /// <summary>
-        /// TODO
         /// Used to check if tables exist.
         /// </summary>
         private const string STMT_GET_TABLES = (
@@ -79,6 +78,16 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         private const string STMT_DROP_TABLES = "DROP TABLE IF EXISTS Logs; DROP TABLE IF EXISTS Stats; DROP TABLE IF EXISTS Games;";
 
         /// <summary>
+        /// Statement to delete all rows in the logs table.
+        /// </summary>
+        private const string STMT_DELETE_LOGS = "DELETE FROM Logs;";
+
+        /// <summary>
+        /// Statement to delete old game rows from the games table.
+        /// </summary>
+        private const string STMT_DELETE_GAMES = "DELETE FROM Games WHERE GameID < @GameID;";
+
+        /// <summary>
         /// Statement to add a log to the logs table.
         /// </summary>
         private const string STMT_INSERT_LOG = "INSERT INTO Logs VALUES (@DateTime, @GameID, @Action);";
@@ -89,7 +98,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         private const string STMT_INSERT_OUTCOME = "INSERT INTO Stats (DateTime, GameID, Outcome) VALUES (@DateTime, @GameID, @Outcome);";
 
         /// <summary>
-        /// TODO
+        /// Inserts a game into the list of games played.
         /// </summary>
         private const string STMT_INSERT_GAME = "INSERT INTO Games (Start) VALUES (@Start); SELECT @@IDENTITY;";
 
@@ -99,12 +108,12 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         private const string STMT_GET_LOGS = "SELECT DateTime, GameID, Action FROM Logs;";
 
         /// <summary>
-        /// TODO
+        /// Statement to gets logs for a specified game.
         /// </summary>
         private const string STMT_GET_LOGS_FOR_GAME = "SELECT DateTime, Action FROM Logs WHERE GameID = @GameID;";
 
         /// <summary>
-        /// TODO
+        /// Statement to get all games played.
         /// </summary>
         private const string STMT_GET_GAMES = "SELECT GameID, Start FROM Games;";
 
@@ -122,8 +131,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         private const string CONN_STRING = @"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True";
 
         /// <summary>
-        /// The location of the default database file, to be copied.
-        /// TODO
+        /// The location of the default database file.
         /// </summary>
         private const string DB_PATH = "../../TarneebData.mdf";
         #endregion
@@ -141,12 +149,6 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// </summary>
         public static void Connect()
         {
-            // Check if the database does not exist, and copy if not in %LOCALAPPDATA%.
-            /*if (!File.Exists(dbPath))
-            {
-                File.Copy(DEFAULT_DB_PATH, dbPath);
-            }*/ //TODO
-
             // Connect to the database using the full path appended to the default connection string.
             _connection = new SqlConnection($"{CONN_STRING};AttachDbFilename={Path.GetFullPath(DB_PATH)}");
             _connection.Open();
@@ -161,10 +163,13 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         public static void Initialize()
         {
             int numberOfTables = (int)new SqlCommand(STMT_GET_TABLES, _connection).ExecuteScalar();
-            // TODO: Explain how this is used to make sure there are three tables
+            /* The above query returns the number of tables present, 
+             * matching the specified table names; it needs to be 3.
+             */
             if (numberOfTables != 3)
             {
-                Database.Drop(); // TODO: Explain that this is done to clear the tables if there are issues
+                // Issues with the database; drop all tables and try again.
+                Database.Drop();
                 // Create and execute the command to create the tables, and ignore the return value.
                 new SqlCommand(STMT_CREATE_TABLES, _connection).ExecuteNonQuery();
 
@@ -207,7 +212,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
 
         #region Retrieve methods
         /// <summary>
-        /// TODO
+        /// Get games played from the database.
         /// </summary>
         public static List<DatabaseGameEntry> GetGames()
         {
@@ -237,9 +242,8 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
 
         /// <summary>
         /// Get all of the logs in the database.
-        /// TODO
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Logs for every game played stored in the database.</returns>
         public static List<Log> GetLogs()
         {
             // Same idea as GetGames, but for the Logs table.
@@ -291,10 +295,11 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         }
 
         /// <summary>
-        /// TODO
+        /// Get the number of outcomes for the specified outcome.
+        /// This is used to find the number of wins or losses.
         /// </summary>
-        /// <param name="outcome"></param>
-        /// <returns></returns>
+        /// <param name="outcome">The outcome type.</param>
+        /// <returns>The number of times this outcome happened.</returns>
         public static int GetOutcomeCount(Game.Outcome outcome)
         {
             // Set up the command and parameter
@@ -308,7 +313,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
 
         #region Insert methods
         /// <summary>
-        /// TODO
+        /// Add a new game to the database, and get it's identifier.
         /// </summary>
         /// <returns>The game ID.</returns>
         public static int InsertGame(DateTime start)
@@ -317,10 +322,23 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
             var cmdInsert = new SqlCommand(STMT_INSERT_GAME, _connection);
             cmdInsert.Parameters.AddWithValue("@Start", DateTime.Now);
 
-            /* Since the query returns the most recent identity value, and only that
-             * value, execute the query as scalar and return whatever comes back.
+            /* If there are 3 (or a multiple of 3) games in the database, clear logs
+             * to ease ballooning of the DB size. Also, remove previous games.
+             * Only one value is returned (one row, one column), so the return value
+             * of the query is scalar.
              */
-            return (int)((Decimal)cmdInsert.ExecuteScalar());
+            var gameId = (int)((Decimal)cmdInsert.ExecuteScalar());
+            if (gameId % 3 == 0)
+            {
+                var cmdDelete = new SqlCommand(STMT_DELETE_LOGS, _connection);
+                cmdDelete.ExecuteNonQuery();
+
+                var cmdDeleteGames = new SqlCommand(STMT_DELETE_GAMES, _connection);
+                cmdDeleteGames.Parameters.AddWithValue("@GameID", gameId);
+                cmdDeleteGames.ExecuteNonQuery();
+            }
+
+            return gameId;
         }
 
         /// <summary>
@@ -335,11 +353,12 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
             // Set up data types for the query params
             cmdInsert.Parameters.Add("@DateTime", SqlDbType.DateTime);
             cmdInsert.Parameters.Add("@Action", SqlDbType.Text);
-            cmdInsert.Parameters.AddWithValue("@GameID", log.GameID); //TODO
+            cmdInsert.Parameters.Add("@GameID", SqlDbType.Int);
 
             // Set the values; action is the string rep of the log.
             cmdInsert.Parameters["@DateTime"].Value = log.DateTime;
             cmdInsert.Parameters["@Action"].Value = log.Action;
+            cmdInsert.Parameters["@GameID"].Value = log.GameID;
 
             // Execute the command; return value must be 1.
             // If it is not 1, there has been an error TODO.
