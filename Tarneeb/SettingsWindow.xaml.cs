@@ -71,7 +71,6 @@ namespace Tarneeb
                 MessageBox.Show("Max score must be a number.");
                 isValid = false;
             }
-            // TODO: Should max score > 0?
 
             if (playerName.Length == 0)
             {

@@ -20,7 +20,6 @@ namespace TarneebClasses.Events
         public Player Player { get; set; }
 
         /// <summary>
-        /// TODO: Enum
         /// The current stage for this turn, such as bid or trick.
         /// </summary>
         public Game.State State { get; set; }

@@ -20,6 +20,9 @@ namespace Tarneeb
     /// </summary>
     public partial class TitleScreen : Window
     {
+        /// <summary>
+        /// Constructor for the title screen.
+        /// </summary>
 
         public TitleScreen()
         {
@@ -31,7 +34,7 @@ namespace Tarneeb
         /// </summary>
         private void LocalPlayClicked(object sender, RoutedEventArgs e)
         {
-            //TODO
+            // Close this window and show the game window.
             MainWindow mainWin = new MainWindow();
             this.Close();
             mainWin.Show();

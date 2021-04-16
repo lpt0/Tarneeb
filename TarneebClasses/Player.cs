@@ -38,7 +38,6 @@ namespace TarneebClasses
         /**** EVENTS ****/
         /// <summary>
         /// Invoked when this player performs an action, such as playing a card.
-        /// TODO: Readonly
         /// </summary>
         public event EventHandler<Events.PlayerActionEventArgs> PlayerActionEvent;
 
