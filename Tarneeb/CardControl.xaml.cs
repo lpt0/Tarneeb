@@ -39,6 +39,15 @@ namespace Tarneeb
         }
 
         /// <summary>
+        /// Whether the Card should be rendered greyed.
+        /// </summary>
+        public bool IsGreyed
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Card represented.
         /// </summary>
         private Card card;
@@ -67,9 +76,10 @@ namespace Tarneeb
         /// <summary>
         /// Card Constructor.
         /// </summary>
-        public CardControl(Card aCard, bool faceDown=false)
+        public CardControl(Card aCard, bool faceDown=false, bool greyed=false)
         {
             this.IsFaceDown = faceDown;
+            this.IsGreyed = greyed;
             this.Card = aCard;
             InitializeComponent();
         }
@@ -111,13 +121,28 @@ namespace Tarneeb
             }
             else
             { 
-                // Determine the suit.
-                switch (aCard.Suit)
+                // Check if card is greyed version.  
+                if (this.IsGreyed == true)
                 {
-                    case Enums.CardSuit.Club: resourceName += "c_"; break;
-                    case Enums.CardSuit.Diamond: resourceName += "d_"; break;
-                    case Enums.CardSuit.Heart: resourceName += "h_"; break;
-                    case Enums.CardSuit.Spades: resourceName += "s_"; break;
+                    // Determine the suit.
+                    switch (aCard.Suit)
+                    {
+                        case Enums.CardSuit.Club: resourceName += "cg_"; break;
+                        case Enums.CardSuit.Diamond: resourceName += "dg_"; break;
+                        case Enums.CardSuit.Heart: resourceName += "hg_"; break;
+                        case Enums.CardSuit.Spades: resourceName += "sg_"; break;
+                    }
+                }
+                else
+                {
+                    // Determine the suit.
+                    switch (aCard.Suit)
+                    {
+                        case Enums.CardSuit.Club: resourceName += "c_"; break;
+                        case Enums.CardSuit.Diamond: resourceName += "d_"; break;
+                        case Enums.CardSuit.Heart: resourceName += "h_"; break;
+                        case Enums.CardSuit.Spades: resourceName += "s_"; break;
+                    }
                 }
 
                 // Determine the number.
