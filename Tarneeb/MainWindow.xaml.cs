@@ -338,6 +338,7 @@ namespace Tarneeb
         {
             // -1 is a pass
             string bid = e.Bid == -1 ? "passed" : "bid " + e.Bid.ToString();
+            this.Messages.Text += $"{e.Player.PlayerName} {bid}\n";
         }
 
         /// <summary>
@@ -404,11 +405,13 @@ namespace Tarneeb
         /// <see cref="GameActionEventArgs"/>
         private void OnRoundComplete(GameActionEventArgs e)
         {
+            ClearMessages();
             // Update the trick scores
             this.Team0TrickWins.Text = e.BidScores[0].ToString();
             this.Team1TrickWins.Text = e.BidScores[1].ToString();
 
             MessageBox.Show($"{e.Player.PlayerName} won the trick!");
+            AddMessage($"{e.Player.PlayerName} won the last trick.");
 
             // Clear the cards played in the round, and the names
             foreach (WrapPanel holder in this._cardsInRoundHolders) 
@@ -549,6 +552,17 @@ namespace Tarneeb
         }
         #endregion
 
+        #region Messages
+        private void ClearMessages()
+        {
+            this.Messages.Text = "";
+        }
+        private void AddMessage(string text)
+        {
+            this.Messages.Text += text + "\n";
+        }
+        #endregion
+
         /// <summary>
         /// Update the name plate colour of the player who is currently playing.
         /// </summary>
@@ -579,11 +593,9 @@ namespace Tarneeb
             }
 
             // Get the user's desired difficulty level
-            //difficultySelect.ShowDialog();
-
-            this.DialogBoxTitle.Text = "Please select a difficulty level:";
-            var difficultySelect = new DifficultySelectUserControl();
-            this.DialogBoxControl.Children.Add(difficultySelect);
+            var difficultySelect = new DifficultySelectWindow();
+            difficultySelect.Topmost = true;
+            difficultySelect.ShowDialog();
 
             // TODO: await for one of the button is clicked, then continue.
 
