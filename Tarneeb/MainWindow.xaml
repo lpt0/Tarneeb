@@ -159,9 +159,23 @@
                     </Grid>
                 </Grid>
 
+                <Border Grid.Row="2"
+                        Grid.RowSpan="2"
+                        BorderThickness="1"
+                        BorderBrush="Black"
+                        Background="White"
+                        Margin="70 20 70 0">
+                    <TextBlock x:Name="Messages"
+                               FontSize="24"
+                               HorizontalAlignment="Center"
+                               FontWeight="Bold">
+                                    
+                    </TextBlock>
+                </Border>
+
                 <Grid Grid.Row="4"
                       x:Name="FirstHolder"
-                      Margin="200 25 200 0"
+                      Margin="220 25 220 0"
                       Background="LightGray">
 
                     <Grid.RowDefinitions>
@@ -226,9 +240,9 @@
         </Grid>
         <Grid Height="40"
               x:Name="ThirdHolder"
-              Width="240"
+              Width="200"
               Canvas.Top="10"
-              Canvas.Left="480"
+              Canvas.Left="498"
               Background="LightGray">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
