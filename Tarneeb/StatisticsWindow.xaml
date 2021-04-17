@@ -18,25 +18,34 @@
         Loaded="OnWindowLoad"
         MinHeight="450" MinWidth="800">
     <Grid Background="WhiteSmoke">
-        <StackPanel Orientation="Vertical">
-            <Label 
+        <TabControl>
+            <TabItem Name="tabStats" Header="Statistics" ToolTip="View stats about the games played.">
+                <StackPanel Orientation="Vertical">
+                    <Label x:Name="lblGamesPlayed">Number of games played:</Label>
+                    <Label x:Name="lblWins">Wins: </Label>
+                    <Label x:Name="lblLosses">Losses:</Label>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name="tabLogs" Header="Logs" ToolTip="View game logs.">
+                <Grid>
+                    <StackPanel Orientation="Vertical" x:Name="stpLogsHolder">
+                        <Label 
                 FontFamily="Segoe UI SemiLight"
                 FontSize="24"
                 HorizontalAlignment="Center"
             >
-                Game Logs
-            </Label>
+                            Game Logs
+                        </Label>
 
-            <!-- Stack panel for the game selector -->
-            <StackPanel x:Name="stpGames" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label HorizontalContentAlignment="Center">Games:</Label>
-                <ComboBox x:Name="cmbGames" SelectionChanged="OnGameSelected" Width="210"></ComboBox>
-            </StackPanel>
-        </StackPanel>
+                        <!-- Stack panel for the game selector -->
+                        <StackPanel x:Name="stpGames" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label HorizontalContentAlignment="Center">Games:</Label>
+                            <ComboBox x:Name="cmbGames" SelectionChanged="OnGameSelected" Width="210"></ComboBox>
+                        </StackPanel>
+                    </StackPanel>
 
-        <!-- TODO: Fix grid scrolling; data grids with bigger row sizes break it -->
-        <Grid Margin="80">
-            <Label 
+                    <Grid Margin="80">
+                        <Label 
                 x:Name="lblNoGames" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center"
@@ -44,17 +53,21 @@
                 FontFamily="Segoe UI SemiLight"
                 Visibility="Hidden"
             >
-                There are no games to view logs for. Please play a game and come back!
-            </Label>
-                <!-- Creating a data grid and turning AutoGenerateColumns to false so we can manually name columns -->
-            <DataGrid Name="logsGrid" AutoGenerateColumns="False" Visibility="Hidden">
-                <DataGrid.Columns>
-                    <!-- Need to be set to OneWay so cells cannot be edited -->
-                    <DataGridTextColumn Header="Date and Time" Width="0.275*" Binding="{Binding DateTime, Mode = OneWay}"/>
-                    <DataGridTextColumn Header="Action" Width="1*"  Binding="{Binding Action, Mode = OneWay}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
+                            There are no games to view logs for. Please play a game and come back!
+                        </Label>
+                        <!-- Creating a data grid and turning AutoGenerateColumns to false so we can manually name columns -->
+                        <DataGrid Name="logsGrid" AutoGenerateColumns="False" Visibility="Hidden">
+                            <DataGrid.Columns>
+                                <!-- Need to be set to OneWay so cells cannot be edited -->
+                                <DataGridTextColumn Header="Date and Time" Width="0.275*" Binding="{Binding DateTime, Mode = OneWay}"/>
+                                <DataGridTextColumn Header="Action" Width="1*"  Binding="{Binding Action, Mode = OneWay}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
         <Button
             Height="50"
             Width="250"

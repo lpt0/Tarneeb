@@ -33,8 +33,15 @@ namespace Tarneeb
         /// <param name="e"></param>
         private void OnWindowLoad(object sender, EventArgs e)
         {
-            // Start a database connection, load the games, and populate the combo box
+            // Start a database connection
             Database.Connect();
+
+            // Load statistics
+            this.lblGamesPlayed.Content = $"Number of games played: {Database.GetLatestGameID()}";
+            this.lblWins.Content = $"Wins: {Database.GetOutcomeCount(Game.Outcome.WIN)}";
+            this.lblLosses.Content = $"Losses: {Database.GetOutcomeCount(Game.Outcome.LOSS)}";
+
+            // Load the games, and populate the combo box for logs
             var games = Database.GetGames();
 
             // If there are no games to choose from...

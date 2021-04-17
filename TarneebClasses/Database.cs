@@ -121,7 +121,13 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// Statement to get statistics data from the database, for the 
         /// given outcome.
         /// </summary>
-        private const string STMT_GET_STATS = "SELECT COUNT(*) FROM Statistics WHERE Outcome = @Outcome";
+        private const string STMT_GET_STATS = "SELECT COUNT(*) FROM Stats WHERE Outcome = @Outcome";
+
+        /// <summary>
+        /// Statement to get the ID for the most recent game, from the logs table
+        /// This is ALL games played, not just completed games.
+        /// </summary>
+        private const string STMT_GET_LATEST_GAME = "SELECT TOP(1) GameID FROM Logs ORDER BY GameID DESC;";
         #endregion
 
         #region Constants
@@ -307,6 +313,17 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
             cmdSelect.Parameters.AddWithValue("@Outcome", (int)outcome);
 
             // Return the count.
+            return (int)cmdSelect.ExecuteScalar();
+        }
+
+        /// <summary>
+        /// Get the identifier for the most recent game played.
+        /// Useful for finding the number of games played.
+        /// </summary>
+        /// <returns>The most recent game identifier.</returns>
+        public static int GetLatestGameID()
+        {
+            var cmdSelect = new SqlCommand(STMT_GET_LATEST_GAME, _connection);
             return (int)cmdSelect.ExecuteScalar();
         }
         #endregion
