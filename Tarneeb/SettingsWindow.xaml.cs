@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TarneebClasses;
 
 namespace Tarneeb
 {
@@ -45,6 +46,16 @@ namespace Tarneeb
         }
 
         /// <summary>
+        /// Reset button clicked; reset the database to clear all logs and stats.
+        /// </summary>
+        private void OnResetClicked(object sender, EventArgs e)
+        {
+            // Call the database reset method
+            Database.Reset();
+            MessageBox.Show("Data has been reset.");
+        }
+
+        /// <summary>
         /// Executes when the save and exit button is clicked.
         /// Validates and save settings, then closes this window.
         /// </summary>
@@ -60,7 +71,6 @@ namespace Tarneeb
                 MessageBox.Show("Max score must be a number.");
                 isValid = false;
             }
-            // TODO: Should max score > 0?
 
             if (playerName.Length == 0)
             {

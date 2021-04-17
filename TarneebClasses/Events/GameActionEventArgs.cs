@@ -10,7 +10,6 @@ namespace TarneebClasses.Events
 {
     /// <summary>
     /// Event arguments for when a game action has taken place.
-    /// TODO: Could be renamed to "GameStateChange"
     /// </summary>
     /// <see cref="EventArgs" />
     public class GameActionEventArgs : EventArgs

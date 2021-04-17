@@ -46,7 +46,6 @@ namespace Tarneeb
 
         /// <summary>
         /// Dictionary of paths to images for each card suit.
-        /// TODO: const
         /// </summary>
         private static Dictionary<Enums.CardSuit, string> SUIT_IMAGES = new Dictionary<Enums.CardSuit, string>()
         {
@@ -144,7 +143,7 @@ namespace Tarneeb
             UpdateAllHands();
             UpdateCurrentPlayer(e.Player.PlayerId);
 
-            this._isPlayerTurn = (e.Player.PlayerId == this._userPlayer.PlayerId); // TODO: Fake player
+            this._isPlayerTurn = (e.Player.PlayerId == this._userPlayer.PlayerId); 
             if (this._isPlayerTurn)
             {
                 // Perform actions
@@ -280,16 +279,15 @@ namespace Tarneeb
                 cardControls[cardIdx] = cc;
             }
 
-            // Create controls for the remaining, invalid cards - all face down, with no click handler
+            // Create controls for the remaining, invalid cards - all greyed out, with no click handler
             for (; cardIdx < cardControls.Length; cardIdx++)
             {
-                cardControls[cardIdx] = new CardControl(DEFAULT_CARD, true);
+                cardControls[cardIdx] = new CardControl(DEFAULT_CARD, false, true);
                 // No click handler for this card
             }
 
             // Update the player's cards using the array of CardControls
             UpdatePlayerHand(0, cardControls);
-            //UpdatePlayerHand(this._userPlayer); // TODO
         }
 
         private void PlayerTurnTarneeb()

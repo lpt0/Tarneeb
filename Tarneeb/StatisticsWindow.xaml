@@ -50,7 +50,7 @@
             <DataGrid Name="logsGrid" AutoGenerateColumns="False" Visibility="Hidden">
                 <DataGrid.Columns>
                     <!-- Need to be set to OneWay so cells cannot be edited -->
-                    <DataGridTextColumn Header="Date and Time" Width="0.25*" Binding="{Binding DateTime, Mode = OneWay}"/>
+                    <DataGridTextColumn Header="Date and Time" Width="0.275*" Binding="{Binding DateTime, Mode = OneWay}"/>
                     <DataGridTextColumn Header="Action" Width="1*"  Binding="{Binding Action, Mode = OneWay}"/>
                 </DataGrid.Columns>
             </DataGrid>

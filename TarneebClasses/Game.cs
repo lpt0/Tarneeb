@@ -128,7 +128,7 @@ namespace TarneebClasses
         /// <summary>
         /// TODO: Counts number of bids placed
         /// </summary>
-        private int bidCount = 0;
+        private int _bidCount = 0;
 
         /// <summary>
         /// The player that gets to make the next move (trick, bid, etc).
@@ -143,22 +143,22 @@ namespace TarneebClasses
         /// <summary>
         /// The score for the current bid.
         /// </summary>
-        private int[] bidScore = new int[NUMBER_OF_TEAMS];
+        private readonly int[] bidScore = new int[NUMBER_OF_TEAMS];
 
         /// <summary>
         /// The overall team score, across all bids.
         /// </summary>
-        private int[] teamScore = new int[NUMBER_OF_TEAMS];
+        private readonly int[] teamScore = new int[NUMBER_OF_TEAMS];
 
         /// <summary>
         /// Internal list of bids for this game.
         /// </summary>
-        private List<Bid> _bids;
+        private readonly List<Bid> _bids;
 
         /// <summary>
         /// Internal list of rounds for this game.
         /// </summary>
-        private List<Round> _tricks;
+        private readonly List<Round> _tricks;
         #endregion
         #region Public fields
         /// <summary>
@@ -305,7 +305,7 @@ namespace TarneebClasses
 
             // If the bid was invalid, the next bidder is the same player
             // And if it is invalid, don't log the bid, and don't send the event out
-            if (this._currentPlayer != nextPlayer || bidCount >= 3) // TODO: Need to find a new way of validation
+            if (this._currentPlayer != nextPlayer || _bidCount >= 3) // TODO: Need to find a new way of validation
             {
                 // Create the log
                 string action = $"{this._currentPlayer.PlayerName} ";
@@ -319,7 +319,7 @@ namespace TarneebClasses
                 }
                 this.AddLog(action);
                 FireGameActionEvent(new GameActionEventArgs() { Player = this._currentPlayer, Bid = args.Bid });
-                bidCount++;
+                _bidCount++;
             }
 
             this._currentPlayer = nextPlayer;
@@ -651,14 +651,25 @@ namespace TarneebClasses
 
                 case State.BID_COMPLETE:
                     {
-                        //TODO: Scoring fix
-                        Enums.Team winningTeam =
-                            this.bidScore[(int)Enums.Team.Blue] > this.bidScore[(int)Enums.Team.Red]
-                            ? Enums.Team.Blue
-                            : Enums.Team.Red;
-                        //TODO: Elaborate on XOR 
+                        Enums.Team winningTeam;
+                        Enums.Team playerTeam = currentBid.WinningPlayer.TeamNumber;
+                        // If the player's team reached the bidded value...
+                        if (this.bidScore[(int)playerTeam] >= currentBid.HighestBid)
+                        {
+                            // ...then they win
+                            winningTeam = playerTeam;
+                        }
+                        // Otherwise, the team did NOT reach the bid value
+                        else
+                        {
+                            /* ...so they lose.
+                             * The XOR acts as a NOT on the player team
+                             */
+                            winningTeam = (Enums.Team)((int)playerTeam ^ 1);
+                        }
+                        // And the losing team is the opposite of the winner.
                         Enums.Team losingTeam = (Enums.Team)((int)winningTeam ^ 1);
-                        int score = currentBid.HighestBid;
+                        int score = 13; // Score is always 13, win condition depends on if bid was reached
 
                         // Update team scores
                         this.teamScore[(int)winningTeam] += score;

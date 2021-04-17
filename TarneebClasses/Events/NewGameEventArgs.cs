@@ -10,7 +10,6 @@ namespace TarneebClasses.Events
 {
     /// <summary>
     /// Event arguments for whenever a new game is started.
-    /// TODO: Placeholder class
     /// </summary>
     /// <see cref="EventArgs" />
     public class NewGameEventArgs : EventArgs
