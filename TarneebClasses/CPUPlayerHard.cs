@@ -83,6 +83,7 @@ namespace TarneebClasses
         /// <summary>
         /// Create a new Hard CPU player.
         /// </summary>
+        /// <param name="game">The game to use to listen for events.</param>
         /// <param name="playerName">The name of the player.</param>
         /// <param name="playerId">The player's ID.</param>
         /// <param name="teamNumber">The player's team number.</param>
@@ -301,7 +302,6 @@ namespace TarneebClasses
                     }
                 }
                 // The AI knows it winning.
-                // TODO: The AI can decide whether or not it should go first versus his teammate
                 else
                 {
                     // No special action if it wants to take lead, pass if team is winning.
