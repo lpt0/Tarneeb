@@ -57,7 +57,6 @@ namespace Tarneeb
 
         /// <summary>
         /// A default card, used for cards that need to be face down.
-        /// TODO: Change to CardControl
         /// </summary>
         private static Card DEFAULT_CARD = new Card(Enums.CardNumber.Two, Enums.CardSuit.Spades);
         #endregion
@@ -189,7 +188,7 @@ namespace Tarneeb
                     break;
                 case Game.State.BID_WON:
                     this.OnBidWon(e);
-                    this.OnTarneebSuit(e); //TODO
+                    this.OnTarneebSuit(e);
                     break;
                 case Game.State.TARNEEB_SUIT:
                     this.OnTarneebSuit(e);
@@ -261,29 +260,41 @@ namespace Tarneeb
 
         private void PlayerTurnCard()
         {
-            // TODO: Enforce leading suit
             // Get the valid cards that a player can play
             List<Card> validCards = this._game.GetValidCards(this._userPlayer);
+
+            // And all of the cards
+            Card[] allCards = new Card[this._userPlayer.HandList.Cards.Count];
+            this._userPlayer.HandList.Cards.CopyTo(allCards);
+
 
             // Create card controls for the valid cards, which should be face up
             CardControl[] cardControls = new CardControl[this._userPlayer.HandList.Cards.Count];
             int cardIdx = 0;
-            for (; cardIdx < validCards.Count; cardIdx++)
+            foreach (Card c in validCards)
             {
-                Card c = validCards[cardIdx];
                 CardControl cc = new CardControl(c, false);
 
                 // Set up event handlers for the valid cards
                 cc.Click += OnCardClicked;
 
                 cardControls[cardIdx] = cc;
+
+                // Increment card index
+                cardIdx++;
             }
 
             // Create controls for the remaining, invalid cards - all greyed out, with no click handler
-            for (; cardIdx < cardControls.Length; cardIdx++)
+            foreach (Card c in allCards)
             {
-                cardControls[cardIdx] = new CardControl(DEFAULT_CARD, false, true);
-                // No click handler for this card
+                if (validCards.IndexOf(c) == -1)
+                {
+                    // Not in valid cards; needs to be grayed out
+                    cardControls[cardIdx] = new CardControl(c, false, true);
+                    // No click handler for this card
+
+                    cardIdx++;
+                }
             }
 
             // Update the player's cards using the array of CardControls
@@ -342,7 +353,6 @@ namespace Tarneeb
         /// <summary>
         /// The highest bid has been decided.
         /// The relevant text element will be set.
-        /// TODO: Bid decided instead of bid won
         /// </summary>
         /// <param name="e">The event arguments.</param>
         /// <see cref="GameActionEventArgs"/>
@@ -435,19 +445,6 @@ namespace Tarneeb
 
         private void OnBidComplete(GameActionEventArgs e)
         {
-            // Update the player's hand
-            //TODO
-
-            // Update everyone else's hands
-            // TODO: Prevent leaks in Game class
-            //foreach (Player p in this._game.Players)
-            //{
-            //    UpdateNonPlayerHand(
-            //        Array.IndexOf(this._game.Players, p),
-            //        p.HandList
-            //    );
-            //}
-
             // TODO: State who won the bid in messages
             MessageBox.Show(
                 $"{e.WinningTeam} won the bid!\n"
@@ -465,15 +462,19 @@ namespace Tarneeb
 
         private void OnGameDone(GameActionEventArgs e)
         {
+            string message = "\nYou will now be returned to the title screen.";
             if (e.WinningTeam == this._userPlayer.TeamNumber)
             {
-                MessageBox.Show("You won!");
+                message = "You won!" + message;
             }
             else
             {
-                MessageBox.Show("You lost.");
+                message = "You lost." + message;
             }
-            throw new Exception("Not implemented");
+            // Show the win/loss message, then show the title screen and close this window.
+            MessageBox.Show(message);
+            (new TitleScreen()).Show();
+            this.Close();
         }
         #endregion
 
@@ -510,7 +511,6 @@ namespace Tarneeb
             CardControl[] cards = new CardControl[numberOfCards];
             for (int cardIdx = 0; cardIdx < numberOfCards; cardIdx++)
             {
-                // TODO: Enforce leading suit
                 cards[cardIdx] = new CardControl(fakeCard, true);
             }
             UpdatePlayerHand(Array.IndexOf(this._game.Players, player), cards);
@@ -583,6 +583,8 @@ namespace Tarneeb
         /// </summary>
         private void OnWindowLoad(object sender, RoutedEventArgs e)
         {
+            this.MaxScore.Text = Properties.Settings.Default.MaxScore.ToString() ?? "31";
+
             // If no name is declared in settings, prompt the user for one, and save the change
             if (Properties.Settings.Default.PlayerName == "")
             {
@@ -615,15 +617,18 @@ namespace Tarneeb
             this._game.PlayerTurnEvent += OnPlayerTurn;
             this._game.NotificationEvent += OnNotification;
 
-            /* Initialize game with player name from settings, 
-             * and this program's app data path for the database. TODO
-             */
+            // Initialize game with player name from settings
             this._userPlayer = this._game.Initialize(
                 Properties.Settings.Default.PlayerName 
             );
 
-            // Use the log observable collection, to be able to see logs.
-            //this.Logs.ItemsSource = this._game.Logs;
+            /* If the game ID is a multiple of 3, then the logs were cleared;
+             * show a message notifying the user of this.
+             */
+            if (this._game.ID % 3 == 0)
+            {
+                MessageBox.Show("Logs were cleared.\nLogs are cleared every 3 games.\nNo other data was deleted.");
+            }
 
             this.MyPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_userPlayer.TeamNumber.ToString());
             this.TopPlayerColor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_userPlayer.TeamNumber.ToString());

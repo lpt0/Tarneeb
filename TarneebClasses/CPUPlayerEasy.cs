@@ -221,8 +221,6 @@ namespace TarneebClasses
                         Card card = CalculateAiCard();
                         this.PerformAction(new Events.PlayerActionEventArgs() { CardPlayed = card });
                         break;
-                    default:
-                        throw new Exception("Unknown state!");
                 }
             }
         }
