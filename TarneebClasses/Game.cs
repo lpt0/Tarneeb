@@ -29,12 +29,7 @@ namespace TarneebClasses
             /// <summary>
             /// The player lost the game.
             /// </summary>
-            LOSS,
-
-            /// <summary>
-            /// The game ended in a tie.
-            /// </summary>
-            TIE
+            LOSS
         }
 
         /// <summary>
@@ -174,14 +169,8 @@ namespace TarneebClasses
 
         /// <summary>
         /// The players of the current game.
-        /// TODO: Fake players for network
         /// </summary>
         public Player[] Players { get; }
-
-        /// <summary>
-        /// The game's deck.
-        /// </summary>
-        //public Deck Deck { get; } //TODO
 
         /// <summary>
         /// The cards currently in play for the current trick.
@@ -211,20 +200,19 @@ namespace TarneebClasses
         public Difficulty DifficultyLevel { get; private set; }
 
         /// <summary>
-        /// TODO
+        /// Tricks/rounds in the game.
         /// </summary>
-        public List<Round> Tricks { get => this._tricks; } //TODO
+        public List<Round> Tricks { get => this._tricks; }
 
         /// <summary>
         /// Bids placed in this game.
         /// </summary>
-        public List<Bid> Bids { get => this._bids; } // TODO
+        public List<Bid> Bids { get => this._bids; }
 
         /// <summary>
-        /// Game logs; TODO
-        /// TODO: https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.readonlyobservablecollection-1?view=net-5.0
+        /// Game logs.
         /// </summary>
-        public ObservableCollection<Log> Logs { get; private set; } //TODO: Public get and private set, and block Add access for get
+        public ObservableCollection<Log> Logs { get; private set; }
         #endregion
         #endregion
 
@@ -395,7 +383,6 @@ namespace TarneebClasses
                             break;
 
                         case Game.State.BID_WON:
-                            // TODO: Tarneeb suit should be in own stage
                             this.OnPlayerTarneeb(args);
                             break;
 
@@ -429,7 +416,7 @@ namespace TarneebClasses
             this.Players = new Player[NUMBER_OF_PLAYERS];
             this.CurrentCards = new Card[NUMBER_OF_PLAYERS];
             this.CurrentPlayers = new Player[NUMBER_OF_PLAYERS];
-            this.Logs = new ObservableCollection<Log>(); // TODO
+            this.Logs = new ObservableCollection<Log>();
             this._bids = new List<Bid>();
             this._tricks = new List<Round>();
             this.CurrentState = State.NEW_GAME;
@@ -542,8 +529,8 @@ namespace TarneebClasses
             }
 
             this.CurrentState = State.BID_STAGE;
-            // TODO: Dealer?
-            // For now, pick a random player as dealer
+
+            // Pick a random player as dealer
             this._currentPlayer = this.Players[new Random().Next(3)];
             
             // Start a new bid
@@ -603,8 +590,7 @@ namespace TarneebClasses
                     }
                     break;
                 case State.TRICK_COMPLETE:
-                    //TODO: Scoping
-                    {
+                    { // Scope control
                         // Perform end of round tasks
                         Round round = new Round(
                             currentBid.TarneebSuit,
@@ -615,11 +601,12 @@ namespace TarneebClasses
                         );
                         this.TrickCounter++;
 
-                        Card winningCard = round.WinCard(round); // TODO
+                        /* Determine round winning card, and get the player who played that
+                         * That player wins the trick.
+                         */
+                        Card winningCard = round.WinCard(round);
                         int winningCardIdx = Array.IndexOf(this.CurrentCards, winningCard);
                         Player winner = this.CurrentPlayers[winningCardIdx];
-
-                        // TODO: Get winner
 
                         // Increment number of wins for their team
                         this.bidScore[(int)winner.TeamNumber]++;
@@ -681,7 +668,6 @@ namespace TarneebClasses
 
                         this.TrickCounter = 0;
 
-                        // TODO: Log bid completion
                         this.AddLog($"{winningTeam} has won the bid with a score of {score}.");
 
                         // Fire game action
@@ -725,7 +711,6 @@ namespace TarneebClasses
                             : Enums.Team.Red;
                         Enums.Team losingTeam = (Enums.Team)((int)winningTeam ^ 1);
 
-                        // TODO: Log game competion
                         // TODO: Game outcome
                         // Did the player win?
                         if (winningTeam == this.Players[0].TeamNumber)
@@ -737,7 +722,8 @@ namespace TarneebClasses
                         {
                             Database.InsertOutcome(DateTime.Now, this.ID, Outcome.LOSS);
                         }
-                        // TODO: What is a tie?
+                        this.AddLog($"Team {winningTeam} won the game.");
+
                         FireGameActionEvent(new GameActionEventArgs()
                             {
                                 WinningTeam = winningTeam,
@@ -859,8 +845,6 @@ namespace TarneebClasses
         /// <returns>The valid cards.</returns>
         public List<Card> GetValidCards(Player player)
         {
-            // TODO: If no card is present this might error
-            // TODO: Fix comment ^
             Enums.CardSuit? leadingSuit = this.CurrentCards[0]?.Suit;
             Enums.CardSuit? tarneebSuit = this.Bids[this.Bids.Count - 1]?.TarneebSuit;
 

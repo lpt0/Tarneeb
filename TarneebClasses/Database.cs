@@ -139,7 +139,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// <summary>
         /// The location of the default database file.
         /// </summary>
-        private const string DB_PATH = "../../TarneebData.mdf";
+        private const string DB_PATH = "./TarneebData.mdf";
         #endregion
 
         #region Variables
@@ -324,7 +324,8 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         public static int GetLatestGameID()
         {
             var cmdSelect = new SqlCommand(STMT_GET_LATEST_GAME, _connection);
-            return (int)cmdSelect.ExecuteScalar();
+            var result = cmdSelect.ExecuteScalar();
+            return (result == null ? 0 : (int)result);
         }
         #endregion
 
