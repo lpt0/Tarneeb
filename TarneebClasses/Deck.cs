@@ -174,7 +174,6 @@ namespace TarneebClasses
             // Check position is reasonable.
             if (position > this.Cards.Count || position < 0)
             {
-                // TODO: We could throw error if needed.
                 return null;
             }
 

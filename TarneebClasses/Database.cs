@@ -378,14 +378,8 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
             cmdInsert.Parameters["@Action"].Value = log.Action;
             cmdInsert.Parameters["@GameID"].Value = log.GameID;
 
-            // Execute the command; return value must be 1.
-            // If it is not 1, there has been an error TODO.
-            if (cmdInsert.ExecuteNonQuery() != 1)
-            {
-
-            }
-
-            // TODO: Catch errors
+            // Execute the command
+            cmdInsert.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -406,14 +400,8 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
             cmdInsert.Parameters["@GameID"].Value = gameId;
             cmdInsert.Parameters["@Outcome"].Value = (int)outcome;
 
-            // Execute the command; return value must be 1.
-            // If it is not 1, there has been an error TODO.
-            if (cmdInsert.ExecuteNonQuery() != 1)
-            {
-
-            }
-
-            // TODO: Catch errors
+            // Execute the query
+            cmdInsert.ExecuteNonQuery();
         }
         #endregion
     }

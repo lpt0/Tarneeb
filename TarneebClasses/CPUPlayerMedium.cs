@@ -260,8 +260,6 @@ namespace TarneebClasses
                 // The AI's Team is not winning, therefore motivated to be the bid winner.
                 if (!isWinningCardTeamMine)
                 {
-                    // TODO: consider Cards in hand.
-
                     // Check if the AI wants to throw
                     if (personalitySeed.Next(0, 10) > MIN_AI_BID_THROW)
                     {
@@ -288,7 +286,6 @@ namespace TarneebClasses
                     }
                 }
                 // The AI knows it winning.
-                // TODO: The AI can decide whether or not it should go first versus his teammate
                 else
                 {
                     // No special action if it wants to take lead, pass if team is winning.

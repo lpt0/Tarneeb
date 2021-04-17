@@ -121,7 +121,7 @@ namespace TarneebClasses
         #region Variables/fields
         #region Internal variables
         /// <summary>
-        /// TODO: Counts number of bids placed
+        /// Number of bids placed.
         /// </summary>
         private int _bidCount = 0;
 
@@ -293,7 +293,7 @@ namespace TarneebClasses
 
             // If the bid was invalid, the next bidder is the same player
             // And if it is invalid, don't log the bid, and don't send the event out
-            if (this._currentPlayer != nextPlayer || _bidCount >= 3) // TODO: Need to find a new way of validation
+            if (this._currentPlayer != nextPlayer || _bidCount >= 3) 
             {
                 // Create the log
                 string action = $"{this._currentPlayer.PlayerName} ";
@@ -711,7 +711,6 @@ namespace TarneebClasses
                             : Enums.Team.Red;
                         Enums.Team losingTeam = (Enums.Team)((int)winningTeam ^ 1);
 
-                        // TODO: Game outcome
                         // Did the player win?
                         if (winningTeam == this.Players[0].TeamNumber)
                         {
@@ -811,7 +810,7 @@ namespace TarneebClasses
             } while (++handsDealt != NUMBER_OF_PLAYERS);
 
             // Player to the right of the dealer goes first
-            this._currentPlayer = this.NextPlayer(dealer); //TODO: What about bid winner?
+            this._currentPlayer = this.NextPlayer(dealer); 
         }
 
         /// <summary>
@@ -866,7 +865,6 @@ namespace TarneebClasses
                     validCards = player.HandList.Cards;
                 }
 
-                // TODO: Sort
                 return validCards;
             }
         }

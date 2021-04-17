@@ -204,7 +204,7 @@ namespace Tarneeb
                     break;
                 case Game.State.DONE:
                     this.OnGameDone(e);
-                    break; //TODO
+                    break; 
             }
         }
 
@@ -445,7 +445,7 @@ namespace Tarneeb
 
         private void OnBidComplete(GameActionEventArgs e)
         {
-            // TODO: State who won the bid in messages
+            // Alert the player to the bid winner.
             MessageBox.Show(
                 $"{e.WinningTeam} won the bid!\n"
                 + $"{e.WinningTeam} gains {e.Score} points.\n"
@@ -596,8 +596,6 @@ namespace Tarneeb
             var difficultySelect = new DifficultySelectWindow();
             difficultySelect.Topmost = true;
             difficultySelect.ShowDialog();
-
-            // TODO: await for one of the button is clicked, then continue.
 
             // Set needed variables
             this._cardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
