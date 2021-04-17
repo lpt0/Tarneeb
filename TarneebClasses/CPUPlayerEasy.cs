@@ -80,6 +80,7 @@ namespace TarneebClasses
         /// <summary>
         /// Create a new Easy CPU player.
         /// </summary>
+        /// <param name="game">The game to use to listen for events.</param>
         /// <param name="playerName">The name of the player.</param>
         /// <param name="playerId">The player's ID.</param>
         /// <param name="teamNumber">The player's team number.</param>

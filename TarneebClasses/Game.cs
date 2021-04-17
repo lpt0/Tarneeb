@@ -244,7 +244,6 @@ namespace TarneebClasses
         /// <summary>
         /// Fire a new game event.
         /// </summary>
-        /// <param name="args">The arguments for the event.</param>
         public void FireNewGameEvent()
         {
             this.AddLog($"An {this.DifficultyLevel.ToString().ToLower()} game was started.");

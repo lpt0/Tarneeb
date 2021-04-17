@@ -385,6 +385,7 @@ CREATE TABLE Games (GameID INT PRIMARY KEY IDENTITY(1, 1), Start DATETIME);");
         /// <summary>
         /// Insert a game outcome into the stats table.
         /// </summary>
+        /// <param name="gameId">The identifier for the game that the outcome is associated with.</param>
         /// <param name="dateTime">The date and time the outcome occurred.</param>
         /// <param name="outcome">The outcome (win/loss/tie)</param>
         public static void InsertOutcome(DateTime dateTime, int gameId, Game.Outcome outcome)

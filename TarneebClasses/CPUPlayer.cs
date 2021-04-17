@@ -23,6 +23,7 @@ namespace TarneebClasses
         /// <summary>
         /// Create a new CPU player.
         /// </summary>
+        /// <param name="game">The game to use to listen for events.</param>
         /// <param name="playerName">The name of the player.</param>
         /// <param name="playerId">The player's ID.</param>
         /// <param name="teamNumber">The player's team number.</param>
@@ -37,6 +38,11 @@ namespace TarneebClasses
         #endregion
 
         #region Event handlers
+        /// <summary>
+        /// Handles logic for the player's turn.
+        /// </summary>
+        /// <param name="sender">The game.</param>
+        /// <param name="args">Event arguments. Only contains the Player object.</param>
         public void OnPlayerTurn(object sender, Events.PlayerTurnEventArgs args)
         {
             // Sender is the Game object; logs can be read from there

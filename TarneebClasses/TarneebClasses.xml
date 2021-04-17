@@ -1,0 +1,1341 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TarneebClasses</name>
+    </assembly>
+    <members>
+        <member name="T:TarneebClasses.Bid">
+            <summary>
+            Represents Bidding stage.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Bid.bidValues">
+            <summary>
+            A list of available bidding values.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Bid.MyPlayers">
+            <summary>
+            A list of Players passed in the constructor.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Bid.originalPlayers">
+            <summary>
+            Original players when the Bid object is created.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Bid.WinningPlayer">
+            <summary>
+            Player who wins the bidding stage.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Bid.HighestBid">
+            <summary>
+            The higest bid value.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Bid.TarneebSuit">
+            <summary>
+            The trump suit determined by winning player.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Bid.#ctor(TarneebClasses.Player[])">
+            <summary>
+            Parameterized constructor that takes an array of players.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Bid.Bids(TarneebClasses.Player,System.Int32)">
+            <summary>
+            Bids method to decide the winner of the bid.
+            </summary>
+            <param name="currentPlayer">A Player object.</param>
+            <param name="bid">An int represents their bid.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TarneebClasses.Bid.DecideTarneebSuit(TarneebClasses.Enums.CardSuit)">
+            <summary>
+            The bid winer decides the Tarneeb Suit.
+            </summary>
+            <param name="tarneebSuit">An enum CardSuit.</param>
+        </member>
+        <member name="T:TarneebClasses.Card">
+            <summary>
+            Card class representing individual card of a deck with number and suit.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Card.Number">
+            <summary>
+            Number attribute of type CardNumber.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Card.Suit">
+            <summary>
+            Suit attribute of type CardSuit.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Card.Value">
+            <summary>
+            Card attribute of type int.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Card.#ctor(TarneebClasses.Enums.CardNumber,TarneebClasses.Enums.CardSuit)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="number">A CardNumber enum named number representing card number.</param>
+            <param name="suit">A CardSuit enum named suit representing card suit</param>
+        </member>
+        <member name="M:TarneebClasses.Card.ToString">
+            <summary>
+            ToString() method return a string containing card number and suit.
+            </summary>
+            <returns>A string containing card information.</returns>
+        </member>
+        <member name="T:TarneebClasses.CPUPlayer">
+            <summary>
+            A computer-controlled player.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayer._game">
+            <summary>
+            Reference to the current game.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayer.#ctor(TarneebClasses.Game,System.String,System.Int32,TarneebClasses.Enums.Team,TarneebClasses.Deck)">
+            <summary>
+            Create a new CPU player.
+            </summary>
+            <param name="playerName">The name of the player.</param>
+            <param name="playerId">The player's ID.</param>
+            <param name="teamNumber">The player's team number.</param>
+            <param name="handList">The player's hand.</param>
+        </member>
+        <member name="T:TarneebClasses.CPUPlayerEasy">
+            <summary>
+            CPUPlayerEasy class
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerEasy.highestBid">
+            <summary>
+            Records the highest bid in memory.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerEasy.isHighestBidTeamMine">
+            <summary>
+            Records whether or not this player's team is the bid winning.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerEasy.winningCard">
+            <summary>
+            Winning card of the trick in memory.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerEasy.isWinningCardTeamMine">
+            <summary>
+            Winning Card of the trick belongs to this player's team.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerEasy.trickSuit">
+            <summary>
+            The suit of the current trick being played.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerEasy.tarneebSuit">
+            <summary>
+            The tarneeb suit of the game.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerEasy.personalitySeed">
+            <summary>
+            Seed for Random number generator associated with the AI player.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerEasy.MIN_AI_SAFE_BID">
+            <summary>
+            AI Personality constants used for decision making.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerEasy.game">
+            <summary>
+            The game that this CPU player is a part of.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerEasy.#ctor(TarneebClasses.Game,System.String,System.Int32,TarneebClasses.Enums.Team,TarneebClasses.Deck)">
+            <summary>
+            Create a new Easy CPU player.
+            </summary>
+            <param name="playerName">The name of the player.</param>
+            <param name="playerId">The player's ID.</param>
+            <param name="teamNumber">The player's team number.</param>
+            <param name="handList">The player's hand.</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerEasy.OnGameActionEvent(System.Object,TarneebClasses.Events.GameActionEventArgs)">
+            <summary>
+            Handles GameActionEvent raised by game and updates the player's memory.
+            </summary>
+            <param name="sender">Game</param>
+            <param name="args">Information about the game.</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerEasy.OnPlayerTurn(System.Object,TarneebClasses.Events.PlayerTurnEventArgs)">
+            <summary>
+            On Player event handler.
+            </summary>
+            <param name="sender">Game raising event</param>
+            <param name="args">Event parameters</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerEasy.CalculateAiBid(System.Int32)">
+            <summary>
+            Custom logic for AI to decide what their bid should be. It considers it's constants 
+            and what it gathers from the GameActionEvents it receives.
+            </summary>
+            <param name="currentBid">The current bid to be considered</param>
+            <returns>A bid number</returns>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerEasy.CalculateAiTarneeb">
+            <summary>
+            AI decision making for selecting a tarneeb.
+            This decision is based off of the number of cards the users has of a card suit.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerEasy.CalculateAiCard">
+            <summary>
+            Calculates the best card for the AI to play.
+            </summary>
+            <returns>Card from the HandList</returns>
+        </member>
+        <member name="T:TarneebClasses.CPUPlayerHard">
+            <summary>
+            CPUPlayerHard class
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerHard.highestBid">
+            <summary>
+            Records the highest bid in memory.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerHard.isHighestBidTeamMine">
+            <summary>
+            Records whether or not this player's team is the bid winning.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerHard.winningCard">
+            <summary>
+            Winning card of the trick in memory.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerHard.isWinningCardTeamMine">
+            <summary>
+            Winning Card of the trick belongs to this player's team.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerHard.trickSuit">
+            <summary>
+            The suit of the current trick being played.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerHard.tarneebSuit">
+            <summary>
+            The tarneeb suit of the game.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerHard.personalitySeed">
+            <summary>
+            Seed for Random number generator associated with the AI player.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerHard.MIN_AI_SAFE_BID">
+            <summary>
+            AI Personality constants used for decision making.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerHard.game">
+            <summary>
+            The game that this CPU player is a part of.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerHard.#ctor(TarneebClasses.Game,System.String,System.Int32,TarneebClasses.Enums.Team,TarneebClasses.Deck)">
+            <summary>
+            Create a new Hard CPU player.
+            </summary>
+            <param name="playerName">The name of the player.</param>
+            <param name="playerId">The player's ID.</param>
+            <param name="teamNumber">The player's team number.</param>
+            <param name="handList">The player's hand.</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerHard.OnGameActionEvent(System.Object,TarneebClasses.Events.GameActionEventArgs)">
+            <summary>
+            Handles GameActionEvent raised by game and updates the player's memory.
+            </summary>
+            <param name="sender">Game</param>
+            <param name="args">Information about the game.</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerHard.OnPlayerTurn(System.Object,TarneebClasses.Events.PlayerTurnEventArgs)">
+            <summary>
+            On Player event handler.
+            </summary>
+            <param name="sender">Game raising event</param>
+            <param name="args">Event parameters</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerHard.CalculateAiBid(System.Int32)">
+            <summary>
+            Custom logic for AI to decide what their bid should be. It considers it's constants 
+            and what it gathers from the GameActionEvents it receives.
+            </summary>
+            <param name="currentBid">The current bid to be considered</param>
+            <returns>A bid number</returns>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerHard.CalculateAITarneeb">
+            <summary>
+            AI decision making for selecting a tarneeb.
+            This decision is based off of the number of cards the users has of a card suit.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerHard.CalculateAiCard">
+            <summary>
+            Calculates the best card for the AI to play.
+            </summary>
+            <returns>Card from the HandList</returns>
+        </member>
+        <member name="T:TarneebClasses.CPUPlayerMedium">
+            <summary>
+            CPUPlayerMedium class
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerMedium.highestBid">
+            <summary>
+            Records the highest bid in memory.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerMedium.isHighestBidTeamMine">
+            <summary>
+            Records whether or not this player's team is the bid winning.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerMedium.winningCard">
+            <summary>
+            Winning card of the trick in memory.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerMedium.isWinningCardTeamMine">
+            <summary>
+            Winning Card of the trick belongs to this player's team.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerMedium.trickSuit">
+            <summary>
+            The suit of the current trick being played.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerMedium.tarneebSuit">
+            <summary>
+            The tarneeb suit of the game.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerMedium.personalitySeed">
+            <summary>
+            Seed for Random number generator associated with the AI player.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerMedium.MIN_AI_SAFE_BID">
+            <summary>
+            AI Personality constants used for decision making.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.CPUPlayerMedium.game">
+            <summary>
+            The game that this CPU player is a part of.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerMedium.#ctor(TarneebClasses.Game,System.String,System.Int32,TarneebClasses.Enums.Team,TarneebClasses.Deck)">
+            <summary>
+            Create a new Medium CPU player.
+            </summary>
+            <param name="playerName">The name of the player.</param>
+            <param name="playerId">The player's ID.</param>
+            <param name="teamNumber">The player's team number.</param>
+            <param name="handList">The player's hand.</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerMedium.OnGameActionEvent(System.Object,TarneebClasses.Events.GameActionEventArgs)">
+            <summary>
+            Handles GameActionEvent raised by game and updates the player's memory.
+            </summary>
+            <param name="sender">Game</param>
+            <param name="args">Information about the game.</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerMedium.OnPlayerTurn(System.Object,TarneebClasses.Events.PlayerTurnEventArgs)">
+            <summary>
+            On Player event handler.
+            </summary>
+            <param name="sender">Game raising event</param>
+            <param name="args">Event parameters</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerMedium.CalculateAiBid(System.Int32)">
+            <summary>
+            Custom logic for AI to decide what their bid should be. It considers it's constants 
+            and what it gathers from the GameActionEvents it receives.
+            </summary>
+            <param name="currentBid">The current bid to be considered</param>
+            <returns>A bid number</returns>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerMedium.CalculateAiTarneeb">
+            <summary>
+            AI decision making for selecting a tarneeb.
+            This decision is based off of the number of cards the users has of a card suit.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayerMedium.CalculateAiCard">
+            <summary>
+            Calculates the best card for the AI to play.
+            </summary>
+            <returns>Card from the HandList</returns>
+        </member>
+        <member name="T:TarneebClasses.DatabaseGameEntry">
+            <summary>
+            A row in the Games table.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.DatabaseGameEntry.GameID">
+            <summary>
+            The game identifier.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.DatabaseGameEntry.Start">
+            <summary>
+            The date and time that the game started.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.DatabaseGameEntry.#ctor(System.Int32,System.DateTime)">
+            <summary>
+            Create a new DatabaseGameEntry.
+            </summary>
+            <param name="gameId">The identifier for the game.</param>
+            <param name="start">The date and time that the game started.</param>
+        </member>
+        <member name="M:TarneebClasses.DatabaseGameEntry.ToString">
+            <summary>
+            Get this game entry as a string.
+            </summary>
+            <returns>The game entry in the format of "Game $GameID at $Start"</returns>
+        </member>
+        <member name="T:TarneebClasses.Database">
+            <summary>
+            Provides database functionality, such as storing logs and statistics.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_GET_TABLES">
+            <summary>
+            Used to check if tables exist.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_CREATE_TABLES">
+            <summary>
+            Statement to create all required tables.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_CREATE_INDEXES">
+            <summary>
+            Statement to create any required indexes, to optimize database lookups.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_DROP_TABLES">
+            <summary>
+            Statement to drop all tables.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_DELETE_LOGS">
+            <summary>
+            Statement to delete all rows in the logs table.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_DELETE_GAMES">
+            <summary>
+            Statement to delete old game rows from the games table.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_INSERT_LOG">
+            <summary>
+            Statement to add a log to the logs table.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_INSERT_OUTCOME">
+            <summary>
+            Statement to add a game outcome into the statistics table.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_INSERT_GAME">
+            <summary>
+            Inserts a game into the list of games played.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_GET_LOGS">
+            <summary>
+            Statement to get logs from the database.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_GET_LOGS_FOR_GAME">
+            <summary>
+            Statement to gets logs for a specified game.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_GET_GAMES">
+            <summary>
+            Statement to get all games played.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_GET_STATS">
+            <summary>
+            Statement to get statistics data from the database, for the 
+            given outcome.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.STMT_GET_LATEST_GAME">
+            <summary>
+            Statement to get the ID for the most recent game, from the logs table
+            This is ALL games played, not just completed games.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.CONN_STRING">
+            <summary>
+            The default connection string, without the path to the database.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database.DB_PATH">
+            <summary>
+            The location of the default database file.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Database._connection">
+            <summary>
+            The database connection.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Database.Connect">
+            <summary>
+            Create a connection to the database.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Database.Initialize">
+            <summary>
+            Attempt to initialize the database by creating the required tables.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Database.Drop">
+            <summary>
+            Drop the database tables.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Database.Reset">
+            <summary>
+            Drop and create the required database tables.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Database.Close">
+            <summary>
+            Closes the database connection.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Database.GetGames">
+            <summary>
+            Get games played from the database.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Database.GetLogs">
+            <summary>
+            Get all of the logs in the database.
+            </summary>
+            <returns>Logs for every game played stored in the database.</returns>
+        </member>
+        <member name="M:TarneebClasses.Database.GetLogs(System.Int32)">
+            <summary>
+            Get logs for the specified game.
+            </summary>
+            <param name="gameId">The game to retrieve logs for.</param>
+            <returns>The list of game logs.</returns>
+        </member>
+        <member name="M:TarneebClasses.Database.GetOutcomeCount(TarneebClasses.Game.Outcome)">
+            <summary>
+            Get the number of outcomes for the specified outcome.
+            This is used to find the number of wins or losses.
+            </summary>
+            <param name="outcome">The outcome type.</param>
+            <returns>The number of times this outcome happened.</returns>
+        </member>
+        <member name="M:TarneebClasses.Database.GetLatestGameID">
+            <summary>
+            Get the identifier for the most recent game played.
+            Useful for finding the number of games played.
+            </summary>
+            <returns>The most recent game identifier.</returns>
+        </member>
+        <member name="M:TarneebClasses.Database.InsertGame(System.DateTime)">
+            <summary>
+            Add a new game to the database, and get it's identifier.
+            </summary>
+            <returns>The game ID.</returns>
+        </member>
+        <member name="M:TarneebClasses.Database.InsertLog(TarneebClasses.Log)">
+            <summary>
+            Insert a log into the Logs table.
+            </summary>
+            <param name="log">The log to add.</param>
+        </member>
+        <member name="M:TarneebClasses.Database.InsertOutcome(System.DateTime,System.Int32,TarneebClasses.Game.Outcome)">
+            <summary>
+            Insert a game outcome into the stats table.
+            </summary>
+            <param name="dateTime">The date and time the outcome occurred.</param>
+            <param name="outcome">The outcome (win/loss/tie)</param>
+        </member>
+        <member name="T:TarneebClasses.Deck">
+            <summary>
+            Deck class represents a collection of cards. 
+            
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Deck.CardValues">
+            <summary>
+            Value of each Card. Should probably involve higher class with game
+            logic. This dictionary assigns a integer value to each CardNumber.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Deck.Cards">
+            <summary>
+            List of cards stored in the deck.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Deck.#ctor">
+            <summary>
+            Default Constructor.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Deck.#ctor(TarneebClasses.Deck)">
+            <summary>
+            Parameterized Constructor. Accepts of a Deck to have cards cloned of.
+            </summary>
+            <param name="aDeck">A deck to copy cards from.</param>
+        </member>
+        <member name="M:TarneebClasses.Deck.#ctor(System.Collections.Generic.List{TarneebClasses.Card})">
+            <summary>
+            Parameterized Constructor. Accepts a set of list of Cards.
+            </summary>
+            <param name="aListOfCards">A list of cards to create a deck of.</param>
+        </member>
+        <member name="M:TarneebClasses.Deck.Reset">
+            <summary>
+            Generates a new standard 52 card deck.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Deck.Shuffle">
+            <summary>
+            Shuffles the cards order. Uses Random to generate a new seed for each shuffle.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Deck.Sort">
+            <summary>
+            Sort the cards order value.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Deck.Draw">
+            <summary>
+            Draw returns the first card in the deck.
+            </summary>
+            <returns>Card.</returns>
+        </member>
+        <member name="M:TarneebClasses.Deck.Draw(System.Int32)">
+            <summary>
+            Draw returns a number of cards.
+            </summary>
+            <param name="numberOfCards">The number of Cards</param>
+            <returns>A list of Cards.</returns>
+        </member>
+        <member name="M:TarneebClasses.Deck.Add(TarneebClasses.Card)">
+            <summary>
+            Adds a card to the deck.
+            </summary>
+            <param name="aCard">Card to be added.</param>
+        </member>
+        <member name="M:TarneebClasses.Deck.Pick(System.Int32)">
+            <summary>
+            Given a position in the deck returns that Card.
+            Returns null if invalid position.
+            </summary>
+            <param name="position">Index of the Card to return. Zero based.</param>
+            <returns>Card at said position or null if invalid</returns>
+        </member>
+        <member name="M:TarneebClasses.Deck.Pick(TarneebClasses.Card)">
+            <summary>
+            Given a card, it is removed from the deck and returned to the caller.
+            </summary>
+            <param name="target">Card to remove</param>
+            <returns>Target Card</returns>
+        </member>
+        <member name="M:TarneebClasses.Deck.Remove(System.Int32)">
+            <summary>
+            Remove the card at the specified position.
+            </summary>
+            <param name="position">The position of the card to be removed.</param>
+        </member>
+        <member name="M:TarneebClasses.Deck.Remove(TarneebClasses.Card)">
+            <summary>
+            Remove a card from the deck.
+            </summary>
+            <param name="card">The card to remove.</param>
+        </member>
+        <member name="T:TarneebClasses.Enums.CardSuit">
+            <summary>
+            The enum type of card suit with 4 constants.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Enums.CardNumber">
+            <summary>
+            The enum type of card number with 13 constants.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Enums.Team">
+            <summary>
+            The enum type of team name with 2 constants.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Events.GameActionEventArgs">
+            <summary>
+            Event arguments for when a game action has taken place.
+            </summary>
+            <see cref="T:System.EventArgs" />
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.State">
+            <summary>
+            The state at the time that the event was raised.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.Player">
+            <summary>
+            The player that performed the action.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.Card">
+            <summary>
+            The card that was played, if a card was played.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.CardsPlayedInRound">
+            <summary>
+            The number of currently played in the trick/round.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.Bid">
+            <summary>
+            The bid that was placed.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.Tarneeb">
+            <summary>
+            The Tarneeb suit that was decided on.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.Score">
+            <summary>
+            The score to add/remove, when a bid has been won/lost.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.WinningTeam">
+            <summary>
+            The team that won the bid.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.LosingTeam">
+            <summary>
+            The team that lost the bid.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.TeamScores">
+            <summary>
+            The total scores for each team.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.GameActionEventArgs.BidScores">
+            <summary>
+            The scores for each team during a round/trick.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Events.NewGameEventArgs">
+            <summary>
+            Event arguments for whenever a new game is started.
+            </summary>
+            <see cref="T:System.EventArgs" />
+        </member>
+        <member name="T:TarneebClasses.Events.NewPlayerEventArgs">
+            <summary>
+            Event arguments for whenever a new player joins the game.
+            </summary>
+            <see cref="T:System.EventArgs" />
+        </member>
+        <member name="P:TarneebClasses.Events.NewPlayerEventArgs.Player">
+            <summary>
+            The player that joined.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Events.NotificationEventArgs">
+            <summary>
+            Event arguments for notifications.
+            </summary>
+            <see cref="T:System.EventArgs" />
+        </member>
+        <member name="P:TarneebClasses.Events.NotificationEventArgs.Message">
+            <summary>
+            The notification message.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Events.PlayerActionEventArgs">
+            <summary>
+            Event arguments for a player action, such as a player playing a card
+            or placing a bid.
+            </summary>
+            <see cref="T:System.EventArgs" />
+        </member>
+        <member name="P:TarneebClasses.Events.PlayerActionEventArgs.CardPlayed">
+            <summary>
+            The card that was played.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.PlayerActionEventArgs.Bid">
+            <summary>
+            The bid that was placed.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.PlayerActionEventArgs.Tarneeb">
+            <summary>
+            The Tarneeb suit that was decided.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Events.PlayerTurnEventArgs">
+            <summary>
+            Event arguments for when it is a player's turn.
+            </summary>
+            <see cref="T:System.EventArgs" />
+        </member>
+        <member name="P:TarneebClasses.Events.PlayerTurnEventArgs.Player">
+            <summary>
+            The player who's turn it is.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Events.PlayerTurnEventArgs.State">
+            <summary>
+            The current stage for this turn, such as bid or trick.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Game">
+            <summary>
+            Core game logic and logging.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Game.Outcome">
+            <summary>
+            The outcome of the game.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.Outcome.WIN">
+            <summary>
+            The player won the game.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.Outcome.LOSS">
+            <summary>
+            The player lost the game.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Game.State">
+            <summary>
+            Enum for representing game state.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.State.NEW_GAME">
+            <summary>
+            A new game has been started.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.State.BID_STAGE">
+            <summary>
+            Bids must be placed, and a Tarneeb suit decided.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.State.BID_WON">
+            <summary>
+            A player has bid the highest, and gets to decide the Tarneeb
+            suit.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.State.TARNEEB_SUIT">
+            <summary>
+            The Tarneeb suit has been decided.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.State.TRICK">
+            <summary>
+            It is a trick turn, where cards can be played.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.State.TRICK_COMPLETE">
+            <summary>
+            A trick has been completed.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.State.BID_COMPLETE">
+            <summary>
+            The bid value is complete.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.State.DONE">
+            <summary>
+            The game is complete.
+            </summary>
+        </member>
+        <member name="T:TarneebClasses.Game.Difficulty">
+            <summary>
+            The difficulty level of the game.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.Difficulty.EASY">
+            <summary>
+            A game composed of easy CPU players.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.Difficulty.MEDIUM">
+            <summary>
+            A game composed of medium difficulty CPU players.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.Difficulty.HARD">
+            <summary>
+            A game with hard CPU players.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.NUMBER_OF_PLAYERS">
+            <summary>
+            The number of players in a game.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.NUMBER_OF_TEAMS">
+            <summary>
+            The number of teams.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.HAND_SIZE">
+            <summary>
+            The number of cards in a hand (size of deck / number of players).
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game._bidCount">
+            <summary>
+            Number of bids placed.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game._currentPlayer">
+            <summary>
+            The player that gets to make the next move (trick, bid, etc).
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game._cardsPlayedInRound">
+            <summary>
+            The number of cards played in the round.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.bidScore">
+            <summary>
+            The score for the current bid.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game.teamScore">
+            <summary>
+            The overall team score, across all bids.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game._bids">
+            <summary>
+            Internal list of bids for this game.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Game._tricks">
+            <summary>
+            Internal list of rounds for this game.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.ID">
+            <summary>
+            Identifier for the current game, for database insertions.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.CurrentState">
+            <summary>
+            Current game state.
+            The state can be read by any class, but can only be changed inside of the class.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.Players">
+            <summary>
+            The players of the current game.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.CurrentCards">
+            <summary>
+            The cards currently in play for the current trick.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.CurrentPlayers">
+            <summary>
+            The players that played each card.
+            Indices here match up with CurrentCards.
+            </summary>
+            <see cref="P:TarneebClasses.Game.CurrentCards" />
+        </member>
+        <member name="P:TarneebClasses.Game.TrickCounter">
+            <summary>
+            The number of rounds played for the current bid.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.MaxScore">
+            <summary>
+            The score that needs to be reached to win.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.DifficultyLevel">
+            <summary>
+            The difficulty level of this game.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.Tricks">
+            <summary>
+            Tricks/rounds in the game.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.Bids">
+            <summary>
+            Bids placed in this game.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Game.Logs">
+            <summary>
+            Game logs.
+            </summary>
+        </member>
+        <member name="E:TarneebClasses.Game.NewGameEvent">
+            <summary>
+            Triggered when a new game is started.
+            </summary>
+        </member>
+        <member name="E:TarneebClasses.Game.PlayerTurnEvent">
+            <summary>
+            Raised when it is a player's turn.
+            </summary>
+        </member>
+        <member name="E:TarneebClasses.Game.GameActionEvent">
+            <summary>
+            Raised when a game action has occurred.
+            This is different from a player action, since a game action could
+            be a card played, or it could be a team winning a trick.
+            </summary>
+        </member>
+        <member name="E:TarneebClasses.Game.NotificationEvent">
+            <summary>
+            Raised when there are notifications.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Game.FireNewGameEvent">
+            <summary>
+            Fire a new game event.
+            </summary>
+            <param name="args">The arguments for the event.</param>
+        </member>
+        <member name="M:TarneebClasses.Game.FirePlayerTurnEvent">
+            <summary>
+            Raise the PlayerTurnEvent.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Game.FireGameActionEvent(TarneebClasses.Events.GameActionEventArgs)">
+            <summary>
+            Fire a game action event.
+            Such as when a card is played, or a bid is placed.
+            </summary>
+            <param name="args">The event arguments.</param>
+            <see cref="T:TarneebClasses.Events.GameActionEventArgs" />
+        </member>
+        <member name="M:TarneebClasses.Game.OnPlayerBid(TarneebClasses.Events.PlayerActionEventArgs)">
+            <summary>
+            A player has placed a bid; it needs to be validated and placed.
+            </summary>
+            <param name="args">The arguments with the player's bid.</param>
+        </member>
+        <member name="M:TarneebClasses.Game.OnPlayerTarneeb(TarneebClasses.Events.PlayerActionEventArgs)">
+            <summary>
+            A player has decided on a Tarneeb suit. 
+            Set the Tarneeb suit for the current bid.
+            </summary>
+            <param name="args">The arguments, with the chosen Tarneeb suit.</param>
+        </member>
+        <member name="M:TarneebClasses.Game.OnPlayerTrick(TarneebClasses.Events.PlayerActionEventArgs)">
+            <summary>
+            A player has played a card during a trick.
+            Validate whether the card can be played, and add it to the cards played.
+            </summary>
+            <param name="args">The arguments, with the card that was played.</param>
+        </member>
+        <member name="M:TarneebClasses.Game.OnPlayerAction(System.Object,TarneebClasses.Events.PlayerActionEventArgs)">
+            <summary>
+            Executes when a player performs an action.
+            </summary>
+            <param name="sender">The player that performed the action.</param>
+            <param name="args">The arguments for the action.</param>
+        </member>
+        <member name="M:TarneebClasses.Game.#ctor(System.Int32,TarneebClasses.Game.Difficulty)">
+            <summary>
+            Create a new game.
+            </summary>
+            <param name="difficulty">The difficulty level of the game.</param>
+            <param name="maxScore">The score of the game to be reached before the game is won.</param>
+        </member>
+        <member name="M:TarneebClasses.Game.Initialize(System.String)">
+            <summary>
+            Initialize game state.
+            </summary>
+            <param name="playerName">The name of the user.</param>
+            <returns>The user's created player.</returns>
+        </member>
+        <member name="M:TarneebClasses.Game.Start">
+            <summary>
+            Start the game.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Game.Next">
+            <summary>
+            Determine the next stage of the game.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Game.NextPlayer">
+            <summary>
+            Move on to the next player's trick, in counter-clockwise direction.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Game.NextPlayer(TarneebClasses.Player)">
+            <summary>
+            Get the player that goes after the given player.
+            </summary>
+            <param name="player">The starting player.</param>
+            <returns>The player who plays next.</returns>
+        </member>
+        <member name="M:TarneebClasses.Game.GetTeammate(TarneebClasses.Player)">
+            <summary>
+            Get a player's teammate.
+            </summary>
+            <param name="player">The player to get the teammate for.</param>
+            <returns>The teammate.</returns>
+        </member>
+        <member name="M:TarneebClasses.Game.DealCards">
+            <summary>
+            (Re-)deal cards to all players.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Game.CreateHands">
+            <summary>
+            Split a deck and create hands for each player.
+            </summary>
+            <returns>An array of four decks.</returns>
+        </member>
+        <member name="M:TarneebClasses.Game.GetValidCards(TarneebClasses.Player)">
+            <summary>
+            Get the valid cards that a player has.
+            Valid cards are those that are of the leading suit or Tarneeb suit.
+            
+            If the player does not have cards of either suit, all cards are valid;
+            they just don't have a score.
+            </summary>
+            <param name="player">The player to check cards for.</param>
+            <returns>The valid cards.</returns>
+        </member>
+        <member name="M:TarneebClasses.Game.AddLog(System.String)">
+            <summary>
+            Create a log for the given action, and add it to the list and database of logs.
+            </summary>
+            <param name="action">The action to create a log for and add.</param>
+        </member>
+        <member name="T:TarneebClasses.GameException">
+            <summary>
+            A game-specific exception has occured.
+            This is manually raised.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.GameException.#ctor">
+            <summary>
+            Create a new game exception.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.GameException.#ctor(System.String)">
+            <summary>
+            Create a new game exception with a message.
+            </summary>
+            <param name="message">The message to use.</param>
+        </member>
+        <member name="T:TarneebClasses.HumanPlayer">
+            <summary>
+            HumanPlayer inherits from the Player Class. 
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.HumanPlayer.#ctor(System.String,System.Int32,TarneebClasses.Enums.Team,TarneebClasses.Deck)">
+            <summary>
+            Constructor parameterized calling the base constructor.
+            </summary>
+            <param name="playerName">A string represents player name.</param>
+            <param name="playerId">An int represents player ID.</param>
+            <param name="teamNumber">An enum represents team color.</param>
+            <param name="handList">A Deck object represents player's handlist.</param>
+        </member>
+        <member name="M:TarneebClasses.HumanPlayer.SetName(System.String)">
+            <summary>
+            Set a new name for the HumanPlayer object.
+            </summary>
+            <param name="newName">A string containing the new player name.</param>
+        </member>
+        <member name="T:TarneebClasses.Log">
+            <summary>
+            A game log.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Log.DateTime">
+            <summary>
+            The date and time the action took place.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Log.Action">
+            <summary>
+            The action that took place, such a card being played or a bid being placed.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Log.GameID">
+            <summary>
+            The identifier for the game that the action took place.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Log.#ctor(System.DateTime,System.Int32,System.String)">
+            <summary>
+            Create a game log, with the date and time.
+            </summary>
+            <param name="dateTime">The date and time the action took place.</param>
+            <param name="gameId">The identifier for the game that the action took place.</param>
+            <param name="action">The action that took place.</param>
+        </member>
+        <member name="M:TarneebClasses.Log.#ctor(System.Int32,System.String)">
+            <summary>
+            Create a new log.
+            </summary>
+            <param name="gameId">The identifier for the game that the action took place.</param>
+            <param name="action">The action that took place.</param>
+        </member>
+        <member name="M:TarneebClasses.Log.ToString">
+            <summary>
+            Get this log as a string.
+            </summary>
+            <returns>The action.</returns>
+        </member>
+        <member name="T:TarneebClasses.Player">
+            <summary>
+            The player class will represent an individual player including their
+            ID, team number, name, and hand.
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Player.PlayerName">
+            <summary>
+            Gets and sets a given players name
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Player.PlayerId">
+            <summary>
+            Gets and sets a given players ID
+            </summary>
+        </member>
+        <member name="E:TarneebClasses.Player.PlayerActionEvent">
+            <summary>
+            Invoked when this player performs an action, such as playing a card.
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Player.PerformAction(TarneebClasses.Events.PlayerActionEventArgs)">
+            <summary>
+            Raise the player action event.
+            </summary>
+            <param name="args">The arguments to use.</param>
+        </member>
+        <member name="T:TarneebClasses.Round">
+            @Author  Hoang Quoc Bao Nguyen.
+            @Date    2021-01-29.
+            <summary>
+            Round class represents a round of the Tarneeb game 
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Round.TrumpSuit">
+            <summary>
+            Trump Suit of the whole game 
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Round.CardOne">
+            <summary>
+            Card 1 played by the first player 
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Round.CardTwo">
+            <summary>
+            Card 2 played by the second player
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Round.CardThree">
+            <summary>
+            Card 3 played by the third player
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Round.CardFour">
+            <summary>
+            Card 4 played by the fouth player
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Round.CardList">
+            <summary>
+            List of card played in a round 
+            </summary>
+        </member>
+        <member name="M:TarneebClasses.Round.#ctor(TarneebClasses.Enums.CardSuit,TarneebClasses.Card,TarneebClasses.Card,TarneebClasses.Card,TarneebClasses.Card)">
+            <summary>
+            Parameterized Constructor 
+            </summary>
+            <param name="trumpSuit">Trump suit of the game</param>
+            <param name="card1">Card 1 played by the first player</param>
+            <param name="card2">Card 2 played by the second player</param>
+            <param name="card3">Card 3 played by the third player</param>
+            <param name="card4">Card 4 played by the fourth player</param>
+        </member>
+        <member name="M:TarneebClasses.Round.WinCard(TarneebClasses.Round)">
+            <summary>
+             WinCard determines the winning card of the round
+            </summary>
+            <param name="round">4 cards played in a round</param>
+            <returns>The winning card</returns>
+        </member>
+        <member name="M:TarneebClasses.Round.WinRoundCounter">
+            <summary>
+            WinRoundCounter represents how many round the team has won 
+            </summary>
+            <returns>Number of win rounds</returns>
+        </member>
+        <member name="M:TarneebClasses.Round.RoundScore(System.Int32,System.Int32)">
+            <summary>
+            RoundScore represents the score the teams receive after a round 
+            </summary>
+            <param name="bid">The round bid number</param>
+            <param name="numberOfWinTrick">Win trick counter</param>
+            <returns></returns>
+        </member>
+        <member name="M:TarneebClasses.Round.Reset">
+            <summary>
+            Reset the Card list for the new round 
+            </summary>
+        </member>
+    </members>
+</doc>

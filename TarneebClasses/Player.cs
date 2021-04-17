@@ -17,8 +17,7 @@ namespace TarneebClasses
     /// </summary>
     public class Player
     {
-        /**** DATA MEMBERS ****/
-
+        #region Data members
         /// <summary>
         /// Gets and sets a given players name
         /// </summary>
@@ -29,19 +28,33 @@ namespace TarneebClasses
         /// </summary>
         public int PlayerId { get; set; }
 
-        // Gets and sets a given players team number
+        /// <summary>
+        /// Gets and sets a given players team number
+        /// </summary>
         public Enums.Team TeamNumber { get; set; }
 
-        // Gets and sets a given players hand
+        /// <summary>
+        /// Gets and sets a given players hand
+        /// </summary>
         public Deck HandList { get; set; }
+        #endregion
 
-        /**** EVENTS ****/
+
+        #region Events
         /// <summary>
         /// Invoked when this player performs an action, such as playing a card.
         /// </summary>
         public event EventHandler<Events.PlayerActionEventArgs> PlayerActionEvent;
+        #endregion
 
-        /**** CONSTRUCTORS ****/
+        #region Constructor
+        /// <summary>
+        /// Create a new player.
+        /// </summary>
+        /// <param name="playerName">The name of the player.</param>
+        /// <param name="playerId">The player's identifier.</param>
+        /// <param name="teamNumber">The player's team.</param>
+        /// <param name="handList">The player's hand.</param>
         public Player(string playerName, int playerId, Enums.Team teamNumber, Deck handList)
         {
             this.PlayerName = playerName;
@@ -49,9 +62,13 @@ namespace TarneebClasses
             this.TeamNumber = teamNumber;
             this.HandList = handList;
         }
+        #endregion
 
-        /**** METHODS ****/
-
+        #region Methods
+        /// <summary>
+        /// Get this player as a string.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return $"User Name: {PlayerName}. Player Number: {PlayerId}. Team Color: {TeamNumber}. ";
@@ -65,6 +82,6 @@ namespace TarneebClasses
         {
             this.PlayerActionEvent?.Invoke(this, args);
         }
-
+        #endregion
     }
 }
