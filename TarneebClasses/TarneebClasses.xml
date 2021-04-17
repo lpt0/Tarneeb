@@ -105,10 +105,18 @@
             <summary>
             Create a new CPU player.
             </summary>
+            <param name="game">The game to use to listen for events.</param>
             <param name="playerName">The name of the player.</param>
             <param name="playerId">The player's ID.</param>
             <param name="teamNumber">The player's team number.</param>
             <param name="handList">The player's hand.</param>
+        </member>
+        <member name="M:TarneebClasses.CPUPlayer.OnPlayerTurn(System.Object,TarneebClasses.Events.PlayerTurnEventArgs)">
+            <summary>
+            Handles logic for the player's turn.
+            </summary>
+            <param name="sender">The game.</param>
+            <param name="args">Event arguments. Only contains the Player object.</param>
         </member>
         <member name="T:TarneebClasses.CPUPlayerEasy">
             <summary>
@@ -164,6 +172,7 @@
             <summary>
             Create a new Easy CPU player.
             </summary>
+            <param name="game">The game to use to listen for events.</param>
             <param name="playerName">The name of the player.</param>
             <param name="playerId">The player's ID.</param>
             <param name="teamNumber">The player's team number.</param>
@@ -258,6 +267,7 @@
             <summary>
             Create a new Hard CPU player.
             </summary>
+            <param name="game">The game to use to listen for events.</param>
             <param name="playerName">The name of the player.</param>
             <param name="playerId">The player's ID.</param>
             <param name="teamNumber">The player's team number.</param>
@@ -352,6 +362,7 @@
             <summary>
             Create a new Medium CPU player.
             </summary>
+            <param name="game">The game to use to listen for events.</param>
             <param name="playerName">The name of the player.</param>
             <param name="playerId">The player's ID.</param>
             <param name="teamNumber">The player's team number.</param>
@@ -586,6 +597,7 @@
             <summary>
             Insert a game outcome into the stats table.
             </summary>
+            <param name="gameId">The identifier for the game that the outcome is associated with.</param>
             <param name="dateTime">The date and time the outcome occurred.</param>
             <param name="outcome">The outcome (win/loss/tie)</param>
         </member>
@@ -684,9 +696,34 @@
             </summary>
             <param name="card">The card to remove.</param>
         </member>
+        <member name="T:TarneebClasses.Enums">
+            <summary>
+            Enums in the game.
+            </summary>
+        </member>
         <member name="T:TarneebClasses.Enums.CardSuit">
             <summary>
             The enum type of card suit with 4 constants.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardSuit.Spades">
+            <summary>
+            Suit of spades.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardSuit.Heart">
+            <summary>
+            Suit of heart.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardSuit.Diamond">
+            <summary>
+            Suit of diamond.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardSuit.Club">
+            <summary>
+            Suit of club.
             </summary>
         </member>
         <member name="T:TarneebClasses.Enums.CardNumber">
@@ -694,9 +731,84 @@
             The enum type of card number with 13 constants.
             </summary>
         </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Two">
+            <summary>
+            Card is a two.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Three">
+            <summary>
+            Card is a three.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Four">
+            <summary>
+            Card is a four.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Five">
+            <summary>
+            Card is a five.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Six">
+            <summary>
+            Card is a six.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Seven">
+            <summary>
+            Card is a seven.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Eight">
+            <summary>
+            Card is an eight.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Nine">
+            <summary>
+            Card is a nine.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Ten">
+            <summary>
+            Card is a ten.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Jack">
+            <summary>
+            Card is a jack.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Queen">
+            <summary>
+            Card is a queen.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.King">
+            <summary>
+            Card is a king.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.CardNumber.Ace">
+            <summary>
+            Card is an ace.
+            </summary>
+        </member>
         <member name="T:TarneebClasses.Enums.Team">
             <summary>
             The enum type of team name with 2 constants.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.Team.Blue">
+            <summary>
+            Blue team.
+            </summary>
+        </member>
+        <member name="F:TarneebClasses.Enums.Team.Red">
+            <summary>
+            Red team.
             </summary>
         </member>
         <member name="T:TarneebClasses.Events.GameActionEventArgs">
@@ -1046,7 +1158,6 @@
             <summary>
             Fire a new game event.
             </summary>
-            <param name="args">The arguments for the event.</param>
         </member>
         <member name="M:TarneebClasses.Game.FirePlayerTurnEvent">
             <summary>
@@ -1253,10 +1364,35 @@
             Gets and sets a given players ID
             </summary>
         </member>
+        <member name="P:TarneebClasses.Player.TeamNumber">
+            <summary>
+            Gets and sets a given players team number
+            </summary>
+        </member>
+        <member name="P:TarneebClasses.Player.HandList">
+            <summary>
+            Gets and sets a given players hand
+            </summary>
+        </member>
         <member name="E:TarneebClasses.Player.PlayerActionEvent">
             <summary>
             Invoked when this player performs an action, such as playing a card.
             </summary>
+        </member>
+        <member name="M:TarneebClasses.Player.#ctor(System.String,System.Int32,TarneebClasses.Enums.Team,TarneebClasses.Deck)">
+            <summary>
+            Create a new player.
+            </summary>
+            <param name="playerName">The name of the player.</param>
+            <param name="playerId">The player's identifier.</param>
+            <param name="teamNumber">The player's team.</param>
+            <param name="handList">The player's hand.</param>
+        </member>
+        <member name="M:TarneebClasses.Player.ToString">
+            <summary>
+            Get this player as a string.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:TarneebClasses.Player.PerformAction(TarneebClasses.Events.PlayerActionEventArgs)">
             <summary>
