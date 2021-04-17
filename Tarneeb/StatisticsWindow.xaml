@@ -21,6 +21,13 @@
         <TabControl>
             <TabItem Name="tabStats" Header="Statistics" ToolTip="View stats about the games played.">
                 <StackPanel Orientation="Vertical">
+                    <Label 
+                        FontFamily="Segoe UI SemiLight"
+                        FontSize="24"
+                        HorizontalAlignment="Center"
+                    >
+                        Game Statistics
+                    </Label>
                     <Label x:Name="lblGamesPlayed">Number of games played:</Label>
                     <Label x:Name="lblWins">Wins: </Label>
                     <Label x:Name="lblLosses">Losses:</Label>
