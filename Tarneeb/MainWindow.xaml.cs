@@ -117,6 +117,8 @@ namespace Tarneeb
                 // By default, fill the input with the user's Windows username
                 promptWindow.Input.Text = Environment.UserName;
                 promptWindow.ShowDialog();
+                promptWindow.Topmost = true;
+                promptWindow.Focus();
                 name = promptWindow.Input.Text.Trim();
 
                 if (name == "")
@@ -246,6 +248,8 @@ namespace Tarneeb
                 var promptWindow = new TextInputWindow();
                 promptWindow.Prompt.Content = "Enter a bid (-1 to pass)";
                 promptWindow.ShowDialog();
+                promptWindow.Topmost = true;
+                promptWindow.Focus();
                 int.TryParse(promptWindow.Input.Text, out bid);
 
                 if (bid == 0)
@@ -311,6 +315,8 @@ namespace Tarneeb
             {
                 var tarneebWindow = new TarneebSuitWindow();
                 tarneebWindow.ShowDialog();
+                tarneebWindow.Topmost = true;
+                tarneebWindow.Focus();
 
                 if (tarneebWindow.Suit == 0)
                 {
@@ -596,6 +602,8 @@ namespace Tarneeb
             var difficultySelect = new DifficultySelectWindow();
             difficultySelect.Topmost = true;
             difficultySelect.ShowDialog();
+            difficultySelect.Topmost = true;
+            difficultySelect.Focus();
 
             // Set needed variables
             this._cardsInRoundHolders = new WrapPanel[] { this.FirstCard, this.SecondCard, this.ThirdCard, this.FourthCard };
